@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractBinaryDrive_HMI" Id="{859e9ef3-503d-47b5-a84a-5d84be4879c6}">
+    <Declaration><![CDATA[// Conveyor drive HMI interface - ONE struct per tile.
+// Extends ST_ComponentBase_HMI, so one bound parameter also carries Config,
+// Command and Status - and the added members may not reuse those three names.
+//
+// The one unit type here with a real device command block: a drive has no SPT
+// component of its own, so DeviceCommand is it. Used by Transport01, Transport02
+// and both lift carriage belts.
+TYPE ST_AbstractBinaryDrive_HMI EXTENDS ST_ComponentBase_HMI :
+STRUCT
+	DeviceConfig	: ST_AbstractBinaryDrive_Config;
+	DeviceCommand	: ST_AbstractBinaryDrive_Command;
+	Device			: ST_AbstractBinaryDrive_Status;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

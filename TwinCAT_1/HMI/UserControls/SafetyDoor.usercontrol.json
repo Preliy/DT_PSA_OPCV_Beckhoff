@@ -1,0 +1,24 @@
+{
+  "parameters": [
+    {
+      "allowSymbolExpressionsInObject": false,
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setSafetyDoorHMI",
+      "propertyGetterName": "getSafetyDoorHMI",
+      "refTo": "",
+      "name": "data-tchmi-safetydoorhmi",
+      "displayName": "SafetyDoorHMI",
+      "visible": true,
+      "type": "tchmi:server#/definitions/ADS-PLC1.ST_SafetyDoor_HMI",
+      "category": "",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "SafetyDoorHMI"
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.5.1/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": "Status tile for one interlocked safety door (FB_SafetyDoor). Two bits, and they are not redundant: a door can be shut without being locked, and that is exactly the state that must not let Production start. Read-only - the lock is commanded by FG_System from the machine's PackML mode."
+}

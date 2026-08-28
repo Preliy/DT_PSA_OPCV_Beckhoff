@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractCamera_HMI" Id="{adb1945f-7548-4cf1-84d9-c537fa6c1c20}">
+    <Declaration><![CDATA[// Camera HMI interface - ONE struct per tile.
+//
+// Extends ST_ComponentBase_HMI, so Config, Command and Status arrive inherited
+// and the added members cannot reuse those three names. Same shape as
+// ST_AbstractLightSource_HMI, which is the component this one was modelled on.
+TYPE ST_AbstractCamera_HMI EXTENDS ST_ComponentBase_HMI :
+STRUCT
+	DeviceCommand	: ST_AbstractCamera_Command;
+	Device			: ST_AbstractCamera_Status;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractBunker_HMI" Id="{d8898eee-1ff7-487f-b9a3-8d65837f3b26}">
+    <Declaration><![CDATA[// Bunker HMI interface - ONE struct per tile.
+//
+// Extends ST_ComponentBase_HMI, so Config, Command and Status arrive inherited
+// and the added members cannot reuse those three names.
+TYPE ST_AbstractBunker_HMI EXTENDS ST_ComponentBase_HMI :
+STRUCT
+	DeviceCommand	: ST_AbstractBunker_Command;
+	Device			: ST_AbstractBunker_Status;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

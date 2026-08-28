@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_TransferStopper" Id="{7d521987-80ac-4139-809a-8788e04aee96}" SpecialFunc="None">
+    <Declaration><![CDATA[// Accumulation stopper - one pallet, held until the next station is free.
+// RETRACTED (min) HOLDS THE PALLET; EXTENDING (max) RELEASES IT. Nine authored
+// Function entries in the twin once said the opposite.
+// CanAccept/Occupied are GETTERS, never stored.
+// Contract: _workflow/reference/transport-behaviour.md
+FUNCTION_BLOCK FB_TransferStopper EXTENDS FB_PackML_BaseModule
+VAR
+	// --- Components ---------------------------------------------------------
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_Detect		: FB_DigitalSensor;
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_Exit			: FB_DigitalSensor;
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Stopper		: FB_SingleSolenoidFeedback;
+
+
+	// --- Ring handshake -----------------------------------------------------
+	// THE INTERFACE IS DERIVED, NOT ASSIGNED. CanAccept and Occupied are getters,
+	// correct in every PackML state and mode. There is no _Ready to go stale.
+	// _Transferring is the ONE piece of memory: a payload is crossing right now.
+	// Set on commit to release, cleared by a B_Exit EDGE in CyclicLogic so it
+	// happens in every state. A plain BOOL initialising FALSE is the point - a
+	// stale FALSE is corrected by B_Detect on the next scan.
+	_Transferring	: BOOL;
+	// Edge detector for the clearing rule. A LEVEL cannot be used: B_Exit may still
+	// be made by the previous pallet at the moment this unit commits to the next
+	// release, which would clear the latch instantly. The rising edge after the
+	// commit is unambiguous, and unlike a cylinder position or a drive command it
+	// is not erased by Stopping or Aborting.
+	ExitEdge		: R_TRIG;
+	// The successor can physically accept a pallet. Supplied by the parent.
+	_NextCanAccept	: BOOL;
+
+	// --- Diagnostics --------------------------------------------------------
+
+	// Module level fault. The SPT components raise their own alarms through the
+	// event logger; these codes cover the sequence timeouts, which belong to the
+	// unit rather than to any one device. Published for the HMI.
+	// 0 none  1 no block  2 no release  3 pallet never reached the exit sensor
+	_FaultCode		: DINT;
+
+	// --- Parameters, set by the parent in Initialize ------------------------
+	_BlockTime		: TIME := T#2S;		// stopper travel to the blocking position
+	_ReleaseTime	: TIME := T#2S;		// stopper travel to the release position
+	_ClearTime		: TIME := T#10S;	// pallet to reach the exit sensor once released
+	// How long a reset lets the line settle once this unit is blocking. The group
+	// runs the main conveyors throughout, so pallets travel up against the blocking
+	// stoppers and accumulate where a detect sensor can see them.
+	_AccumulateTime	: TIME := T#5S;
+
+	// --- HMI ----------------------------------------------------------------
+	// One struct for the whole tile, extending the SPT module interface. The
+	// inherited half is bridged to the base's own PackMLBaseModule_HMI in two
+	// places: HMICommunication pushes Command in before the base acts on it,
+	// PublishHMI copies Config and Status back out after. The Station half is this
+	// block's own and is filled by PublishHMI alone.
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI	: ST_TransferStopper_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Aborting" Id="{13a78c14-1f96-4de5-824f-dd799da4933b}">
+      <Declaration><![CDATA[METHOD PROTECTED Aborting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		// Block on abort. A released stopper would let an unsupervised pallet run
+		// into a station that is no longer sequencing. An abort is immediate by
+		// definition, so unlike Resetting it does not wait for a crossing to
+		// finish - that is the difference between stopping safely and stopping now.
+		//
+		// Nothing is cleared: the interface is derived, and _Transferring is
+		// cleared by B_Exit whenever the pallet actually gets there.
+		Y_Stopper.Retract();
+		SequenceState	:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Aborting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clearing" Id="{500961d2-9ae5-406a-9266-b339f2452727}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		_FaultCode := 0;
+		SequenceState := SequenceState + 10;
+
+	10:	// Clear latched component alarms.
+		IF Y_Stopper.Reset()
+			AND B_Detect.Reset()
+			AND B_Exit.Reset() THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{92c9780f-2f9b-48ee-8008-a081cffbf590}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// No ReadInputs / WriteOutputs anywhere in this group: each component is linked
+// to its terminal channel at the instance declaration, so there is no image to
+// copy in or out.
+
+// THE TRANSFER LATCH IS CLEARED BY THE SENSOR, IN EVERY STATE - not in the
+// Execute step that starts the release. A pallet that finishes crossing while the
+// machine is stopped or resetting has still finished crossing.
+//
+// THE WITNESS MUST BE A SENSOR EDGE. Qualifying it with Y_Stopper.Extended
+// deadlocked the machine: Stopping and Aborting retract the cylinder immediately,
+// destroying the very witness the rule depended on, so _Transferring could never
+// go FALSE again. A rising edge is specific to THIS crossing and no state change
+// can erase it.
+ExitEdge(CLK := B_Exit.Active);
+IF _Transferring AND ExitEdge.Q THEN
+	_Transferring := FALSE;
+END_IF
+
+SUPER^.CyclicLogic();
+
+// After the base, so the published struct carries this scan's state and
+// this scan's HMI permission rather than last scan's.
+PublishHMI();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Execute" Id="{af7df93a-98b6-4348-b13d-fa2e18e28255}">
+      <Declaration><![CDATA[METHOD PROTECTED Execute
+VAR_INPUT
+END_VAR
+VAR_INST
+	BlockTimer		: TON;
+	ReleaseTimer	: TON;
+	ClearTimer		: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The transport ring runs continuously, so this state loops rather than
+// completing. Execute is the one acting state that does not self-complete and
+// SequenceState is simply reset to 0 after each pallet.
+
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:
+
+		CASE SequenceState OF
+			0:	// Block. Nothing to clear: this chain no longer owns the interface,
+				// it only drives the cylinder. CanAccept and Occupied are derived
+				// from the sensors and are already correct on entry.
+				NoStateTasksToComplete	:= FALSE;
+				Y_Stopper.Retract();
+				SequenceState	:= SequenceState + 10;
+
+			10:	// Wait for the real limit switch, not the commanded position.
+				// CanAccept becomes TRUE by itself the moment the switch makes and
+				// the detect sensor is clear - there is no window in which this
+				// unit advertises readiness over a pallet, because readiness is
+				// not something it publishes.
+				IF Y_Stopper.Retracted THEN
+					SequenceState	:= SequenceState + 10;
+				ELSIF BlockTimer.Q THEN
+					_FaultCode := 1;
+					ChangeState(E_PMLCommand.ePMLCommand_Hold);
+				END_IF
+
+			20:	// Idle and empty. Waiting here is the normal resting condition.
+				IF B_Detect.Active THEN
+					SequenceState	:= SequenceState + 10;
+				END_IF
+
+			30:	// Holding a pallet. Release only onto a successor that can
+				// physically accept one - invariant 3.
+				IF _NextCanAccept THEN
+					// The crossing starts here. This is also what tells a lift to
+					// start its belt, so it is set BEFORE the cylinder opens; it is
+					// cleared by B_Exit in CyclicLogic, never by this chain.
+					_Transferring	:= TRUE;
+					SequenceState	:= SequenceState + 10;
+				END_IF
+
+			40:	// Release
+				Y_Stopper.Extend();
+				IF Y_Stopper.Extended THEN
+					SequenceState := SequenceState + 10;
+				ELSIF ReleaseTimer.Q THEN
+					_FaultCode := 2;
+					ChangeState(E_PMLCommand.ePMLCommand_Hold);
+				END_IF
+
+			50:	// The pallet has to actually leave before this unit takes another.
+				// _Transferring has already been cleared by B_Exit in CyclicLogic.
+				IF B_Exit.Active THEN
+					SequenceState := 0;
+				ELSIF ClearTimer.Q THEN
+					_FaultCode := 3;
+					ChangeState(E_PMLCommand.ePMLCommand_Hold);
+				END_IF
+		END_CASE
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		// The stopper is an SPT component and honours its own SolenoidHMI struct
+		// whenever the mode grants HMI control. No sequence runs, and nothing needs
+		// to be assigned: the interface is derived from the sensors, so it keeps
+		// telling the truth while an operator moves pallets by hand.
+		;
+END_CASE
+
+SUPER^.Execute();
+
+BlockTimer(	IN := (SequenceState = 10),							PT := _BlockTime);
+ReleaseTimer(IN := (SequenceState = 40),						PT := _ReleaseTime);
+ClearTimer(	IN := (SequenceState = 50),							PT := _ClearTime);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="FaultCode" Id="{08cfa865-7a6b-4911-b3dc-c9439896ca5f}">
+      <Declaration><![CDATA[// Sequence timeout that took this unit to Held. Cleared by Clearing.
+// 0 none  1 no block  2 no release  3 pallet never reached the exit sensor
+PROPERTY FaultCode : DINT]]></Declaration>
+      <Get Name="Get" Id="{a34f8cd5-a102-43f5-b36a-a9ea07186023}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FaultCode := _FaultCode;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="HMICommunication" Id="{83cc73c9-f2ca-4ff8-97e0-8d289195d1ec}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The command half of the HMI bridge; PublishHMI is the status half.
+// The base calls this immediately before ModeControl() and StateControl(), which
+// is the only point at which an operator command can still reach this scan's
+// state machine. See FB_TransferIndex.HMICommunication for the full reasoning.
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{f53e52bb-0399-4322-b233-26750d7a91b9}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		// Names are prefixed by the parent with the unit name, so alarms read
+		// "Stopper03 B_Detect" rather than one of four identical "B_Detect".
+		RegisterComponent(B_Detect);
+		RegisterComponent(B_Exit);
+		RegisterComponent(Y_Stopper);
+
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= FALSE;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// Open loop travel times. The stopper has no extended limit switch, so
+		// these bound the commanded move rather than confirming it.
+		Y_Stopper.ExtendTime	:= 2000.0;
+		Y_Stopper.RetractTime	:= 2000.0;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="NextCanAccept" Id="{c3f118fc-582e-416a-a401-0bb0aa274481}">
+      <Declaration><![CDATA[// The successor's CanAccept, wired in by the parent - this unit does not know the
+// chain order.
+PROPERTY NextCanAccept : BOOL]]></Declaration>
+      <Set Name="Set" Id="{98a95f98-a093-46e3-be1c-64ae9f9e98d6}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_NextCanAccept := NextCanAccept;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Occupied" Id="{07bac6d1-cb7e-40ed-98a3-e9fd215e0aac}">
+      <Declaration><![CDATA[// This station is physically holding or handling a pallet.
+//
+// Derived, like CanAccept: the detect sensor, or a crossing that has been committed
+// to and not yet confirmed finished. True from the moment the unit decides to
+// release until B_Exit says the pallet has gone, which is exactly the window in
+// which nobody should send it another one.
+//
+// There is no remembered occupancy behind this, so there is nothing for a state
+// change or a program download to falsify.
+PROPERTY Occupied : BOOL]]></Declaration>
+      <Get Name="Get" Id="{fc6b030e-9eae-4c84-8887-4f8dfe6b662c}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Occupied := B_Detect.Active OR _Transferring;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Action Name="PublishHMI" Id="{6a2e4c19-8d73-4f56-b0a1-9c3e5d84f2b7}">
+      <Implementation>
+        <ST><![CDATA[// Everything an operator tile needs from this unit, in one struct.
+//
+// Called from CyclicLogic AFTER SUPER^.CyclicLogic(), so _CurrentState and the
+// base's HMIControlAvailable are this scan's values and not last scan's.
+
+// --- Inherited half ---------------------------------------------------------
+// Straight copies of the struct the SPT base maintains - Config carries Name and
+// the logging toggles, Status carries Busy, Error, ErrorID, Mode, State and
+// HMIControlAvailable. The last is the gate for the jog buttons on the tile,
+// granted in ePMLUnitMode_Manual only.
+HMI.Config		:= PackMLBaseModule_HMI.Config;
+HMI.Status		:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName			:= F_PMLStateName(_CurrentState);
+HMI.Sequence.StepIndex	:= SequenceState;
+
+// --- Ring handshake ---------------------------------------------------------
+// The derived properties, not backing variables - the tile shows what the machine
+// physically is, which is the same thing the neighbouring stations act on. The
+// struct field names are unchanged so the existing panel bindings still resolve.
+HMI.Station.Ready					:= CanAccept;
+HMI.Station.Occupied				:= Occupied;
+HMI.Station.NextReady				:= _NextCanAccept;
+HMI.Station.SendToNext				:= SendToNext;
+
+// --- Diagnostics ------------------------------------------------------------
+HMI.Station.FaultCode				:= _FaultCode;]]></ST>
+      </Implementation>
+    </Action>
+    <Property Name="CanAccept" Id="{cec9c871-6c96-48fd-8938-4af4f10042c6}">
+      <Declaration><![CDATA[// This station can physically take a pallet right now. The predecessor gates its
+// release on this, and it is the whole of the readiness contract.
+//
+// DERIVED, NOT ASSIGNED: computed from the cylinder limit, the detect sensor and
+// the transfer latch, so it is correct in every PackML state and mode.
+//
+// Blocking position, nothing on the sensor, nothing crossing, no fault outstanding.
+PROPERTY CanAccept : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9034d69f-c59b-4d0e-8b20-823892e118f2}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CanAccept := Y_Stopper.Retracted
+	AND NOT B_Detect.Active
+	AND NOT _Transferring
+	AND (_FaultCode = 0);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Resetting" Id="{c6df164e-48b3-469f-80a7-22e954bbee51}">
+      <Declaration><![CDATA[METHOD PROTECTED Resetting
+VAR_INPUT
+END_VAR
+VAR_INST
+	ResetBlockTimer	: TON;
+	AccumulateTimer	: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// A RESET RE-ESTABLISHES WHERE THE PALLETS ARE.
+// Block, then wait for the line to settle. The group runs the main conveyors
+// throughout a reset, so whatever was moving accumulates against the blocking
+// stoppers; after that, each station's state is simply what its sensor says.
+//
+// A FIXED WAIT, NOT AN EVENT. Waiting for the in-flight pallet to clear B_Exit
+// deadlocked: Stopping had already retracted the cylinder the clearing rule
+// needed. A RESET MUST ALWAYS TERMINATE - nothing in it may wait on an event that
+// might not arrive.
+// The stopper is never released on reset, and is already blocking anyway.
+
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		Y_Stopper.Retract();
+		SequenceState	:= SequenceState + 10;
+
+	10:
+		IF Y_Stopper.Retracted THEN
+			SequenceState := SequenceState + 10;
+		ELSIF ResetBlockTimer.Q THEN
+			_FaultCode := 1;
+			ChangeState(E_PMLCommand.ePMLCommand_Hold);
+		END_IF
+
+	20:	// Accumulation. When it expires the pallets have settled, so any crossing
+		// this unit had outstanding is over by definition - either the pallet
+		// reached the next station or it is back against this one. Clearing the
+		// latch here is the reset re-establishing state rather than inheriting a
+		// crossing whose sensor edge was missed while the machine was stopped.
+		IF AccumulateTimer.Q THEN
+			_Transferring	:= FALSE;
+			SequenceState	:= SequenceState + 10;
+		END_IF
+
+	30:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Resetting();
+
+ResetBlockTimer(IN := (SequenceState = 10),							PT := _BlockTime);
+AccumulateTimer(IN := (SequenceState = 20),							PT := _AccumulateTime);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SendToNext" Id="{80877b59-0053-452c-8086-8fdd305ed29d}">
+      <Declaration><![CDATA[// This unit is handing a pallet over right now. The parent forwards it to the
+// successor's PayloadIncoming, which only a lift acts on - it starts drawing the
+// pallet aboard.
+//
+// This is the transfer latch itself, not a second flag that shadows it. Handing
+// over and being mid-crossing are the same fact, and keeping them as one variable
+// means they cannot disagree. It is cleared by B_Exit, so the announcement stops
+// exactly when the pallet has actually gone.
+PROPERTY SendToNext : BOOL]]></Declaration>
+      <Get Name="Get" Id="{ed669631-feb3-4b01-916c-16166a23bf14}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SendToNext := _Transferring;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Stopping" Id="{c495d551-1442-4e21-906a-ed695aba158c}">
+      <Declaration><![CDATA[METHOD PROTECTED Stopping
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		// Block. Nothing to clear - see Aborting.
+		Y_Stopper.Retract();
+		SequenceState	:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Stopping();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

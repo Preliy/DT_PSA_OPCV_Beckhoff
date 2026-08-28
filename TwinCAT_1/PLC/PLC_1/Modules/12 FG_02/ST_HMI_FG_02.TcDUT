@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_HMI_FG_02" Id="{e21c5b66-045e-4746-9aaf-b0ec09efffd0}">
+    <Declaration><![CDATA[// FG_02 HMI interface - ONE struct for the group tile.
+//
+// Extends ST_BaseModule_HMI, so it inherits the whole SPT module interface:
+//   Config.Name / LogStateChanges / LogModeChanges / ModeNames
+//   Command.Mode / State / Activate*Log / Deactivat*Log      (writable)
+//   Status.Busy / Error / ErrorID / Mode / State / HMIControlAvailable
+//   Sequence.StepIndex / StepName
+//   StateName
+//
+// The one added member CANNOT be called Config, Command, Status or Sequence -
+// those are inherited and redeclaring them is a compile error. Hence Inspection.
+//
+// FG_02 did not need this while its camera had a single status bit that echoed the
+// trigger: there was no group-level fact that no device already owned. A real
+// verdict and three distinguishable failure modes are exactly such a fact.
+TYPE ST_HMI_FG_02 EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Inspection	: ST_FG_02_Inspection_Status;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_Transport" Id="{b61e639f-bf5a-48d0-9fff-a8b5db9b71aa}" SpecialFunc="None">
+    <Declaration><![CDATA[// FG_Transport - two level pallet conveyor, Bosch TS style, closed ring.
+// Eleven stations: 5 Index, 4 Stopper, 2 Lift, plus the two main conveyors,
+// which are the only thing this level owns itself.
+// WireRing is the ONLY place the chain order exists - no station knows what
+// follows it, which is what lets one FB serve five index units.
+// Contract: _workflow/reference/transport-behaviour.md
+FUNCTION_BLOCK FG_Transport EXTENDS FB_PackML_BaseModule
+VAR	
+	Index01			: FB_TransferIndex := (Name := 'Index01');
+	Index02			: FB_TransferIndex := (Name := 'Index02');
+	Index03			: FB_TransferIndex := (Name := 'Index03');
+	Index04			: FB_TransferIndex := (Name := 'Index04');
+	Index05			: FB_TransferIndex := (Name := 'Index05');
+	Stopper01		: FB_TransferStopper := (Name := 'Stopper01');
+	Stopper02		: FB_TransferStopper := (Name := 'Stopper02');
+	Stopper03		: FB_TransferStopper := (Name := 'Stopper03');
+	Stopper04		: FB_TransferStopper := (Name := 'Stopper04');
+	Lift01			: FB_TransferLift := (Name := 'Lift01');
+	Lift02			: FB_TransferLift := (Name := 'Lift02');
+	Transport01		: FB_AbstractBinaryDrive := (Name := 'Transport01');
+	Transport02		: FB_AbstractBinaryDrive := (Name := 'Transport02');
+	
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_BaseModule_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Aborting" Id="{d8e27d5d-100e-4665-8880-283a6c16a9d7}">
+      <Declaration><![CDATA[METHOD PROTECTED Aborting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		Transport01.RunForward := FALSE;
+		Transport01.RunBackward := FALSE;
+		Transport02.RunForward := FALSE;
+		Transport02.RunBackward := FALSE;
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Aborting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clearing" Id="{6989add7-8c29-42cd-beb2-b0967d3eb289}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		SequenceState := SequenceState + 10;
+
+	10:
+		IF Transport01.Reset() AND Transport02.Reset() THEN
+			StateTasksComplete := TRUE;
+		END_IF
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{878f8b22-c539-4ce5-9e58-60e6858c7148}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// Ring wiring, then the state machine. There is no process image step: every
+// component owns its hardware variables and is linked to a terminal channel by
+// the imported Mapping_PLC.xml, not by anything in this file.
+//
+// The chain order lives here and nowhere else - no sub module knows which unit
+// follows it. Done before the state machine so a unit sees this scan's values.
+WireRing();
+
+// Components get no PackML state callbacks, so the owning module removes every run
+// request outside the states entitled to drive them.
+// TWO STATES DRIVE THE CONVEYORS: Execute, and Resetting - which runs them to
+// accumulate loose pallets against the blocking stoppers.
+// THIS GUARD RUNS BEFORE SUPER^.CyclicLogic(), so it does not merely veto the
+// output for a scan - it ERASES the request the state method set on the previous
+// scan. A state left out of this condition cannot move a conveyor at all,
+// however plainly its own code commands one.
+IF (_CurrentState <> E_PMLState.ePMLState_Execute)
+	AND (_CurrentState <> E_PMLState.ePMLState_Resetting) THEN
+	Transport01.RunForward := FALSE;
+	Transport01.RunBackward := FALSE;
+	Transport02.RunForward := FALSE;
+	Transport02.RunBackward := FALSE;
+END_IF
+
+SUPER^.CyclicLogic();
+
+PublishStatus();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Execute" Id="{da18e4f3-82fc-4299-bf29-82bfa231b48e}">
+      <Declaration><![CDATA[METHOD PROTECTED Execute
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The stations sequence themselves - SUPER^.Execute() drives all eleven sub
+// modules' Execute methods. This level only owns what belongs to no station:
+// the two main conveyors.
+//
+// There is no step chain here and no completion. A transport ring runs until it
+// is stopped, so Execute never calls Complete.
+
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:		
+		Transport01.RunBackward := TRUE;
+		Transport02.RunBackward := TRUE;
+		Transport01.RunForward  := FALSE;
+		Transport02.RunForward  := FALSE;
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		// Nothing to do at this level. Each drive honours its own
+		// HMI.DeviceCommand struct in these modes - see
+		// FB_AbstractBinaryDrive.HMICommunication - so a panel talks to the
+		// device it is pointing at rather than through a group GVL. The eleven
+		// stations' cylinders do the same through their SPT SolenoidHMI structs.
+		;
+END_CASE
+
+SUPER^.Execute();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{c713c41f-9924-4edc-b196-86d8ad053afd}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The command half of the HMI bridge; PublishStatus is the status half.
+//
+// Without this, the group's published Command block is decoration: the base reads
+// its own PackMLBaseModule_HMI.Command and never looks at ours, so a mode or state
+// button on the FG_Transport tile would write into a struct nothing consumes.
+// It has to happen here because the base calls this method immediately before
+// ModeControl() and StateControl().
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{7a6aa0f9-7529-4f63-b605-57d81e99f85d}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		// HMI.Config.Name is NOT set here. The SPT base writes Config.Name from
+		// _Name every scan in its own HMICommunication, and PublishStatus copies
+		// the whole Config across - setting it here would be a second author for
+		// one field and the first to drift.
+
+		// Eleven station submodules plus two drive components. Forgetting one is
+		// silent: its cyclic framework logic would simply never be called.
+		RegisterSubmodule(Index01);
+		RegisterSubmodule(Index02);
+		RegisterSubmodule(Index03);
+		RegisterSubmodule(Index04);
+		RegisterSubmodule(Index05);
+		RegisterSubmodule(Stopper01);
+		RegisterSubmodule(Stopper02);
+		RegisterSubmodule(Stopper03);
+		RegisterSubmodule(Stopper04);
+		RegisterSubmodule(Lift01);
+		RegisterSubmodule(Lift02);
+		RegisterComponent(Transport01);
+		RegisterComponent(Transport02);
+
+		// Devices that belong to the group rather than to a station.
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= TRUE;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// Lift01 raises: it loads at the retracted (lower) end.
+		// Lift02 lowers: the mirror image. This one parameter is the entire
+		// difference between the two instances.
+		Lift01.ReverseDirection := FALSE;
+		Lift02.ReverseDirection := TRUE;
+
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsIndexReadyForOperation" Id="{e9568c91-6f6d-4eb8-b117-22e907ac7b7a}">
+      <Declaration><![CDATA[// TRUE while index unit <Index> is holding a pallet stopped and lifted, waiting
+// for its functional group to run. The Machine module polls this and turns it
+// into a Start command on the matching group.
+//
+// A method rather than five properties so the caller can loop 1..5.
+METHOD PUBLIC IsIndexReadyForOperation : BOOL
+VAR_INPUT
+	Index : INT;	// 1..5
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE Index OF
+	1:	IsIndexReadyForOperation := Index01.ReadyForOperation;
+	2:	IsIndexReadyForOperation := Index02.ReadyForOperation;
+	3:	IsIndexReadyForOperation := Index03.ReadyForOperation;
+	4:	IsIndexReadyForOperation := Index04.ReadyForOperation;
+	5:	IsIndexReadyForOperation := Index05.ReadyForOperation;
+ELSE
+	IsIndexReadyForOperation := FALSE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="PublishStatus" Id="{ac4b03ab-2f74-4801-948a-fda738338764}">
+      <Implementation>
+        <ST><![CDATA[// The status half of the HMI bridge; HMICommunication is the command half.
+//
+// Called from CyclicLogic AFTER SUPER^.CyclicLogic(), so everything below is this
+// scan's value. The three fields this action used to set by hand - Mode, State and
+// the step index - were the only three that were ever current; Busy, Error,
+// ErrorID and HMIControlAvailable stayed at zero because nothing wrote them.
+// Copying the base's struct wholesale fixes that and cannot drift.
+HMI.Config		:= PackMLBaseModule_HMI.Config;
+HMI.Status		:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName			:= F_PMLStateName(_CurrentState);
+HMI.Sequence.StepIndex	:= SequenceState;]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Resetting" Id="{5206f34e-5aa2-490c-8286-0218848fab88}">
+      <Declaration><![CDATA[METHOD PROTECTED Resetting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Every station homes itself through its own Resetting, reached by SUPER^.
+// This level owns what belongs to no station: the two main conveyors.
+// THE CONVEYORS RUN DURING THE RESET, in the production direction. Safe because
+// nothing opens: a stopper blocks and is never released, an index blocks before
+// lowering. Loose pallets accumulate against the blocking stoppers where a detect
+// sensor can see them. It is also what lets a lift hand on a pallet it was
+// carrying when it was interrupted, instead of pushing it onto a dead belt.
+
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		Transport01.RunBackward := TRUE;
+		Transport02.RunBackward := TRUE;
+		Transport01.RunForward  := FALSE;
+		Transport02.RunForward  := FALSE;
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		// The state does not end here: SUPER^ holds it open until all eleven stations
+		// have finished their own Resetting, each ending with a fixed accumulation
+		// wait, so the belts run for the whole settling period.
+		// THE ACCUMULATION IS THE RESET. Once it has settled, every station's state is
+		// simply what its sensor says - which is why nothing here waits on an event
+		// that might never arrive.
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Resetting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetIndexOperationDone" Id="{f1dadf76-bb35-407c-b1e7-a5523f211a89}">
+      <Declaration><![CDATA[// Reports back to index unit <Index> that its functional group has finished, so
+// the pallet may be lowered and released. Written by the Machine module.
+//
+// The index unit clears the flag itself once it has seen it - the group never has
+// to reset anything, which is the contract the twin's SIL establishes.
+METHOD PUBLIC SetIndexOperationDone
+VAR_INPUT
+	Index	: INT;		// 1..5
+	Value	: BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE Index OF
+	1:	Index01.OperationDone := Value;
+	2:	Index02.OperationDone := Value;
+	3:	Index03.OperationDone := Value;
+	4:	Index04.OperationDone := Value;
+	5:	Index05.OperationDone := Value;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stopping" Id="{91b222ad-7dfc-4b3d-8335-53b830d67327}">
+      <Declaration><![CDATA[METHOD PROTECTED Stopping
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		// The drives are components: they have no state methods of their own, so
+		// nothing here reaches them through SUPER^. The guard in CyclicLogic is
+		// what stops them, and Stopping is not one of the states it exempts.
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Stopping();]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="WireRing" Id="{9d306b9e-8904-4068-9d9c-b7df25633397}">
+      <Implementation>
+        <ST><![CDATA[// The chain, exactly as probed from the scene. This is the only place the order
+// is written down; no station knows what follows it, which is what lets one FB
+// serve five index units.
+//
+//   Lift01 -> Stopper03 -> Index01 -> Index02 -> Index03 -> Index04 -> Index05
+//          -> Stopper04 -> Lift02 -> Stopper01 -> Stopper02 -> Lift01
+//
+// THE WIRING IS THE AUTHORITY. Two authored Role entries in the twin name the
+// wrong successor - both skip the intervening stopper.
+
+// --- Successor readiness: nobody releases into a station that cannot take it ---
+//
+// ONE CHANNEL, VALID IN EVERY STATE. CanAccept is a derived property - cylinder
+// position, detect sensor, transfer latch, no outstanding fault - so it answers
+// the same question during Resetting as during Execute. That is what lets a lift's
+// reset recovery hand its pallet over on the ordinary contract instead of needing
+// a second, reset-only channel wired alongside this one.
+Lift01.NextCanAccept	:= Stopper03.CanAccept;
+Stopper03.NextCanAccept	:= Index01.CanAccept;
+Index01.NextCanAccept	:= Index02.CanAccept;
+Index02.NextCanAccept	:= Index03.CanAccept;
+Index03.NextCanAccept	:= Index04.CanAccept;
+Index04.NextCanAccept	:= Index05.CanAccept;
+Index05.NextCanAccept	:= Stopper04.CanAccept;
+Stopper04.NextCanAccept	:= Lift02.CanAccept;
+Lift02.NextCanAccept	:= Stopper01.CanAccept;
+Stopper01.NextCanAccept	:= Stopper02.CanAccept;
+Stopper02.NextCanAccept	:= Lift01.CanAccept;
+
+// --- Payload announcements ---------------------------------------------------
+// Only a lift acts on being told a pallet is coming: it reverses its belt to draw
+// the pallet aboard. Every other station picks a pallet up on its own detect
+// sensor, so the announcement would be inert and is not wired.
+//
+// A lift is a pulling station; the units it feeds are pushing stations. That
+// asymmetry is deliberate, not an oversight - see interfaces.md.
+Lift01.PayloadIncoming := Stopper02.SendToNext;
+Lift02.PayloadIncoming := Stopper04.SendToNext;]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

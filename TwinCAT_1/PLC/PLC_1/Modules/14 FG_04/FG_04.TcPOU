@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_04" Id="{470d3ffd-cd13-43d1-95a5-71c1c5b697e7}" SpecialFunc="None">
+    <Declaration><![CDATA[// FG_04 - press and seat check. Y_AxisZ (double solenoid) and B_NIO.
+// Triggered by Index04; reports OperationDone. An NIO aborts (fault 1).
+// B_NIO IS A VERDICT, NOT A SENSOR READING: the twin's PartPressDetector raises
+// it only at the bottom limit with the hold expired, so step 30 is the one place
+// it means anything. Contract: _workflow/reference/fg-04-behaviour.md
+FUNCTION_BLOCK FG_04 EXTENDS FB_PackML_BaseModule
+VAR
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisZ		: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisZ');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_NIO		: FB_DigitalSensor := (Name := 'B_NIO');
+
+	// Group level fault. One code - see ST_FG_04_Press_Status. Cleared in Clearing.
+	_FaultCode	: DINT;
+
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_HMI_FG_04;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Aborting" Id="{afd84502-18a8-4dee-96f2-b5d9503153a9}">
+      <Declaration><![CDATA[METHOD PROTECTED Aborting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// LIFT THE PRESS - not a no-motion abort. A press held on a part is this
+// station's hazardous state. Bounded by Y_AxisZ.RetractTime, so a jammed press
+// alarms out of this state instead of parking in it.
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		Y_AxisZ.Retract();
+		IF Y_AxisZ.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Aborting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clearing" Id="{035fe51c-4882-4d40-8cba-27a19625cd01}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		// Cleared by the act of clearing, not by the condition going away.
+		_FaultCode := 0;
+		SequenceState := SequenceState + 10;
+
+	10:	// Clear latched component alarms - the solenoid travel timeouts latch.
+		IF Y_AxisZ.Reset()
+			AND B_NIO.Reset() THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{68139053-7933-460c-8530-972c55eea86e}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// No process image copy step: component members map straight to terminal channels.
+SUPER^.CyclicLogic();
+
+PublishStatus();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Execute" Id="{b0219025-aaf7-4eed-b4bc-9571c0d97eae}">
+      <Declaration><![CDATA[METHOD PROTECTED Execute
+VAR_INPUT
+END_VAR
+VAR_INST
+	SettleTimer	: TON;
+	HoldTimer	: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// settle 0.5 s -> press down -> hold 1 s -> read verdict -> retract.
+// The hold is a timer because nothing reports "seated" - only B_NIO reports
+// the opposite.
+
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:
+
+		CASE SequenceState OF
+			0:
+				NoStateTasksToComplete	:= FALSE;
+				SequenceState			:= SequenceState + 10;
+
+			10:	// Let the pallet settle on the index lift before pressing on it
+				IF SettleTimer.Q THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			20:	// Down onto the part
+				Y_AxisZ.Extend();
+				IF Y_AxisZ.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			30:	// Hold at the bottom, THEN read. B_NIO is only meaningful once the
+				// press is at its limit and the hold has expired.
+				IF HoldTimer.Q THEN
+					IF B_NIO.Active THEN
+						_FaultCode := 1;
+						AbortImmediate();
+					ELSE
+						SequenceState := SequenceState + 10;
+					END_IF
+				END_IF
+
+			40:	// Lift clear before the index lowers the pallet
+				Y_AxisZ.Retract();
+				IF Y_AxisZ.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			50:	// Execute is the one acting state that does not self-complete.
+				// StateComplete() would be wrong here.
+				ChangeState(E_PMLCommand.ePMLCommand_Complete);
+		END_CASE
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		// No group sequence. Y_AxisZ stays jogged through its own component
+			// HMI control.
+		;
+END_CASE
+
+SUPER^.Execute();
+
+SettleTimer(IN := SequenceState = 10,							PT := T#500MS);
+HoldTimer(IN := (SequenceState = 30) AND Y_AxisZ.Extended,		PT := T#1S);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{16f5c25a-0937-419f-81d9-36b9f6600c6c}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Command half of the HMI bridge; PublishStatus is the status half. MUST be in
+// this method: the base calls it immediately before ModeControl() and
+// StateControl(), and reads its own PackMLBaseModule_HMI.Command, never ours.
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{58bf17ee-0ede-419b-b744-01a73b877766}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		RegisterComponent(Y_AxisZ);
+		RegisterComponent(B_NIO);
+
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= TRUE;
+		HMI.Config.Name		:= THIS^._Name;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// Travel timeouts in ms. On a press, alarming on a jam is what they are for.
+		Y_AxisZ.ExtendTime	:= 2000.0;
+		Y_AxisZ.RetractTime	:= 2000.0;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="PublishStatus" Id="{13274df7-8d46-4688-bdf9-1338ec7ab9a4}">
+      <Implementation>
+        <ST><![CDATA[// Status half of the HMI bridge. Called AFTER SUPER^.CyclicLogic(), so every
+// field is this scan's. Copy the base struct wholesale - setting fields one by
+// one leaves Busy, Error, ErrorID and HMIControlAvailable at zero.
+HMI.Config		:= PackMLBaseModule_HMI.Config;
+HMI.Status		:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName			:= F_PMLStateName(_CurrentState);
+HMI.Sequence.StepIndex	:= SequenceState;
+HMI.Press.FaultCode		:= _FaultCode;]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Resetting" Id="{b3418738-6f41-4006-8ed3-25b2b5c643c4}">
+      <Declaration><![CDATA[METHOD PROTECTED Resetting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Home is the press up. One cylinder, bounded by its own travel timeout.
+
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		Y_AxisZ.Retract();
+		IF Y_AxisZ.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Resetting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stopping" Id="{1f0c01ae-8597-4b27-a7eb-282769fb028d}">
+      <Declaration><![CDATA[METHOD PROTECTED Stopping
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// A stop lifts the press, for the same reason the abort does.
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		Y_AxisZ.Retract();
+		IF Y_AxisZ.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Stopping();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

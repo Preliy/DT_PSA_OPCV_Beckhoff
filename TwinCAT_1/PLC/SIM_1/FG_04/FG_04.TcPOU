@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_04" Id="{06f8125c-af48-4619-894e-8922d83c941f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FG_04
+{region generated code}
+VAR_INPUT
+	B_NIO : FB_SensorBinary;
+	Y_AxisZ : FB_Cylinder;
+END_VAR
+{endregion}]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[{region generated code}
+	InitRun();
+	B_NIO();
+	Y_AxisZ();
+{endregion}
+
+Mapping();
+
+]]></ST>
+    </Implementation>
+    <Method Name="InitRun" Id="{9cd17ed3-e823-4000-8936-dbfb9d9e2b67}">
+      <Declaration><![CDATA[METHOD InitRun
+{region generated code}
+VAR_INST
+	bInitRun : BOOL := TRUE;
+END_VAR
+{endregion}]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[{region generated code}
+	IF NOT bInitRun THEN RETURN; END_IF
+	bInitRun := FALSE;
+{endregion}
+]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="Mapping" Id="{edab1274-6099-41da-a10c-63392ff253a8}">
+      <Implementation>
+        <ST><![CDATA[// ============================================================================
+// FG_04 twin <-> EtherCAT simulation process image.
+//
+// The press and its verdict. Y_AxisZ is a double solenoid so that an abort
+// mid-stroke leaves it where it is instead of letting a spring drive it further
+// into the part.
+//
+// B_NIO is not a sensor reading. The twin's seating sensor is not a PLC symbol at
+// all - its Link is disabled and it feeds PartPressDetector inside Unity, which
+// publishes the conclusion here as one bit. The PLC reads it only at the bottom of
+// the stroke with the hold expired.
+// ============================================================================
+
+// --- B_NIO - binary sensor -------------------------------------------------
+// DI FG_04_EL1008_1 3.
+GVL_EtherCAT_1_SIM.FG_04_EL1008_1.bIn3	:= B_NIO.bValue;
+
+// --- Y_AxisZ - double solenoid, both coils and both limits -----------------
+// DI FG_04_EL1008_1 1/2, DO FG_04_EL2008_1 1/2.
+GVL_EtherCAT_1_SIM.FG_04_EL1008_1.bIn1	:= Y_AxisZ.bExtended;
+GVL_EtherCAT_1_SIM.FG_04_EL1008_1.bIn2	:= Y_AxisZ.bRetracted;
+Y_AxisZ.bExtend	:= GVL_EtherCAT_1_SIM.FG_04_EL2008_1.bOut1;
+Y_AxisZ.bRetract	:= GVL_EtherCAT_1_SIM.FG_04_EL2008_1.bOut2;]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

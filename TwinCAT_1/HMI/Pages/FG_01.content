@@ -1,0 +1,140 @@
+<!-- FG_01 on the standard device grid.
+
+     GRID: columns at x = 20 / 290 / 560 (260 wide, 270 pitch), rows at
+     y = 96 / 226 / 356 / 486 / 616 / 746 (120 tall, 130 pitch). A tall tile
+     (Cylinder, Camera) is 250 = two rows plus the 10px gutter, so it occupies
+     rows j and j+1 and the next band starts at 96 + (j+2)*130.
+
+     Host width/height below are only what the designer shows: every device host
+     carries width-mode="Content", so the tile renders at the user control's own
+     260x120 or 260x250. They are written to match so the two never disagree. -->
+<div id="FG01_Devices" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-width-unit="%" data-tchmi-height-unit="%">
+
+<div id="FG01_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="FG_01 - identify and mark" class="headline-2">
+</div>
+
+<div id="FG01_Module" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/PackML_BaseModul.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="48" data-tchmi-top-unit="px" data-tchmi-width="650" data-tchmi-width-unit="px" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-module="%s%ADS.PLC1.MAIN.Machine.FG_01.HMI%/s%">
+</div>
+
+<!-- Row band 1 (y 96..346) - the three cylinders of the identify station -->
+<div id="FG01_Y_Gripper" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="404" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_Gripper::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_Gripper::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG01_Y_ReaderWindow" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="290" data-tchmi-left-unit="px" data-tchmi-top="404" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_ReaderWindow::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_ReaderWindow::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG01_Y_Platform" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="560" data-tchmi-left-unit="px" data-tchmi-top="404" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_Platform::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_Platform::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<!-- Row band 2 (y 356..606) - the two gates and the reader camera -->
+<div id="FG01_Y_Gate1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="664" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_Gate1::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_Gate1::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG01_Y_Gate2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="290" data-tchmi-left-unit="px" data-tchmi-top="664" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_Gate2::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_Gate2::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG01_P_Camera" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Camera.usercontrol" data-tchmi-left="560" data-tchmi-left-unit="px" data-tchmi-top="664" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content" data-tchmi-camera="%s%ADS.PLC1.MAIN.Machine.FG_01.P_Camera.HMI%/s%">
+</div>
+
+<!-- Row band 3 (y 616..736) - the small tiles: gate sensors and the marking laser -->
+<div id="FG01_B_SafetyGate1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/BinarySensor.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="924" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-sensor="%s%ADS.PLC1.MAIN.Machine.FG_01.B_SafetyGate1::DigitalSensor_HMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_01.B_SafetyGate1::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG01_B_SafetyGate2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/BinarySensor.usercontrol" data-tchmi-left="290" data-tchmi-left-unit="px" data-tchmi-top="924" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-sensor="%s%ADS.PLC1.MAIN.Machine.FG_01.B_SafetyGate2::DigitalSensor_HMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_01.B_SafetyGate2::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG01_Y_LaserMark" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/LightSource.usercontrol" data-tchmi-left="560" data-tchmi-left-unit="px" data-tchmi-top="924" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-light="%s%ADS.PLC1.MAIN.Machine.FG_01.Y_LaserMark.HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<!-- Row band 4 (y 746..866) - group-level readout. Given the same 260x120 frame
+     as a device tile so it sits in the grid rather than floating beside it. -->
+<div id="FG01_ResultFrame" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="830" data-tchmi-left-unit="px" data-tchmi-top="924" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px">
+</div>
+
+<div id="FG01_ResultTitle" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="854" data-tchmi-left-unit="px" data-tchmi-top="924" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Identify result">
+</div>
+
+<div id="FG01_FaultLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="848" data-tchmi-left-unit="px" data-tchmi-top="975" data-tchmi-top-unit="px" data-tchmi-width="84" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Fault code">
+</div>
+
+<div id="FG01_FaultValue" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="942" data-tchmi-left-unit="px" data-tchmi-top="974" data-tchmi-top-unit="px" data-tchmi-width="80" data-tchmi-width-unit="px" data-tchmi-height="22" data-tchmi-height-unit="px" data-tchmi-is-read-only="true" data-tchmi-value="%s%ADS.PLC1.MAIN.Machine.FG_01.HMI::Identify::FaultCode%/s%">
+</div>
+
+<div id="FG01_LastResultLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="870" data-tchmi-left-unit="px" data-tchmi-top="1009" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Last read OK">
+</div>
+
+<div id="FG01_LastResultLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="848" data-tchmi-left-unit="px" data-tchmi-top="1009" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(125, 125, 125, 1)"
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%s%ADS.PLC1.MAIN.Machine.FG_01.HMI::Identify::LastResultOK%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.MAIN.Machine.FG_01.HMI::Identify::LastResultOK%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%FG01_LastResultLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(10, 255, 0, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%FG01_LastResultLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(125, 125, 125, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+
+<div id="TcHmiStateMachineV2_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiPackML.TcHmiStateMachineV2" data-tchmi-height="321" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="800" data-tchmi-width-unit="px" data-tchmi-state-current="%s%ADS.PLC1.MAIN.Machine.FG_01.HMI::Status::State%/s%" data-tchmi-unit-mode-current="%s%ADS.PLC1.MAIN.Machine.FG_01.HMI::Status::Mode%/s%" data-tchmi-command="%s%ADS.PLC1.MAIN.Machine.FG_01.HMI::Command::State%/s%">
+</div>
+</div>

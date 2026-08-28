@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_TransferLift_Status" Id="{335bb7e3-f232-41ad-ba04-6bf4c0e711a2}">
+    <Declaration><![CDATA[// What a lift unit publishes BEYOND what the SPT base already gives it.
+// State, StateName, SequenceState and HMIControlAvailable are inherited through
+// ST_TransferLift_HMI EXTENDS ST_BaseModule_HMI and are no longer duplicated.
+TYPE ST_TransferLift_Status :
+STRUCT
+	// --- Ring handshake -----------------------------------------------------
+	// A lift is a pulling station: it has no SendToNext. PayloadIncoming is how
+	// the predecessor announces a pallet.
+	Ready				: BOOL;
+	Occupied			: BOOL;
+	NextReady			: BOOL;
+	PayloadIncoming		: BOOL;
+
+	// FALSE = this lift raises (Lift01), TRUE = it lowers (Lift02). Published so
+	// a tile can label its travel buttons without knowing which instance it is.
+	ReverseDirection	: BOOL;
+
+	// --- Diagnostics --------------------------------------------------------
+	// 0 none  1 no home  2 pallet never arrived aboard  3 travel failed
+	// 4 pallet never left
+	FaultCode			: DINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,41 @@
+{
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.5.1/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": "Operator tile for an SPT cylinder (FB_SingleSolenoid and its Feedback/Double descendants). Bind Cylinder to the FB's SolenoidHMI struct and Component to its ComponentBase_HMI struct.",
+  "parameters": [
+    {
+      "allowSymbolExpressionsInObject": false,
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setCylinder",
+      "propertyGetterName": "getCylinder",
+      "refTo": "",
+      "name": "data-tchmi-cylinder",
+      "displayName": "Cylinder",
+      "visible": true,
+      "type": "tchmi:project#/definitions/PLC1.SPT_Components.ST_Cylinder_HMI",
+      "category": "",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "Cylinder"
+    },
+    {
+      "allowSymbolExpressionsInObject": false,
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setComponent",
+      "propertyGetterName": "getComponent",
+      "refTo": "",
+      "name": "data-tchmi-component",
+      "displayName": "Component",
+      "visible": true,
+      "type": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_HMI",
+      "category": "",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "Component"
+    }
+  ],
+  "virtualRights": []
+}

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractBinaryDrive_Command" Id="{5f033069-2287-488b-b0cc-0e790f7fa6e2}">
+    <Declaration><![CDATA[// Honoured by FB_AbstractBinaryDrive itself, in Manual and Maintenance mode only.
+// A drive is a bare two direction contactor with no SPT component to jog it
+// through, so the command lives here and the block reads its own struct.
+// Reached as HMI.DeviceCommand - Command is inherited and therefore taken.
+// Both directions are offered: a lift's carriage belt is driven both ways by hand.
+// Asking for both at once is a stop, not a fault - CyclicLogic cancels them.
+TYPE ST_AbstractBinaryDrive_Command :
+STRUCT
+	RunForward		: BOOL;
+	RunBackward		: BOOL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

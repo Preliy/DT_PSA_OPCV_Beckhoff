@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="Machine" Id="{4aab3236-a53f-481a-a189-a476e43a7cc3}" SpecialFunc="None">
+    <Declaration><![CDATA[// Machine - the top level module. Owns the PackML mode and the safety policy,
+// and brokers the Index <-> functional group handshakes every scan.
+// EnforceSafety aborts on NOT SafetyOk, EXCEPT in Aborting/Aborted/Clearing -
+// re-issuing the abort there is a deadlock the machine cannot leave.
+// Contract: _workflow/reference/fg-system-safety.md
+FUNCTION_BLOCK Machine EXTENDS FB_PackML_BaseModule
+VAR
+	FG_System : FG_System := (Name := 'FG_System', LogStateChanges := TRUE);
+	FG_Transport : FG_Transport := (Name := 'FG_Transport', LogStateChanges := TRUE);
+
+	// The five processing groups, in ring order. Each one is served by the index
+	// unit of the same number and by no other - see BrokerIndexHandshakes.
+	FG_01 : FG_01 := (Name := 'FG_01', LogStateChanges := TRUE);
+	FG_02 : FG_02 := (Name := 'FG_02', LogStateChanges := TRUE);
+	FG_03 : FG_03 := (Name := 'FG_03', LogStateChanges := TRUE);
+	FG_04 : FG_04 := (Name := 'FG_04', LogStateChanges := TRUE);
+	FG_05 : FG_05 := (Name := 'FG_05', LogStateChanges := TRUE);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Action Name="BrokerIndexHandshakes" Id="{a1c58e6a-e1b0-4f1e-9a0c-6b2f9d3e4c71}">
+      <Implementation>
+        <ST><![CDATA[// Index unit -> functional group, brokered.
+// The index units and the groups are sibling submodules, so this is where the
+// two halves meet - neither reaches into the other.
+//   1. the index reports ReadyForOperation once the pallet is stopped AND lifted
+//   2. the group runs its operation
+//   3. the group reports complete, and the index clears the flag itself
+// A group that is not running is answered IMMEDIATELY, so the ring keeps turning
+// whichever group is missing. There is no bypass flag and none is needed.
+
+BrokerGroup(Index := 1, Group := FG_01);
+BrokerGroup(Index := 2, Group := FG_02);
+BrokerGroup(Index := 3, Group := FG_03);
+BrokerGroup(Index := 4, Group := FG_04);
+BrokerGroup(Index := 5, Group := FG_05);]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="BrokerGroup" Id="{6622c8ca-d395-4ed8-a3b0-cc91e4bff972}">
+      <Declaration><![CDATA[// One index unit, one functional group, one handshake. Called once per group from
+// BrokerIndexHandshakes, every scan.
+// The five groups share no base but FB_PackML_BaseModule, so the only thing that
+// can hold all of them is I_PackML_BaseModule.
+// LIVENESS IS READ OFF THE STATE, NOT OFF InitComplete. An unregistered module
+// never has CyclicLogic() called, so it never leaves ePMLState_Undefined - a
+// direct test of whether its state machine is running. InitComplete was a proxy,
+// and is not on the interface.
+METHOD PRIVATE BrokerGroup
+VAR_INPUT
+	Index	: INT;						// 1..5, the index unit that serves this group
+	Group	: I_PackML_BaseModule;		// the group it serves
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT FG_Transport.IsIndexReadyForOperation(Index) THEN
+	RETURN;
+END_IF
+
+// Not there, or not running. Answer for it so the pallet is released rather than
+// held until the index unit's operation timeout raises fault 3.
+IF Group = 0 OR_ELSE Group.CurrentState = E_PMLState.ePMLState_Undefined THEN
+	FG_Transport.SetIndexOperationDone(Index := Index, Value := TRUE);
+	RETURN;
+END_IF
+
+CASE Group.CurrentState OF
+
+	E_PMLState.ePMLState_Idle:
+		// Pallet stopped and lifted. Run.
+		Group.ChangeState(E_PMLCommand.ePMLCommand_Start);
+
+	E_PMLState.ePMLState_Complete:
+		// Finished. Release the pallet and put the group back to Idle for the
+		// next one. Order matters only in that both happen on the same scan -
+		// the index clears OperationDone itself once it has seen it.
+		FG_Transport.SetIndexOperationDone(Index := Index, Value := TRUE);
+		Group.ChangeState(E_PMLCommand.ePMLCommand_Reset);
+
+END_CASE
+
+// Every other state - Execute, Starting, Resetting, Held, Aborted - is left
+// alone on purpose. The index unit goes on waiting, and if the group never
+// finishes, FB_TransferIndex raises its own fault 3 on the operation timeout.
+// That is the intended report of a stuck group, and it belongs to the index unit
+// rather than here.]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clearing" Id="{abd3c3a1-f0c5-4603-8e80-5a5ac2e23749}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// A safety fault cannot be cleared while the safety fault is still present.
+// This stalls in Clearing DELIBERATELY, which is why Clearing is one of the three
+// states EnforceSafety excludes. Not a deadlock: it completes on its own the
+// moment the mushroom is released or the last lock confirms, with no second press.
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		SequenceState := SequenceState + 10;
+
+	10:
+		IF SafetyOk THEN
+			StateTasksComplete := TRUE;
+		END_IF
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{9e411289-caf8-4988-becf-02ec98704328}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// --- Cross-couplings between sibling equipment modules -----------------------
+// Siblings never talk directly; the machine brokers what crosses between them.
+// Evaluated EVERY SCAN: a handshake sampled once deadlocks.
+// The laser gate permissive is no longer brokered here - the gates moved into
+// FG_01, which reads its own limits.
+
+// Evaluated before the state machine so a unit sees this scan's values.
+BrokerIndexHandshakes();
+
+// --- Infrastructure ---------------------------------------------------------
+// Hand this module's own state and mode down to FG_System before the base walks
+// its submodules, so the lock policy and the signal tower both act on this
+// scan's values rather than last scan's.
+FG_System.SetMachineIndication(State := _CurrentState, Mode := _CurrentMode);
+
+EnforceSafety();
+
+SUPER^.CyclicLogic();]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="EnforceSafety" Id="{08e9eca1-bc14-453e-bcfe-681157788484}">
+      <Implementation>
+        <ST><![CDATA[// The whole safety layer, in one place.
+// !! FUNCTIONAL DEMONSTRATION, NOT A SAFETY-RATED FUNCTION. A real cell puts
+// guard interlocks and E-stops on TwinSAFE, never in standard PLC logic.
+// Nothing here is rated, diagnosed or redundant.
+//
+// THE THREE EXCLUDED STATES ARE LOAD-BEARING - do not simplify them away:
+//   Aborting / Aborted  re-issuing AbortImmediate() overwrites the operator's
+//                       Clear on the scan it lands, so Aborted is never left.
+//   Clearing            we are in Clearing BECAUSE safety broke; aborting out of
+//                       it makes Clear impossible.
+// Every other state aborts, Stopped and Resetting included.
+//
+// NO SCAN LAG: every input here is a getter over a located variable. Do NOT
+// reuse FB_DigitalSensor for the mushrooms - it caches _Active inside its own
+// CyclicLogic, which put the emergency stops one scan behind.
+IF NOT SafetyOk
+	AND	_CurrentState <> E_PMLState.ePMLState_Aborting
+	AND	_CurrentState <> E_PMLState.ePMLState_Aborted
+	AND	_CurrentState <> E_PMLState.ePMLState_Clearing THEN
+
+	AbortImmediate();
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Execute" Id="{e7c3f546-b076-4365-bf3b-c559df4e139c}">
+      <Declaration><![CDATA[METHOD PROTECTED FINAL Execute
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The machine sequences its groups by hand here, so SUPER^.Execute() is
+// deliberately not called - the base would drive the submodule state machine in
+// parallel with this one.
+// The groups are not sequenced here. Each is triggered by its own index unit
+// through BrokerGroup; this method only keeps the ring running. Pallet order
+// emerges from the physical chain, and several may be in the line at once.
+
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:
+
+		// The transport ring runs continuously for as long as the machine is
+		// producing, so it is started once and left in Execute.
+		IF FG_Transport.CurrentState = E_PMLState.ePMLState_Idle THEN
+			FG_Transport.ChangeState(E_PMLCommand.ePMLCommand_Start);
+		END_IF
+
+		// The functional groups are no longer free-run from here. Each one is
+		// started by its own index unit, through BrokerIndexHandshakes, once that
+		// unit has a pallet stopped and lifted - which is what the twin actually
+		// specifies and what the free-run loop was standing in for.
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IndicationFlash" Id="{d17476dc-60b7-484a-9af9-4d1c4905525c}">
+      <Declaration><![CDATA[// The signal tower's flash phase, forwarded so MAIN can hand it to the panel
+// control source and every flashing lamp on the machine blinks together.
+PROPERTY PUBLIC IndicationFlash : BOOL]]></Declaration>
+      <Get Name="Get" Id="{fd1101ac-c401-4838-8362-e21de17adb2f}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IndicationFlash := FG_System.IndicationFlash;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Initialize" Id="{017793cc-4747-4fab-8f14-e03155853da2}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		// Registering is what makes the framework call a module's state methods.
+		// An unregistered module never reaches Complete, so BrokerGroup takes its
+		// "group is not there" branch and the index unit is silently bypassed - with
+		// the group's I/O linked and its HMI tiles bound, which is what makes it look
+		// finished. FG_01 shipped that way once.
+		RegisterSubmodule(FG_Transport);
+		RegisterSubmodule(FG_System);
+		RegisterSubmodule(FG_01);
+		RegisterSubmodule(FG_02);
+		RegisterSubmodule(FG_03);
+		RegisterSubmodule(FG_04);
+		RegisterSubmodule(FG_05);
+
+		_LogModeChanges		:= TRUE;
+		_LogStateChanges	:= TRUE;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// The FG_01 gate permissive used to be forced TRUE here, because nothing
+		// could read the real gate state. FG_Transport now owns those sensors and
+		// publishes GatesClosed, so the stand-in is gone and the permissive is
+		// driven cyclically in CyclicLogic instead - a one-shot here would latch
+		// a stale value and defeat the interlock.
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SafetyOk" Id="{934311d0-a9f3-4005-88f5-0000706079b0}">
+      <Declaration><![CDATA[// The machine's safety chain. Derived on every read, never stored.
+// MODE IS THE GATE, and the two inputs are gated differently on purpose:
+//   Emergency stops  EVERY mode. Manual is precisely the mode where somebody is
+//                    inside the cell jogging a cylinder.
+//   Guard doors      Production only. Maintenance and Manual are the only way
+//                    into the cell, because the locks hold throughout Production.
+// FG_System publishes the two facts and applies no policy: only this module owns
+// the PackML mode.
+PROPERTY PUBLIC SafetyOk : BOOL]]></Declaration>
+      <Get Name="Get" Id="{709b1376-8d7a-418f-8435-d4a1bd3779ee}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SafetyOk :=	NOT FG_System.EmergencyStopActive
+			AND	(	(_CurrentMode <> E_PMLUnitMode.ePMLUnitMode_Production)
+				OR	FG_System.GuardsSecure);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Starting" Id="{52ae82f4-0848-48fd-a00b-70b5cc9e9274}">
+      <Declaration><![CDATA[// THE FIVE PROCESS GROUPS ARE NOT STARTED BY THE MACHINE. This method exists to
+// say so, and SUPER^.Starting() is deliberately not called.
+// The base commands EVERY registered submodule to Start and will not leave
+// Starting until all are in Execute - which ran all five station sequences on an
+// empty line the moment Start was pressed. That is the bug this method fixes.
+//
+// The groups must still be REGISTERED: registration gets their CyclicLogic
+// called, makes Undefined-vs-Idle meaningful to BrokerGroup, and carries Abort,
+// Stop, Clear and Reset down from the states this method does not override.
+//
+// KNOWN LIMIT: Holding and Suspending are still the base implementations and gate
+// on every submodule reaching Held/Suspended. A group parked in Idle rejects Hold
+// and never gets there, so the machine would stall in Holding. Nothing commands
+// Hold today. Adding a Hold button means overriding Holding/Unholding here on the
+// same pattern: command only the submodules actually in Execute, and gate on those.
+METHOD PROTECTED Starting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The two infrastructure groups do follow the machine into Execute. FG_Transport
+// runs the ring for as long as the machine produces, and FG_System owns the
+// signal tower and the door locks.
+FG_System.ChangeState(E_PMLCommand.ePMLCommand_Start);
+FG_Transport.ChangeState(E_PMLCommand.ePMLCommand_Start);
+
+// Same completion gate as the base, over those two submodules only. The
+// StateTasksComplete / NoStateTasksToComplete term is carried over unchanged so
+// this method can grow its own step chain later without the gate going wrong.
+IF FG_System.CurrentState = E_PMLState.ePMLState_Execute
+	AND FG_Transport.CurrentState = E_PMLState.ePMLState_Execute
+	AND (StateTasksComplete OR NoStateTasksToComplete) THEN
+
+	NoStateTasksToComplete	:= TRUE;
+	StateTasksComplete		:= FALSE;
+	StateComplete();
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

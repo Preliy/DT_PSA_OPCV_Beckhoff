@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_FG_01_Identify_Status" Id="{6f2c1a4e-9d3b-4c07-8b21-5a7e0c4d91f8}">
+    <Declaration><![CDATA[// What the identification has to say beyond the PackML state.
+//
+// THE SAME THREE FAULT CODES AS ST_FG_02_Inspection_Status, deliberately - both
+// stations now drive the same device through the same handshake, and an operator
+// should not have to learn two numbering schemes for one failure:
+//
+//   1  NOK       - the camera returned a serial number and it was not the one
+//                  this station expects
+//   2  not ready - Enable was set and Ready never came: the camera is not
+//                  answering at all, which is a wiring or device fault
+//   3  no result - the shot was triggered and no verdict arrived in time: the
+//                  camera is there but the exposure never completed
+//
+// FG_01 HAD NO FAULT CODE AT ALL until the reader became a camera. It could not
+// have had one: the old reader's status bit was an echo of the trigger,
+// the sequence held the window open for a fixed 1 s and moved on whatever came
+// back, and there was nothing to report. A real verdict that nobody consumes is
+// worse than no verdict, so this is what consumes it.
+//
+// LastResultOK is the verdict from the most recent completed read, latched so the
+// panel still shows it after ResultValid has dropped. It is not a fault - a NOK
+// sets code 1 as well.
+//
+// Cleared in FG_01.Clearing.
+TYPE ST_FG_01_Identify_Status :
+STRUCT
+	FaultCode		: DINT;
+	LastResultOK	: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

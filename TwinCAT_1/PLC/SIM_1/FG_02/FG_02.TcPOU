@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_02" Id="{669b5fb7-101c-4b47-8f64-4b0c099808fe}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FG_02
+
+{region generated code}
+VAR_INPUT
+	P_Camera : FB_Camera;
+END_VAR
+{endregion}]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[{region generated code}
+	InitRun();
+	P_Camera();
+{endregion}
+
+Mapping();]]></ST>
+    </Implementation>
+    <Method Name="InitRun" Id="{9f43e803-fcdb-4fb1-81ce-65421d04daeb}">
+      <Declaration><![CDATA[METHOD InitRun
+{region generated code}
+VAR_INST
+	bInitRun : BOOL := TRUE;
+END_VAR
+{endregion}]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[{region generated code}
+	IF NOT bInitRun THEN RETURN; END_IF
+	bInitRun := FALSE;
+{endregion}
+]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="Mapping" Id="{b7fef0f3-6c98-4533-b8bb-f2460619aa13}">
+      <Implementation>
+        <ST><![CDATA[// ============================================================================
+// FG_02 twin <-> EtherCAT simulation process image.
+//
+// One device, one card. P_Camera owns FG_02_EL1859_1 outright, so the whole
+// interface travels together rather than borrowing bits from a shared card.
+//
+// THE BYTE IS NO LONGER COPIED WHOLESALE. It used to be, because the device was
+// an FB_DeviceByte and the byte WAS the interface - a half-mapped byte would have
+// been the thing that reads plausible and is wrong. FB_Camera is not a byte
+// device: it exposes six named signals, and the bit positions below are the
+// contract with FB_AbstractCamera in OC_PLC. Mapping bits 5..8 to nothing is
+// correct now, because there is nothing on them.
+//
+//   DO 1 (Ch 9)  Enable        DI 1 (Ch 1)  Ready
+//   DO 2 (Ch 10) Trigger       DI 2 (Ch 2)  Busy
+//                              DI 3 (Ch 3)  ResultValid
+//                              DI 4 (Ch 4)  ResultOK
+//
+// The GVL holds the SIM box id and is regenerated with the emulation, so it is
+// deliberately not repeated here - that is what went stale in FG_01 when the
+// emulation was rebuilt.
+// ============================================================================
+
+// --- P_Camera - what the part must be carrying ------------------------------
+// FG_02 inspects the mark FG_01 applied: the laser writes LaserMark := 240 onto
+// the payload, this station reads that key back and passes only on 240. A part
+// that skipped FG_01, or whose mark failed, reads 0 and is a NOK.
+//
+// IT IS SET HERE AND NOT IN InitRun BECAUSE Mapping IS THE ONLY ACTION WE OWN -
+// OC Assistant regenerates everything inside the {region generated code} blocks
+// on the next twin regeneration.
+P_Camera.nExpectedData := 240;
+
+// --- P_Camera - the handshake on FG_02_EL1859_1 -----------------------------
+// Commands from the control PLC.
+P_Camera.bEnable	:= GVL_EtherCAT_1_SIM.FG_02_EL1859_1.bOut1;
+P_Camera.bTrigger	:= GVL_EtherCAT_1_SIM.FG_02_EL1859_1.bOut2;
+
+// The camera's answer. Ready, Busy and the verdict are synthesised inside
+// FB_Camera - the Unity DataReader below it only echoes the two commands and
+// hands over the datum it read.
+GVL_EtherCAT_1_SIM.FG_02_EL1859_1.bIn1 := P_Camera.bReady;
+GVL_EtherCAT_1_SIM.FG_02_EL1859_1.bIn2 := P_Camera.bBusy;
+GVL_EtherCAT_1_SIM.FG_02_EL1859_1.bIn3 := P_Camera.bResultValid;
+GVL_EtherCAT_1_SIM.FG_02_EL1859_1.bIn4 := P_Camera.bResultOK;
+
+// Spare after FG_02: FG_02_EL1859_1 DI 5..8, DO 3..8.]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

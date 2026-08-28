@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractCamera_Command" Id="{4e378fc5-c23c-414a-9982-893f9e2e0c4a}">
+    <Declaration><![CDATA[// What an operator may ask of a camera from the panel, in Manual and Maintenance.
+// One member per control bit, so the panel never has to know the bit layout.
+//
+// Two signals, not three. The light was folded away when the device moved to a
+// real vision-sensor interface: a camera of this kind switches its own
+// illumination with the shot, and a separate lamp bit was modelling a lamp this
+// device does not have.
+TYPE ST_AbstractCamera_Command :
+STRUCT
+	Enable	: BOOL;
+	Trigger	: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

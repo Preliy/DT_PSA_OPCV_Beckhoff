@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_FG_02_Inspection_Status" Id="{90af3cda-5dcd-4d92-937c-fee0bf23071a}">
+    <Declaration><![CDATA[// What the inspection has to say beyond the PackML state.
+//
+// THREE FAULT CODES, one per way the handshake can fail, and no more. Each is a
+// distinct thing an operator would do something different about:
+//
+//   1  NOK      - the camera returned a verdict and it was bad
+//   2  not ready - Enable was set and Ready never came: the camera is not
+//                  answering at all, which is a wiring or device fault
+//   3  no result - the shot was triggered and no verdict arrived in time: the
+//                  camera is there but the exposure never completed
+//
+// Telling 2 from 3 is the whole reason the interface grew from one status bit to
+// four. The old device could only ever say nothing.
+//
+// LastResultOK is the verdict from the most recent completed shot, latched so the
+// panel still shows it after ResultValid has dropped. It is not a fault - a NOK
+// sets code 1 as well.
+//
+// Cleared in FG_02.Clearing.
+TYPE ST_FG_02_Inspection_Status :
+STRUCT
+	FaultCode		: DINT;
+	LastResultOK	: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

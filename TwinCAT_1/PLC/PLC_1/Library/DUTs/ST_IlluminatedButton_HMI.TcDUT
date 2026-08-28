@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_IlluminatedButton_HMI" Id="{ea208934-b135-457f-9e5c-fb355e1c1dab}">
+    <Declaration><![CDATA[// Illuminated button HMI interface - ONE struct per tile.
+// Extends ST_ComponentBase_HMI, so one bound parameter also carries Config,
+// Command and Status - and the added members may not reuse those three names.
+//
+// NO DeviceCommand: the lamp is driven by the owning module from the machine's
+// PackML state, and a panel able to override it could make a latched emergency
+// stop look released.
+TYPE ST_IlluminatedButton_HMI EXTENDS ST_ComponentBase_HMI :
+STRUCT
+	DeviceConfig	: ST_IlluminatedButton_Config;
+	Device			: ST_IlluminatedButton_Status;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

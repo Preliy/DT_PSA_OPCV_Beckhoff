@@ -1,0 +1,351 @@
+<?xml version="1.0"?>
+<VarLinks>
+	<OwnerA Name="TIPC^PLC_1^PLC_1 Instance">
+		<OwnerB Name="TIID^EtherCAT_1^FG_01_EK1100^FG_01_EL1008_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Gripper.ExtendedSensor" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Gripper.RetractedSensor" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Platform.ExtendedSensor" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Platform.RetractedSensor" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_ReaderWindow.ExtendedSensor" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_ReaderWindow.RetractedSensor" VarB="Channel 5^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_01_EK1100^FG_01_EL1008_2">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.B_SafetyGate1.HardwareInput" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.B_SafetyGate2.HardwareInput" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Gate1.ExtendedSensor" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Gate1.RetractedSensor" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Gate2.ExtendedSensor" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Gate2.RetractedSensor" VarB="Channel 3^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_01_EK1100^FG_01_EL1859_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.P_Camera.InputData" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.P_Camera.InputData" VarB="Channel 2^Input" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.P_Camera.InputData" VarB="Channel 3^Input" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.P_Camera.InputData" VarB="Channel 4^Input" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.P_Camera.InputData" VarB="Channel 5^Input" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.P_Camera.InputData" VarB="Channel 6^Input" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.P_Camera.InputData" VarB="Channel 7^Input" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.P_Camera.InputData" VarB="Channel 8^Input" Size="1" OffsA="7"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.P_Camera.OutputData" VarB="Channel 10^Output" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.P_Camera.OutputData" VarB="Channel 11^Output" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.P_Camera.OutputData" VarB="Channel 12^Output" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.P_Camera.OutputData" VarB="Channel 13^Output" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.P_Camera.OutputData" VarB="Channel 14^Output" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.P_Camera.OutputData" VarB="Channel 15^Output" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.P_Camera.OutputData" VarB="Channel 16^Output" Size="1" OffsA="7"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.P_Camera.OutputData" VarB="Channel 9^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_01_EK1100^FG_01_EL1859_2">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_LaserMark.InputData" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_LaserMark.InputData" VarB="Channel 2^Input" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_LaserMark.InputData" VarB="Channel 3^Input" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_LaserMark.InputData" VarB="Channel 4^Input" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_LaserMark.InputData" VarB="Channel 5^Input" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_LaserMark.InputData" VarB="Channel 6^Input" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_LaserMark.InputData" VarB="Channel 7^Input" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_LaserMark.InputData" VarB="Channel 8^Input" Size="1" OffsA="7"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_LaserMark.OutputData" VarB="Channel 10^Output" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_LaserMark.OutputData" VarB="Channel 11^Output" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_LaserMark.OutputData" VarB="Channel 12^Output" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_LaserMark.OutputData" VarB="Channel 13^Output" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_LaserMark.OutputData" VarB="Channel 14^Output" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_LaserMark.OutputData" VarB="Channel 15^Output" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_LaserMark.OutputData" VarB="Channel 16^Output" Size="1" OffsA="7"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_LaserMark.OutputData" VarB="Channel 9^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_01_EK1100^FG_01_EL2008_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_Gate1._ExtendOutput" VarB="Channel 7^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_Gate2._ExtendOutput" VarB="Channel 8^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_Gripper._ExtendOutput" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_Gripper._RetractOutput" VarB="Channel 5^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_Platform._ExtendOutput" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_Platform._RetractOutput" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_ReaderWindow._ExtendOutput" VarB="Channel 4^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_01.Y_ReaderWindow._RetractOutput" VarB="Channel 6^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_02_EK1100^FG_02_EL1859_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_02.P_Camera.InputData" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_02.P_Camera.InputData" VarB="Channel 2^Input" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_02.P_Camera.InputData" VarB="Channel 3^Input" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_02.P_Camera.InputData" VarB="Channel 4^Input" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_02.P_Camera.InputData" VarB="Channel 5^Input" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_02.P_Camera.InputData" VarB="Channel 6^Input" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_02.P_Camera.InputData" VarB="Channel 7^Input" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_02.P_Camera.InputData" VarB="Channel 8^Input" Size="1" OffsA="7"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_02.P_Camera.OutputData" VarB="Channel 9^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_02.P_Camera.OutputData" VarB="Channel 10^Output" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_02.P_Camera.OutputData" VarB="Channel 11^Output" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_02.P_Camera.OutputData" VarB="Channel 12^Output" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_02.P_Camera.OutputData" VarB="Channel 13^Output" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_02.P_Camera.OutputData" VarB="Channel 14^Output" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_02.P_Camera.OutputData" VarB="Channel 15^Output" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_02.P_Camera.OutputData" VarB="Channel 16^Output" Size="1" OffsA="7"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_03_EK1100^FG_03_EL1809_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.B_Detect1.HardwareInput" VarB="Channel 15^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.B_Detect2.HardwareInput" VarB="Channel 16^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisR1.ExtendedSensor" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisR1.RetractedSensor" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisX1.ExtendedSensor" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisX1.RetractedSensor" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisX2.ExtendedSensor" VarB="Channel 9^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisX2.RetractedSensor" VarB="Channel 10^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisY1.ExtendedSensor" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisY1.RetractedSensor" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisY2.ExtendedSensor" VarB="Channel 11^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_AxisY2.RetractedSensor" VarB="Channel 12^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_Gripper1.ExtendedSensor" VarB="Channel 7^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_Gripper1.RetractedSensor" VarB="Channel 8^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_Gripper2.ExtendedSensor" VarB="Channel 13^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_03.Y_Gripper2.RetractedSensor" VarB="Channel 14^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_03_EK1100^FG_03_EL2809_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisR1._ExtendOutput" VarB="Channel 5^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisR1._RetractOutput" VarB="Channel 6^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisX1._ExtendOutput" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisX1._RetractOutput" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisX2._ExtendOutput" VarB="Channel 9^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisX2._RetractOutput" VarB="Channel 10^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisY1._ExtendOutput" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisY1._RetractOutput" VarB="Channel 4^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisY2._ExtendOutput" VarB="Channel 11^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_AxisY2._RetractOutput" VarB="Channel 12^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_Gripper1._ExtendOutput" VarB="Channel 7^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_Gripper1._RetractOutput" VarB="Channel 8^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_Gripper2._ExtendOutput" VarB="Channel 13^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_03.Y_Gripper2._RetractOutput" VarB="Channel 14^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_04_EK1100^FG_04_EL1008_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_04.B_NIO.HardwareInput" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_04.Y_AxisZ.ExtendedSensor" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_04.Y_AxisZ.RetractedSensor" VarB="Channel 2^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_04_EK1100^FG_04_EL2008_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_04.Y_AxisZ._ExtendOutput" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_04.Y_AxisZ._RetractOutput" VarB="Channel 2^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_05_EK1100^FG_05_EL1809_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.B_Detect.HardwareInput" VarB="Channel 14^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.B_Part.HardwareInput" VarB="Channel 13^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_AxisR.ExtendedSensor" VarB="Channel 7^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_AxisR.RetractedSensor" VarB="Channel 8^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_AxisX.ExtendedSensor" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_AxisX.RetractedSensor" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_AxisZ1.ExtendedSensor" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_AxisZ1.RetractedSensor" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_AxisZ2.ExtendedSensor" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_AxisZ2.RetractedSensor" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSourceStopper.ExtendedSensor" VarB="Channel 11^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSourceStopper.RetractedSensor" VarB="Channel 12^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_Gripper.ExtendedSensor" VarB="Channel 9^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_Gripper.RetractedSensor" VarB="Channel 10^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_05_EK1100^FG_05_EL1859_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSource.InputData" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSource.InputData" VarB="Channel 2^Input" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSource.InputData" VarB="Channel 3^Input" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSource.InputData" VarB="Channel 4^Input" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSource.InputData" VarB="Channel 5^Input" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSource.InputData" VarB="Channel 6^Input" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSource.InputData" VarB="Channel 7^Input" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.Y_CapsSource.InputData" VarB="Channel 8^Input" Size="1" OffsA="7"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSource.OutputData" VarB="Channel 9^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSource.OutputData" VarB="Channel 10^Output" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSource.OutputData" VarB="Channel 11^Output" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSource.OutputData" VarB="Channel 12^Output" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSource.OutputData" VarB="Channel 13^Output" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSource.OutputData" VarB="Channel 14^Output" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSource.OutputData" VarB="Channel 15^Output" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSource.OutputData" VarB="Channel 16^Output" Size="1" OffsA="7"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_05_EK1100^FG_05_EL1859_2">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.P_Camera.InputData" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.P_Camera.InputData" VarB="Channel 2^Input" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.P_Camera.InputData" VarB="Channel 3^Input" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.P_Camera.InputData" VarB="Channel 4^Input" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.P_Camera.InputData" VarB="Channel 5^Input" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.P_Camera.InputData" VarB="Channel 6^Input" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.P_Camera.InputData" VarB="Channel 7^Input" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_05.P_Camera.InputData" VarB="Channel 8^Input" Size="1" OffsA="7"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.P_Camera.OutputData" VarB="Channel 9^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.P_Camera.OutputData" VarB="Channel 10^Output" Size="1" OffsA="1"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.P_Camera.OutputData" VarB="Channel 11^Output" Size="1" OffsA="2"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.P_Camera.OutputData" VarB="Channel 12^Output" Size="1" OffsA="3"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.P_Camera.OutputData" VarB="Channel 13^Output" Size="1" OffsA="4"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.P_Camera.OutputData" VarB="Channel 14^Output" Size="1" OffsA="5"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.P_Camera.OutputData" VarB="Channel 15^Output" Size="1" OffsA="6"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.P_Camera.OutputData" VarB="Channel 16^Output" Size="1" OffsA="7"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_05_EK1100^FG_05_EL2809_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_AxisR._ExtendOutput" VarB="Channel 7^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_AxisR._RetractOutput" VarB="Channel 8^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_AxisX._ExtendOutput" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_AxisX._RetractOutput" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_AxisZ1._ExtendOutput" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_AxisZ1._RetractOutput" VarB="Channel 4^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_AxisZ2._ExtendOutput" VarB="Channel 5^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_AxisZ2._RetractOutput" VarB="Channel 6^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSourceStopper._ExtendOutput" VarB="Channel 11^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_CapsSourceStopper._RetractOutput" VarB="Channel 12^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_Gripper._ExtendOutput" VarB="Channel 9^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_05.Y_Gripper._RetractOutput" VarB="Channel 10^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_System_EK1100^FG_System_Door_EL1809_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor11.ClosedSensor" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor11.LockedSensor" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor12.ClosedSensor" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor12.LockedSensor" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor13.ClosedSensor" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor13.LockedSensor" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor21.ClosedSensor" VarB="Channel 7^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor21.LockedSensor" VarB="Channel 8^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor22.ClosedSensor" VarB="Channel 9^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor22.LockedSensor" VarB="Channel 10^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor23.ClosedSensor" VarB="Channel 11^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.B_SafetyDoor23.LockedSensor" VarB="Channel 12^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_System_EK1100^FG_System_Door_EL2008_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.B_SafetyDoor11.LockOutput" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.B_SafetyDoor12.LockOutput" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.B_SafetyDoor13.LockOutput" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.B_SafetyDoor21.LockOutput" VarB="Channel 4^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.B_SafetyDoor22.LockOutput" VarB="Channel 5^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.B_SafetyDoor23.LockOutput" VarB="Channel 6^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_System_EK1100^FG_System_Panel_EL1809_1">
+			<Link VarA="PlcTask Inputs^MAIN.ControlSource_Panel.AbortPressed" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.ControlSource_Panel.ClearPressed" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.ControlSource_Panel.MainPMLControl_Simplified.ResetPressed" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.ControlSource_Panel.MainPMLControl_Simplified.StartPressed" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.ControlSource_Panel.MainPMLControl_Simplified.StopPressed" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.ControlSource_Panel.MaintenancePressed" VarB="Channel 7^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.ControlSource_Panel.ManualPressed" VarB="Channel 8^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.ControlSource_Panel.ProductionPressed" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.SS_EStop1.HardwareInput" VarB="Channel 9^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_System.SS_EStop2.HardwareInput" VarB="Channel 10^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_System_EK1100^FG_System_Panel_EL2809_1">
+			<Link VarA="PlcTask Outputs^MAIN.ControlSource_Panel.LampAbort" VarB="Channel 5^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.ControlSource_Panel.LampClear" VarB="Channel 4^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.ControlSource_Panel.LampMaintenance" VarB="Channel 7^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.ControlSource_Panel.LampManual" VarB="Channel 8^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.ControlSource_Panel.LampProduction" VarB="Channel 6^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.ControlSource_Panel.LampReset" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.ControlSource_Panel.LampStart" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.ControlSource_Panel.LampStop" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.H_SignalTower.Blue" VarB="Channel 11^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.H_SignalTower.Green" VarB="Channel 12^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.H_SignalTower.Red" VarB="Channel 9^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.H_SignalTower.Yellow" VarB="Channel 10^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.SS_EStop1.LampOutput" VarB="Channel 13^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_System.SS_EStop2.LampOutput" VarB="Channel 14^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Drive_EL1008_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Transport01._DriveActive" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Transport02._DriveActive" VarB="Channel 2^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Drive_EL2008_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Transport01._Backward" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Transport01._Forward" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Transport02._Backward" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Transport02._Forward" VarB="Channel 4^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Index_EL1809_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index01.B_Detect.HardwareInput" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index01.B_Exit.HardwareInput" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index01.Y_Lift.ExtendedSensor" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index01.Y_Lift.RetractedSensor" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index01.Y_Stopper.ExtendedSensor" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index01.Y_Stopper.RetractedSensor" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index02.B_Detect.HardwareInput" VarB="Channel 7^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index02.B_Exit.HardwareInput" VarB="Channel 8^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index02.Y_Lift.ExtendedSensor" VarB="Channel 10^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index02.Y_Lift.RetractedSensor" VarB="Channel 9^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index02.Y_Stopper.ExtendedSensor" VarB="Channel 12^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index02.Y_Stopper.RetractedSensor" VarB="Channel 11^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index03.B_Detect.HardwareInput" VarB="Channel 13^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index03.B_Exit.HardwareInput" VarB="Channel 14^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index03.Y_Lift.ExtendedSensor" VarB="Channel 16^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index03.Y_Lift.RetractedSensor" VarB="Channel 15^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Index_EL1809_2">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index03.Y_Stopper.ExtendedSensor" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index03.Y_Stopper.RetractedSensor" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index04.B_Detect.HardwareInput" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index04.B_Exit.HardwareInput" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index04.Y_Lift.ExtendedSensor" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index04.Y_Lift.RetractedSensor" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index04.Y_Stopper.ExtendedSensor" VarB="Channel 8^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index04.Y_Stopper.RetractedSensor" VarB="Channel 7^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index05.B_Detect.HardwareInput" VarB="Channel 9^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index05.B_Exit.HardwareInput" VarB="Channel 10^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index05.Y_Lift.ExtendedSensor" VarB="Channel 12^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index05.Y_Lift.RetractedSensor" VarB="Channel 11^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index05.Y_Stopper.ExtendedSensor" VarB="Channel 14^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Index05.Y_Stopper.RetractedSensor" VarB="Channel 13^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Index_EL2809_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index01.Y_Lift._ExtendOutput" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index01.Y_Lift._RetractOutput" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index01.Y_Stopper._ExtendOutput" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index02.Y_Lift._ExtendOutput" VarB="Channel 5^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index02.Y_Lift._RetractOutput" VarB="Channel 4^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index02.Y_Stopper._ExtendOutput" VarB="Channel 6^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index03.Y_Lift._ExtendOutput" VarB="Channel 8^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index03.Y_Lift._RetractOutput" VarB="Channel 7^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index03.Y_Stopper._ExtendOutput" VarB="Channel 9^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index04.Y_Lift._ExtendOutput" VarB="Channel 11^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index04.Y_Lift._RetractOutput" VarB="Channel 10^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index04.Y_Stopper._ExtendOutput" VarB="Channel 12^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index05.Y_Lift._ExtendOutput" VarB="Channel 14^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index05.Y_Lift._RetractOutput" VarB="Channel 13^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index05.Y_Stopper._ExtendOutput" VarB="Channel 15^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_Detect.HardwareInput" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_Exit.HardwareInput" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._DriveActive" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_Detect.HardwareInput" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_Exit.HardwareInput" VarB="Channel 7^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._DriveActive" VarB="Channel 10^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor" VarB="Channel 9^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor" VarB="Channel 8^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Backward" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Forward" VarB="Channel 4^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Backward" VarB="Channel 7^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Forward" VarB="Channel 8^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput" VarB="Channel 6^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput" VarB="Channel 5^Output"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Stopper_EL1809_1">
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper01.B_Detect.HardwareInput" VarB="Channel 1^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper01.B_Exit.HardwareInput" VarB="Channel 2^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper01.Y_Stopper.ExtendedSensor" VarB="Channel 4^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper01.Y_Stopper.RetractedSensor" VarB="Channel 3^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper02.B_Detect.HardwareInput" VarB="Channel 5^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper02.B_Exit.HardwareInput" VarB="Channel 6^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper02.Y_Stopper.ExtendedSensor" VarB="Channel 8^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper02.Y_Stopper.RetractedSensor" VarB="Channel 7^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper03.B_Detect.HardwareInput" VarB="Channel 9^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper03.B_Exit.HardwareInput" VarB="Channel 10^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper03.Y_Stopper.ExtendedSensor" VarB="Channel 12^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper03.Y_Stopper.RetractedSensor" VarB="Channel 11^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper04.B_Detect.HardwareInput" VarB="Channel 13^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper04.B_Exit.HardwareInput" VarB="Channel 14^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper04.Y_Stopper.ExtendedSensor" VarB="Channel 16^Input"/>
+			<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper04.Y_Stopper.RetractedSensor" VarB="Channel 15^Input"/>
+		</OwnerB>
+		<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Stopper_EL2008_1">
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Stopper01.Y_Stopper._ExtendOutput" VarB="Channel 1^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Stopper02.Y_Stopper._ExtendOutput" VarB="Channel 2^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Stopper03.Y_Stopper._ExtendOutput" VarB="Channel 3^Output"/>
+			<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Stopper04.Y_Stopper._ExtendOutput" VarB="Channel 4^Output"/>
+		</OwnerB>
+	</OwnerA>
+</VarLinks>

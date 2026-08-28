@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractLightSource_HMI" Id="{f5f00f97-c3e1-4596-879d-07ee0792d97d}">
+    <Declaration><![CDATA[// Light source HMI interface - ONE struct per tile.
+// Extends ST_ComponentBase_HMI, so one bound parameter also carries Config,
+// Command and Status - and the added members may not reuse those three names.
+TYPE ST_AbstractLightSource_HMI EXTENDS ST_ComponentBase_HMI :
+STRUCT
+	DeviceCommand	: ST_AbstractLightSource_Command;
+	Device			: ST_AbstractLightSource_Status;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

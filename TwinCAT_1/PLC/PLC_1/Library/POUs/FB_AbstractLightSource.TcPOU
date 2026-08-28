@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_AbstractLightSource" Id="{19e3734d-cf0a-43cc-b7e6-0e848784e85c}" SpecialFunc="None">
+    <Declaration><![CDATA[// Generic byte-oriented light source component.
+// Output: 0 Enable. Input: 0 Enabled, 1 Error, 2..7 ErrorCode.
+FUNCTION_BLOCK FB_AbstractLightSource EXTENDS FB_ComponentBase
+VAR
+	InputData  AT %I* : BYTE;
+	OutputData AT %Q* : BYTE;
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_AbstractLightSource_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="CyclicLogic" Id="{a798a0ee-3799-4c61-9965-e023402c9e34}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+_Busy := OutputData.0 AND NOT InputData.0;
+_Error := InputData.1;
+_ErrorID := ErrorCode;
+SUPER^.CyclicLogic();
+
+// Device status only. The inherited Config / Command / Status half of HMI is a
+// mirror of ComponentBase_HMI and is bridged in HMICommunication.
+HMI.Device.Enabled := InputData.0;
+HMI.Device.Error := InputData.1;
+HMI.Device.ErrorCode := ErrorCode;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="DeviceError" Id="{0c115f1d-4c3b-426a-8ee4-ef3e68f25529}">
+      <Declaration><![CDATA[PROPERTY DeviceError : BOOL]]></Declaration>
+      <Get Name="Get" Id="{6c37b58b-8827-43e8-982e-527450525b86}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[DeviceError := InputData.1;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Disable" Id="{e7440dad-fb52-4b45-9e62-6a0415dc63bf}">
+      <Declaration><![CDATA[METHOD PUBLIC Disable
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[OutputData.0 := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enable" Id="{bcad94c5-7725-4591-a0fc-3e782a4a6db0}">
+      <Declaration><![CDATA[METHOD PUBLIC Enable
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[OutputData.0 := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Enabled" Id="{42524877-4303-44e2-89f8-581cd41fb5a2}">
+      <Declaration><![CDATA[PROPERTY Enabled : BOOL]]></Declaration>
+      <Get Name="Get" Id="{c8d12eb8-4668-4f2b-8070-bca7471a5184}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Enabled := InputData.0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ErrorCode" Id="{599fc3e0-3cc4-42ea-8cb7-9983a3f28c59}">
+      <Declaration><![CDATA[PROPERTY ErrorCode : BYTE]]></Declaration>
+      <Get Name="Get" Id="{8adb401a-21e2-43ef-85a3-d68d08c8ec13}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorCode := SHR(InputData, 2);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="HMICommunication" Id="{26e465f2-59c8-458b-92e6-e8a5c6191ea0}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// HMI is a published mirror of the base's own ComponentBase_HMI - carry operator
+// intent in before the base looks, and its answers back out afterwards.
+ComponentBase_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+HMI.Config	:= ComponentBase_HMI.Config;
+HMI.Status	:= ComponentBase_HMI.Status;
+HMI.Command	:= ComponentBase_HMI.Command;
+
+IF ComponentBase_HMI.Status.HMIControlAvailable THEN
+	OutputData.0 := HMI.DeviceCommand.Enable;
+ELSE
+	HMI.DeviceCommand.Enable := OutputData.0;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{6823855b-3196-4e16-9b11-88283c5ee4fe}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := SUPER^.Initialize();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

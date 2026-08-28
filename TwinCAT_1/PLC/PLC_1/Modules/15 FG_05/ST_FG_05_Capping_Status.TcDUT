@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_FG_05_Capping_Status" Id="{2d9b7c60-4f18-4ea3-95c7-8e30ab61d24f}">
+    <Declaration><![CDATA[// What the identification read has to say beyond the PackML state.
+//
+// THE READ IS OF THE ASSEMBLY, NOT THE CAP. The camera returns the assembly's
+// CapsID - which cap that assembly wants - and the station fits one only to an
+// assembly of the type it is set up for.
+//
+// THE SAME THREE FAULT CODES AS FG_01 AND FG_02, deliberately. All three stations
+// drive the same FB_AbstractCamera through the same handshake, and an operator
+// should not have to learn three numbering schemes for one device:
+//
+//   1  NOK       - the camera returned a CapsID and it was not the one this
+//                  station caps: the wrong assembly, or an empty pallet
+//   2  not ready - Enable was set and Ready never came: the camera is not
+//                  answering at all, which is a wiring or device fault
+//   3  no result - the shot was triggered and no verdict arrived in time: the
+//                  camera is there but the exposure never completed
+//
+// CODES 4 TO 6 ARE THE GRIPPER'S, not the camera's, and they arrived with B_Detect,
+// the grip sensor. They share this struct rather than getting their own because an
+// operator reads one number off one tile:
+//
+//   4  off safe   - a cycle was started with a cap held by a unit that is NOT at the
+//                   safe position (X max, both Z min). The resume entry point is
+//                   derived from the fact that a cap is held, and it is only right
+//                   if the unit is where the reset would have parked it. Someone
+//                   jogged an axis in Manual. Reset fixes it, because Resetting
+//                   reaches the safe position from anywhere.
+//
+//                   A cap held AT the safe position is not a fault at all - it is a
+//                   resumable cycle, and Resetting raises nothing for it.
+//   5  no pick    - the jaws closed at the pick position and no cap appeared in
+//                   them. B_Part said a cap was THERE; B_Detect says none is HELD.
+//                   A crooked cap, or one that moved as the jaws closed.
+//   6  no release - the jaws opened over the part and the cap is still in them.
+//                   Lifting now would carry it back off the pallet and send an
+//                   uncapped assembly on with nothing having complained.
+//
+// FG_05 HAD NO FAULT CODE AT ALL while its reader's status bit was an echo of the
+// trigger. Step 20 took the read, left on it OR a 1 s timeout, and branched on
+// neither - there was nothing to report.
+//
+// THE ABORT COSTS MORE HERE THAN IT DOES IN FG_01 OR FG_02, and that is why the
+// read sits where it does. It runs BEFORE the gripper has taken anything, so an
+// abort leaves the cap in the feed and the handling unit empty and home. Moving
+// the read later would abort with a cap held in the air over the pallet.
+//
+// LastResultOK is the verdict from the most recent completed read, latched so the
+// panel still shows it after ResultValid has dropped. It is not a fault - a NOK
+// sets code 1 as well.
+//
+// ResumePoint is not a fault. It is which part of the cycle the NEXT Start will
+// enter, derived every scan from B_Detect - the same derivation Execute step 0
+// makes, published so the panel can show it before anyone presses anything:
+//
+//   1  the whole cycle, from the camera read and the pick   (jaws empty)
+//   2  the placement, from the safe position over the pallet (cap held)
+//
+// FG_03 publishes the same field with three values; this station has one gripper
+// and therefore one place to resume from.
+//
+// Cleared in FG_05.Clearing - the fault code, that is. ResumePoint is derived and
+// has nothing to clear.
+TYPE ST_FG_05_Capping_Status :
+STRUCT
+	FaultCode		: DINT;
+	ResumePoint		: DINT;
+	LastResultOK	: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

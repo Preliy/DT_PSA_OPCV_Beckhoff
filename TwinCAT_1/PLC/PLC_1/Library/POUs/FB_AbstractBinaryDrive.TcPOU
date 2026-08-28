@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_AbstractBinaryDrive" Id="{e88d9576-61e7-4e24-a8e7-f674c4eaede9}" SpecialFunc="None">
+    <Declaration><![CDATA[// Reusable two-direction conveyor drive SPT component.
+FUNCTION_BLOCK FB_AbstractBinaryDrive EXTENDS FB_ComponentBase
+VAR
+	_Forward AT %Q* : BOOL;
+	_Backward AT %Q* : BOOL;
+	_DriveActive AT %I* : BOOL;
+	_RunForward : BOOL;
+	_RunBackward : BOOL;
+	_FaultCode : UDINT;
+	_StartTime : TIME := T#2S;
+	StartTimer : TON;
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_AbstractBinaryDrive_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Active" Id="{e72806f9-87bd-44b4-bf63-6823e50128fe}">
+      <Declaration><![CDATA[PROPERTY Active : BOOL]]></Declaration>
+      <Get Name="Get" Id="{291f227e-d61d-469c-99db-aa43ec94dfa8}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Active := _DriveActive;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="CyclicLogic" Id="{b3a2e9d0-d8dc-417e-b855-09b8fe091772}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+_Forward := _RunForward AND NOT _RunBackward AND (_FaultCode = 0);
+_Backward := _RunBackward AND NOT _RunForward AND (_FaultCode = 0);
+StartTimer(IN := (_Forward OR _Backward) AND NOT _DriveActive, PT := _StartTime);
+IF StartTimer.Q THEN
+	_FaultCode := 1;
+	_Forward := FALSE;
+	_Backward := FALSE;
+END_IF
+
+_Busy := (_Forward OR _Backward) AND NOT _DriveActive;
+_Error := _FaultCode <> 0;
+_ErrorID := _FaultCode;
+SUPER^.CyclicLogic();
+
+// Device config and status only. The inherited Config / Command / Status half of
+// HMI is a mirror of ComponentBase_HMI and is bridged in HMICommunication.
+HMI.DeviceConfig.StartTime := _StartTime;
+HMI.Device.Running := _Forward OR _Backward;
+HMI.Device.Active := _DriveActive;
+HMI.Device.Forward := _Forward;
+HMI.Device.Backward := _Backward;
+HMI.Device.Error := _Error;
+HMI.Device.ErrorCode := _FaultCode;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="FaultCode" Id="{1bf23ab8-761b-4892-89a5-3d31661eb42b}">
+      <Declaration><![CDATA[PROPERTY FaultCode : UDINT]]></Declaration>
+      <Get Name="Get" Id="{ee8ff445-94cb-4f22-bccf-d2aad98b4ccf}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FaultCode := _FaultCode;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="HMICommunication" Id="{6df47e85-823b-48bf-945a-cf39dd38022f}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// HMI is a published mirror of the base's own ComponentBase_HMI - carry operator
+// intent in before the base looks, and its answers back out afterwards.
+ComponentBase_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+HMI.Config	:= ComponentBase_HMI.Config;
+HMI.Status	:= ComponentBase_HMI.Status;
+HMI.Command	:= ComponentBase_HMI.Command;
+
+IF HMI.DeviceConfig.StartTime > T#0S THEN
+	_StartTime := HMI.DeviceConfig.StartTime;
+END_IF
+IF ComponentBase_HMI.Status.HMIControlAvailable THEN
+	_RunForward := HMI.DeviceCommand.RunForward;
+	_RunBackward := HMI.DeviceCommand.RunBackward;
+ELSE
+	HMI.DeviceCommand.RunForward := _RunForward;
+	HMI.DeviceCommand.RunBackward := _RunBackward;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{079b0ff1-467b-4d4c-94cb-f4825f52ed9f}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := SUPER^.Initialize();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{bc135a7b-61c0-4324-8fa9-c729faabbd47}">
+      <Declaration><![CDATA[METHOD PUBLIC Reset : BOOL
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Reset := SUPER^.Reset();
+IF Reset THEN
+	_FaultCode := 0;
+	_RunForward := FALSE;
+	_RunBackward := FALSE;
+	_Forward := FALSE;
+	_Backward := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="RunBackward" Id="{ebb197b9-c5b6-4639-a1cb-c5fb90101724}">
+      <Declaration><![CDATA[PROPERTY RunBackward : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b64d43cf-89bd-4e61-a200-bb8e468daf89}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[RunBackward := _RunBackward;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{11907c18-7055-4df0-bda0-bb91a1041123}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_RunBackward := RunBackward;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="RunForward" Id="{f8ed10a6-b541-49de-b49f-d9bbd2f08c83}">
+      <Declaration><![CDATA[PROPERTY RunForward : BOOL]]></Declaration>
+      <Get Name="Get" Id="{99804164-3054-482a-9239-0be45ac3173c}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[RunForward := _RunForward;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{7095a308-227d-49e5-9f8d-098d02eb6df1}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_RunForward := RunForward;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="StartTime" Id="{db51ef70-200b-41f5-9aaa-d1fa55da0471}">
+      <Declaration><![CDATA[PROPERTY StartTime : TIME]]></Declaration>
+      <Get Name="Get" Id="{d36b2638-cd5f-4e2f-98e2-4f2ef146cc2c}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[StartTime := _StartTime;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9b224a9b-c58d-4213-b4f4-98df96034126}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_StartTime := StartTime;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

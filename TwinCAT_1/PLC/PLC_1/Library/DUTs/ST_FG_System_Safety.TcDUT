@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_FG_System_Safety" Id="{9fddd9e1-3676-4e8b-bbf9-f03c37d15efa}">
+    <Declaration><![CDATA[// The safety chain, broken out for the panel.
+// GuardsSecure and EmergencyStopActive are the two facts the machine consumes;
+// the rest exists so an operator can see WHICH door or mushroom is holding the
+// cell, which the composed booleans cannot say.
+// Door array order is fixed and matches the twin:
+//   [1] B_SafetyDoor11  [2] B_SafetyDoor12  [3] B_SafetyDoor13   (side 1)
+//   [4] B_SafetyDoor21  [5] B_SafetyDoor22  [6] B_SafetyDoor23   (side 2)
+TYPE ST_FG_System_Safety :
+STRUCT
+	// The composed chain. Guards are only enforced in Production; the machine
+	// applies that rule, not this struct.
+	GuardsSecure : BOOL;
+	EmergencyStopActive : BOOL;
+
+	// TRUE while the PLC is commanding every lock engaged, i.e. in Production.
+	DoorsRequestedLocked : BOOL;
+
+	DoorClosed : ARRAY[1..6] OF BOOL;
+	DoorLocked : ARRAY[1..6] OF BOOL;
+	// 0 none, 1 lock commanded but never confirmed.
+	DoorFaultCode : ARRAY[1..6] OF UDINT;
+
+	EStopActive : ARRAY[1..2] OF BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

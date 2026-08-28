@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_AbstractBunker" Id="{5c7c9139-c141-4ae7-9c21-9fbdefe9cb00}" SpecialFunc="None">
+    <Declaration><![CDATA[// Generic byte-oriented parts bunker component.
+// Bit layout, from the twin node MAIN.FG_05.Y_CapsSource:
+//   Output: 0 vibration table, 1 feed conveyor.   Input: unused.
+//
+// AN OUTPUT-ONLY DEVICE. No feedback, so nothing to time out on: _Busy and _Error
+// stay false and the status struct mirrors the commanded bits. A travel timeout or
+// a "table stalled" fault would be a fiction, and a plausible fiction gets believed.
+//
+// Not part of any pallet cycle - the feed runs continuously so caps accumulate at
+// the pick position between pallets. FG_05 drives it from CyclicLogic, never Execute.
+FUNCTION_BLOCK FB_AbstractBunker EXTENDS FB_ComponentBase
+VAR
+	// Declared and linked though the twin drives nothing into it: the twin device
+	// is an FB_DeviceByte and carries the pair whatever this side does, so the
+	// channel exists. Nothing in this block consumes it.
+	InputData  AT %I* : BYTE;
+	OutputData AT %Q* : BYTE;
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_AbstractBunker_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="CyclicLogic" Id="{6dc8e499-6013-424f-8a82-8f41ff7eeb5a}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+SUPER^.CyclicLogic();
+
+// Commanded state, not measured state - see the block header.
+HMI.Device.TableRunning		:= OutputData.0;
+HMI.Device.ConveyorRunning	:= OutputData.1;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Halt" Id="{d102f9b0-816c-4ab8-93f1-16c00a300f5f}">
+      <Declaration><![CDATA[// Table first: stopping the conveyor while the table still feeds it piles caps up
+// at the transfer point.
+METHOD PUBLIC Halt
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[OutputData.0 := FALSE;
+OutputData.1 := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{acc0feea-bfcd-4b05-a1bc-4a66642d8408}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// HMI is a published mirror of the base's own ComponentBase_HMI - carry operator
+// intent in before the base looks, and its answers back out afterwards.
+ComponentBase_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+HMI.Config	:= ComponentBase_HMI.Config;
+HMI.Status	:= ComponentBase_HMI.Status;
+HMI.Command	:= ComponentBase_HMI.Command;
+
+IF ComponentBase_HMI.Status.HMIControlAvailable THEN
+	OutputData.0 := HMI.DeviceCommand.RunTable;
+	OutputData.1 := HMI.DeviceCommand.RunConveyor;
+ELSE
+	HMI.DeviceCommand.RunTable		:= OutputData.0;
+	HMI.DeviceCommand.RunConveyor	:= OutputData.1;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{d86096d8-8c59-441a-80b3-fe0e5cd34706}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := SUPER^.Initialize();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Run" Id="{0206c461-65d5-44e7-8d8f-3474801aae50}">
+      <Declaration><![CDATA[// Conveyor first, so the pick position is being cleared before the table starts
+// feeding into it.
+METHOD PUBLIC Run
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[OutputData.1 := TRUE;
+OutputData.0 := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Running" Id="{893a29e6-37fa-453d-b33c-6dc99adef783}">
+      <Declaration><![CDATA[// TRUE when both halves of the feed are commanded on. Commanded, not confirmed -
+// this device has no status byte.
+PROPERTY Running : BOOL]]></Declaration>
+      <Get Name="Get" Id="{81f92995-e661-442a-9b0f-4532306dbdd4}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Running := OutputData.0 AND OutputData.1;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

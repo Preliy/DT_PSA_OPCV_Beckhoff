@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractBunker_Command" Id="{e9b2ad19-924b-4adb-b051-888580c7afde}">
+    <Declaration><![CDATA[// The two control bits, one member each, so the panel never handles a bit index.
+// They are separate because the vibration table and the feed conveyor are
+// separate machines - running the table into a stopped conveyor is a way to jam
+// the pick position, and a commissioning engineer needs to be able to do one
+// without the other.
+TYPE ST_AbstractBunker_Command :
+STRUCT
+	RunTable	: BOOL;
+	RunConveyor	: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

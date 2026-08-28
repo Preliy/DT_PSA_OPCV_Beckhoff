@@ -1,0 +1,642 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_05" Id="{809fc8d5-9a79-416f-9121-e270a76d117a}" SpecialFunc="None">
+    <Declaration><![CDATA[// FG_05 - capping station.
+// THE BUNKER IS NOT PART OF THE PALLET CYCLE. Y_CapsSource is commanded from
+// CyclicLogic via DriveBunker, on mode and state only; driven from Execute it
+// would stop between pallets and step 10 would block on B_Part for ever.
+// B_Part is on the FEED (a cap has arrived); B_Detect is in the JAWS (this unit
+// is carrying one). They are not interchangeable.
+// Y_CapsSourceStopper is HELD, NEVER INDEXED: EXTENDED BLOCKS THE PATH, and the
+// queue pushes the next cap against it as the gripper takes the one in front.
+// Contract: _workflow/reference/fg-05-behaviour.md and gripper-station-reset.md
+FUNCTION_BLOCK FG_05 EXTENDS FB_PackML_BaseModule
+VAR
+	// --- The cap handling unit ----------------------------------------------
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisX					: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisX');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisZ1				: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisZ1');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisZ2				: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisZ2');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisR					: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisR');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Gripper				: FB_DoubleSolenoidFeedback := (Name := 'Y_Gripper');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_Detect				: FB_DigitalSensor := (Name := 'B_Detect');
+
+	// --- The cap feed --------------------------------------------------------
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_CapsSourceStopper		: FB_DoubleSolenoidFeedback := (Name := 'Y_CapsSourceStopper');
+	Y_CapsSource			: FB_AbstractBunker := (Name := 'Y_CapsSource');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_Part					: FB_DigitalSensor := (Name := 'B_Part');
+	P_Camera				: FB_AbstractCamera := (Name := 'P_Camera');
+
+	// Group level fault - see ST_FG_05_Capping_Status. Cleared in Clearing.
+	_FaultCode				: DINT;
+	// The verdict of the last completed read, latched so the panel still shows it
+	// once ResultValid has dropped.
+	_LastResultOK			: BOOL;
+	// What Resetting found in the gripper, sampled ONCE at its step 0 and never
+	// re-read. It decides which end of X the unit parks at and whether the reset
+	// may open the gripper at all.
+	_Held					: BOOL;
+
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_HMI_FG_05;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Aborting" Id="{3690be27-1fd4-4a62-84b9-13e97b49987c}">
+      <Declaration><![CDATA[METHOD PROTECTED Aborting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// AN ABORT COMMANDS NO AXIS MOTION. For most of this cycle a cap is held in the air
+// over the pallet. The grip is held by the CyclicLogic interlock, not by leaving
+// the valve alone. Parking happens in Resetting, where the operator has asked for
+// it.
+//
+// What does stop is everything that keeps running on its own: the feed, so caps
+// stop arriving at a station that cannot take them, and the camera.
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		Y_CapsSource.Halt();
+		P_Camera.Disable();
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Aborting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clearing" Id="{b5bd6807-2e8e-47a3-bb77-cacf965464a8}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		// The group fault is cleared by the act of clearing, not by the condition
+		// going away - an assembly this station does not cap is still the wrong
+		// assembly after the camera has stopped reporting it, and the operator has
+		// to have dealt with the pallet.
+		_FaultCode := 0;
+		SequenceState := SequenceState + 10;
+
+	10:	// Clear latched component alarms - the solenoid travel timeouts latch.
+		IF Y_AxisX.Reset()
+			AND Y_AxisZ1.Reset()
+			AND Y_AxisZ2.Reset()
+			AND Y_AxisR.Reset()
+			AND Y_Gripper.Reset()
+			AND B_Detect.Reset()
+			AND Y_CapsSourceStopper.Reset()
+			AND Y_CapsSource.Reset()
+			AND B_Part.Reset()
+			AND P_Camera.Reset() THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{c59c5d94-1d3b-4154-b9e7-9ca5821934c4}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// The feed runs outside the pallet cycle - see the block header. Evaluated BEFORE
+// the base walks its components so Y_CapsSource's own CyclicLogic publishes this
+// scan's commanded state rather than last scan's, and so that in Manual mode its
+// HMICommunication - which runs inside SUPER^ - still gets the last word on the
+// output byte. That ordering is the whole reason an operator can jog the bunker.
+DriveBunker();
+
+// A HELD CAP IS GRIPPED ACTIVELY, IN EVERY STATE EXCEPT Execute. Identical
+// interlock to FG_03's - a de-energised double solenoid does NOT hold the cap in
+// the twin, because OnActiveChanged is wired to Gripper.Place and IsActive means
+// MOVING. FG_03 dropped a part this way mid-reset; this station has the same
+// wiring. Before SUPER^ so it overrides the state methods, while HMICommunication
+// inside SUPER^ still lets Manual jog the gripper open.
+IF _CurrentState <> E_PMLState.ePMLState_Execute THEN
+	IF B_Detect.Active THEN
+		Y_Gripper.Extend();
+	END_IF
+END_IF
+
+// No process image copy step: component process-image members are mapped directly
+// to terminal channels.
+SUPER^.CyclicLogic();
+
+PublishStatus();]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="DriveBunker" Id="{6da7c2df-88e7-4296-96b3-3798e4741f8e}">
+      <Implementation>
+        <ST><![CDATA[// The cap feed, which is not a step of anything.
+//
+// A BLACKLIST, NOT A WHITELIST, and deliberately: the feed should be running in
+// every state where the station could plausibly be asked to work, and the states
+// where it must not are few and nameable. Written the other way round, every
+// PackML state anyone forgot would silently starve the pick position.
+//
+// Production only. In Maintenance and Manual the bunker belongs to the operator,
+// through FB_AbstractBunker's own HMI command struct - the module keeps its hands
+// off, and HMIPermissions has already granted control by the time SUPER^ runs.
+IF _CurrentMode = E_PMLUnitMode.ePMLUnitMode_Production THEN
+
+	CASE _CurrentState OF
+		E_PMLState.ePMLState_Stopping,
+		E_PMLState.ePMLState_Stopped,
+		E_PMLState.ePMLState_Aborting,
+		E_PMLState.ePMLState_Aborted,
+		E_PMLState.ePMLState_Clearing:
+			Y_CapsSource.Halt();
+	ELSE
+		Y_CapsSource.Run();
+	END_CASE
+
+ELSE
+	Y_CapsSource.Halt();
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Execute" Id="{412a5039-575f-400e-9304-a41054354550}">
+      <Declaration><![CDATA[METHOD PROTECTED Execute
+VAR_INPUT
+END_VAR
+VAR_INST
+	SettleTimer		: TON;
+	ReadyTimer		: TON;
+	ShotTimer		: TON;
+
+	// One grace timer per payload confirmation, armed only once the gripper has
+	// reached its limit. The cylinder's own ExtendTime/RetractTime covers the
+	// stroke; these cover only the question that follows it.
+	GripTimer		: TON;
+	ReleaseTimer	: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Ordering from the authored Process entry. Every cylinder here is a *Feedback
+// Both limits are wired, so the steps wait on limit switches, not dwells. The 0.5 s
+// settle at step 10 is kept because no sensor reports it.
+// Steps 20..50 are the vision-sensor protocol, identical to FG_01's and FG_02's,
+// and every wait is bounded with a timeout raising a fault.
+// AN ASSEMBLY THIS STATION DOES NOT CAP ABORTS THE GROUP; Index05 then raises its
+// own fault 3 on the operation timeout. The abort is cheap only because the read is
+// first - see the block header.
+// These conditions name step numbers: renumbering a step moves its timer too.
+
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:
+
+		CASE SequenceState OF
+			0:	// WHERE THE CYCLE STARTS IS DERIVED, NOT REMEMBERED. A cap in the jaws
+// is a legal starting condition: Resetting parks a held cap at the
+				// SAFE POSITION, so the next Start picks the cycle up from there.
+				// A RESUME SKIPS THE CAMERA, correctly: the read identifies the
+				// ASSEMBLY, it ran before the pick and came back OK, and the pallet
+				// has not moved. Re-reading asks a question already answered.
+				// The unit must actually BE at the safe position - anywhere else the
+				// entry point would be a guess, so this refuses rather than moves.
+				NoStateTasksToComplete	:= FALSE;
+
+				IF B_Detect.Active THEN
+					IF Y_AxisX.Extended
+						AND Y_AxisZ1.Retracted
+						AND Y_AxisZ2.Retracted THEN
+						SequenceState := 100;		// at SAFE - resume at the rotate
+					ELSE
+						_FaultCode := 4;
+						AbortImmediate();
+					END_IF
+				ELSE
+					P_Camera.Enable();
+					P_Camera.ClearTrigger();
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			10:	// Nothing happens until there is a cap to pick. The stopper is EXTENDED
+				// to block the path, so the queue accumulates against it; the feed
+				// that fills it runs outside this sequence - see DriveBunker.
+				Y_CapsSourceStopper.Extend();
+				IF B_Part.Active AND SettleTimer.Q THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			//--- Identify the assembly before picking a cap for it --------------
+			20:	// Wait for the camera to say it can take a shot. It was enabled at
+				// step 0 and step 10 has just spent at least 0.5 s waiting for a
+				// cap, so Ready never arriving means the camera is not answering
+				// at all - a wiring or device fault.
+				IF P_Camera.Ready THEN
+					SequenceState := SequenceState + 10;
+				ELSIF ReadyTimer.Q THEN
+					_FaultCode := 2;
+					AbortImmediate();
+				END_IF
+
+			30:	// Ask for the shot. Busy is the acknowledgement, but a fast camera
+				// can come and go inside one scan, so ResultValid counts as an
+				// acknowledgement too - waiting only on Busy would hang on exactly
+				// the device that answered quickest.
+				P_Camera.Trigger();
+				IF P_Camera.DeviceBusy OR P_Camera.ResultValid THEN
+					SequenceState := SequenceState + 10;
+				ELSIF ShotTimer.Q THEN
+					_FaultCode := 3;
+					AbortImmediate();
+				END_IF
+
+			40:	// Read the verdict. It stands until the trigger is released, so
+				// this cannot miss it by being a scan late.
+				IF P_Camera.ResultValid THEN
+					_LastResultOK := P_Camera.ResultOK;
+					IF P_Camera.ResultOK THEN
+						SequenceState := SequenceState + 10;
+					ELSE
+						_FaultCode := 1;
+						AbortImmediate();
+					END_IF
+				ELSIF ShotTimer.Q THEN
+					_FaultCode := 3;
+					AbortImmediate();
+				END_IF
+
+			50:	// Release the trigger. That is also what tells the camera its
+				// verdict has been read, so it drops ResultValid and re-arms. The
+				// enable stays on until the end of the cycle.
+				P_Camera.ClearTrigger();
+				SequenceState := SequenceState + 10;
+
+			//--- Pick a cap off the feed ---------------------------------------
+			60:	// Down on the bunker side
+				Y_AxisZ2.Extend();
+				IF Y_AxisZ2.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			70:	// Grip the cap, and confirm the jaws caught it. B_Part said a cap
+				// was AT the pick position; only B_Detect says one is IN the
+				// gripper, and the two disagree whenever the cap sat crooked or
+				// moved as the jaws closed. Lifting on that disagreement carries
+				// nothing to the pallet and fits nothing to the part.
+				Y_Gripper.Extend();
+				IF Y_Gripper.Extended THEN
+					IF B_Detect.Active THEN
+						SequenceState := SequenceState + 10;
+					ELSIF GripTimer.Q THEN
+						_FaultCode := 5;
+						AbortImmediate();
+					END_IF
+				END_IF
+
+			80:	// Lift clear before traversing. The next cap comes forward against
+				// the held stopper on its own.
+				Y_AxisZ2.Retract();
+				IF Y_AxisZ2.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			//--- Carry it to the pallet ----------------------------------------
+			90:	// Traverse across to the pallet.
+				//
+				// *** SAFE *** - X max, Z1 min, Z2 min, R min, cap in the gripper. The
+				// end of this step IS the safe position, reached in the ordinary course
+				// of the cycle rather than only by the reset: both vertical strokes are
+				// already up (Z2 at step 80, Z1 untouched), R has not turned yet, and
+				// the traverse has just finished. That is why step 100 is the resume
+				// entry and why nothing had to be inserted to make the position real -
+				// unlike FG_03's arm 1, which never passes through its own safe spot.
+				Y_AxisX.Extend();
+				IF Y_AxisX.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			100: // Rotate into the fitting orientation, in the air and clear of
+				// everything
+				Y_AxisR.Extend();
+				IF Y_AxisR.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			110: // Lower onto the part
+				Y_AxisZ1.Extend();
+				IF Y_AxisZ1.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			120: // Release the cap onto the part, and confirm it has left the jaws
+				// before the unit lifts. A cap that stays gripped is carried back
+				// off the pallet, and the pallet leaves this station uncapped with
+				// nothing having reported a problem.
+				Y_Gripper.Retract();
+				IF Y_Gripper.Retracted THEN
+					IF NOT B_Detect.Active THEN
+						SequenceState := SequenceState + 10;
+					ELSIF ReleaseTimer.Q THEN
+						_FaultCode := 6;
+						AbortImmediate();
+					END_IF
+				END_IF
+
+			//--- Return --------------------------------------------------------
+			130: // Up, clear of the pallet, before anything traverses
+				Y_AxisZ1.Retract();
+				IF Y_AxisZ1.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			140: // Back over the feed
+				Y_AxisX.Retract();
+				IF Y_AxisX.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			150: // Rotate home, ready for the next cap
+				Y_AxisR.Retract();
+				IF Y_AxisR.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			160: // Execute is the one acting state that does not self-complete.
+				// StateComplete() would be wrong here.
+				P_Camera.Disable();
+				ChangeState(E_PMLCommand.ePMLCommand_Complete);
+		END_CASE
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		// Every device in this group is reachable through its own component HMI
+		// struct - the six cylinders through SolenoidHMI, the camera and the
+		// bunker through their own. HMIPermissions grants that in these modes and
+		// the components honour it themselves. No group sequence runs.
+		;
+END_CASE
+
+SUPER^.Execute();
+
+SettleTimer(IN := (SequenceState = 10) AND B_Part.Active,	PT := T#500MS);
+
+// One budget from Ready, one from Trigger to verdict. The shot timer spans both
+// steps 30 and 40 on purpose: the split between "acknowledged" and "answered" is
+// the station's business, but the camera's total response time is one number and
+// is what the operator would be told. Same budgets as FG_01 and FG_02 - it is the
+// same device.
+ReadyTimer(IN := SequenceState = 20,						PT := T#2S);
+ShotTimer(IN := (SequenceState = 30) OR (SequenceState = 40),	PT := T#3S);
+
+// The payload grace timers, armed only once the gripper has reached its limit. Same
+// budget and same reasoning as FG_03's four: long enough that a slow physics step
+// cannot fault a good grip, short enough to be a fault rather than a stall.
+GripTimer(IN	:= (SequenceState = 70)  AND Y_Gripper.Extended,		PT := T#500MS);
+ReleaseTimer(IN	:= (SequenceState = 120) AND Y_Gripper.Retracted,	PT := T#500MS);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{46b25e9d-204b-4340-b93d-7d0c7f7e3997}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The command half of the HMI bridge; PublishStatus is the status half.
+//
+// The base reads its OWN PackMLBaseModule_HMI.Command and never looks at ours, so
+// without this a mode or state button on the FG_05 tile writes into a struct
+// nothing consumes. It has to happen in this method because the base calls it
+// immediately before ModeControl() and StateControl().
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on, so the panel
+// sees its request consumed instead of re-issuing it next scan.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{e57bd252-4fd5-4a7f-ae4a-15b3bdb7c488}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		RegisterComponent(Y_AxisX);
+		RegisterComponent(Y_AxisZ1);
+		RegisterComponent(Y_AxisZ2);
+		RegisterComponent(Y_AxisR);
+		RegisterComponent(Y_Gripper);
+		RegisterComponent(B_Detect);
+		RegisterComponent(Y_CapsSourceStopper);
+		RegisterComponent(Y_CapsSource);
+		RegisterComponent(B_Part);
+		RegisterComponent(P_Camera);
+
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= TRUE;
+		HMI.Config.Name		:= THIS^._Name;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// Travel timeouts in ms (LREAL). The twin completes a stroke well inside
+		// these; they exist to alarm on a jam, not to pace the cycle. The traverse
+		// and the rotate are the long strokes.
+		Y_AxisX.ExtendTime					:= 3000.0;
+		Y_AxisX.RetractTime					:= 3000.0;
+		Y_AxisZ1.ExtendTime					:= 2000.0;
+		Y_AxisZ1.RetractTime				:= 2000.0;
+		Y_AxisZ2.ExtendTime					:= 2000.0;
+		Y_AxisZ2.RetractTime				:= 2000.0;
+		Y_AxisR.ExtendTime					:= 3000.0;
+		Y_AxisR.RetractTime					:= 3000.0;
+		Y_Gripper.ExtendTime				:= 2000.0;
+		Y_Gripper.RetractTime				:= 2000.0;
+		Y_CapsSourceStopper.ExtendTime		:= 2000.0;
+		Y_CapsSourceStopper.RetractTime		:= 2000.0;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="PublishStatus" Id="{9d8306be-00c7-4c84-b844-330c439585e2}">
+      <Implementation>
+        <ST><![CDATA[// Local HMI surface, and the status half of the HMI bridge - HMICommunication is
+// the command half. Called from CyclicLogic AFTER SUPER^.CyclicLogic(), so every
+// field is this scan's. Copy the base struct wholesale - setting fields one by
+// one leaves Busy, Error, ErrorID and HMIControlAvailable at zero.
+// Every device publishes itself; what is added here is what no device owns.
+HMI.Config		:= PackMLBaseModule_HMI.Config;
+HMI.Status		:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName				:= F_PMLStateName(_CurrentState);
+HMI.Sequence.StepIndex		:= SequenceState;
+HMI.Capping.FaultCode		:= _FaultCode;
+HMI.Capping.LastResultOK	:= _LastResultOK;
+
+// ResumePoint IS DERIVED HERE, NOT COPIED FROM _Held. That one is Resetting's
+// private snapshot and is stale everywhere else. This runs the same derivation
+// Execute step 0 runs, off the live sensor, so the panel shows what pressing Start
+// would actually do rather than what the last reset happened to see.
+IF B_Detect.Active THEN
+	HMI.Capping.ResumePoint := 2;		// place the cap already held
+ELSE
+	HMI.Capping.ResumePoint := 1;		// the whole cycle
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Resetting" Id="{216f9eca-828c-4e2d-8053-f0284c02e00c}">
+      <Declaration><![CDATA[METHOD PROTECTED Resetting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Home the cap handling unit from wherever the cycle stopped.
+// THE ORDER IS THE COLLISION ANALYSIS. Both vertical strokes come up first, which
+// is always safe; only then does anything traverse or rotate, which with the
+// gripper high is also safe. Any other order can drag a lowered gripper across the
+// pallet or into the feed conveyor.
+//
+// Every step waits on its own cylinders and nothing else - not B_Part, not
+// B_Detect, not the index unit. B_Detect is SAMPLED ONCE at step 0 and never read
+// again: a snapshot selects the ending, a live read could stall it.
+//
+// THE RESET KEEPS THE CAP AND PARKS IT AT THE SAFE POSITION:
+//   SAFE   X MAX, Z1 min, Z2 min, R min, cap in the gripper
+// which is exactly what Execute step 90 leaves, so the cycle resumes at step 100.
+//
+// The alternatives are all wrong, and it is worth recording why:
+//   Back on the feed?  The pick position is not empty - the next cap advanced
+//                      against the held stopper. Two caps on one position jams it.
+//   Onto the part?     A reset does not deliver product, and it would mean knowing
+//                      Index05 still has a pallet clamped - waiting on another unit.
+//   Open in the air?   The cap falls.
+//   Keep it and stop?  Turns every E-Stop into a trip into the cell for a cap that
+//                      was never in danger.
+
+CASE SequenceState OF
+	0:
+		// BLOCK THE FEED BEFORE ANYTHING HOMES. The stopper's de-energised position no
+		// longer blocks the path - EXTENDED does, since the device was refactored in
+		// the twin - and DriveBunker keeps the feed running right through Resetting and
+		// Idle. Commanded here rather than at step 30, the queue accumulates against the
+		// stopper from the first scan of the reset instead of spilling past the pick
+		// position while the axes home. The command latches, so step 30 only has to
+		// wait on .Extended and the state still terminates on this unit's own travel
+		// budget.
+		NoStateTasksToComplete	:= FALSE;
+		Y_CapsSourceStopper.Extend();
+		P_Camera.Disable();
+		_Held					:= B_Detect.Active;
+		SequenceState			:= SequenceState + 10;
+
+	10:	// Both vertical strokes up. Commanded on the same scan so they travel
+		// together rather than one after the other.
+		Y_AxisZ1.Retract();
+		Y_AxisZ2.Retract();
+		IF Y_AxisZ1.Retracted AND Y_AxisZ2.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:	// Rotate home, and traverse to whichever end of X this unit can stand at.
+		// R always goes home: it is min at the safe position and min at rest, so
+		// there is nothing to decide. X is the one that depends on the payload -
+		// MAX with a cap, which is the pallet side and the safe position, min
+		// without one, which is the feed side and home.
+		//
+		// Both vertical strokes are up from step 10, so the unit can cross freely
+		// in either direction and turn while it does.
+		Y_AxisR.Retract();
+
+		IF _Held THEN
+			Y_AxisX.Extend();
+			IF Y_AxisX.Extended AND Y_AxisR.Retracted THEN
+				SequenceState := SequenceState + 10;
+			END_IF
+		ELSE
+			Y_AxisX.Retract();
+			IF Y_AxisX.Retracted AND Y_AxisR.Retracted THEN
+				SequenceState := SequenceState + 10;
+			END_IF
+		END_IF
+
+	30:	// Confirm the feed is blocked - the stopper was commanded at step 0 - and
+		// open the gripper only if it is empty.
+		//
+		// With a cap held, Y_Gripper is not commanded HERE - CyclicLogic is holding
+		// it closed instead, and that command wins because it runs first. The step
+		// then waits on the stopper alone, which is still this unit's own cylinder,
+		// so the state still terminates on its own travel budget. No fault is
+		// raised: a cap parked at the safe position is a resumable cycle, not a
+		// problem.
+		Y_CapsSourceStopper.Extend();
+
+		IF _Held THEN
+			IF Y_CapsSourceStopper.Extended THEN
+				SequenceState := SequenceState + 10;
+			END_IF
+		ELSE
+			Y_Gripper.Retract();
+			IF Y_Gripper.Retracted AND Y_CapsSourceStopper.Extended THEN
+				SequenceState := SequenceState + 10;
+			END_IF
+		END_IF
+
+	40:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Resetting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stopping" Id="{3d202727-8923-4097-b891-199b3942ca65}">
+      <Declaration><![CDATA[METHOD PROTECTED Stopping
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// A controlled stop commands no axis motion, for the same reason the abort does
+// not: a cap is held in the air for most of this cycle, and the grip is held by the
+// CyclicLogic interlock rather than by leaving the valve alone. The feed and the
+// camera stop, because both run on their own and neither should keep running into a
+// stopped station.
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		Y_CapsSource.Halt();
+		P_Camera.Disable();
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Stopping();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

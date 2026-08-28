@@ -1,0 +1,15 @@
+<div id="FGTransport_Drive" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-width-unit="%" data-tchmi-height-unit="%">
+
+<div id="FGTDrv_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="FG_Transport - Conveyor drives" class="headline-2">
+</div>
+
+<div id="UC_Transport01" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/TransferDrive.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="166" data-tchmi-height-unit="px" data-tchmi-drive="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Transport01.HMI%/s%">
+</div>
+
+<div id="UC_Transport02" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/TransferDrive.usercontrol" data-tchmi-left="336" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="166" data-tchmi-height-unit="px" data-tchmi-drive="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Transport02.HMI%/s%">
+</div>
+
+<div id="FGTDrv_BeltNote" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="250" data-tchmi-top-unit="px" data-tchmi-width="620" data-tchmi-width-unit="px" data-tchmi-height="22" data-tchmi-height-unit="px" data-tchmi-text="Carriage belts are on the Lift page - they belong to their lift.">
+</div>
+
+</div>

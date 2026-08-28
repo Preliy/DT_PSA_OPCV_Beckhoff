@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_HMI_FG_System" Id="{f9afdb10-dbac-459a-85b7-d1ddac19d829}">
+    <Declaration><![CDATA[// FG_System's HMI contract.
+//
+// ST_BaseModule_HMI's header states the constraint: a descendant adds exactly one
+// member, and it must not be named Config, Command, Status or Sequence, because
+// redeclaring an inherited member is a compile error. That member is Safety.
+TYPE ST_HMI_FG_System EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Safety : ST_FG_System_Safety;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

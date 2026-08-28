@@ -1,0 +1,30 @@
+{
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.5.1/runtimes/native1.12-tchmi/Schema/LocalizationDescription.Schema.json",
+  "locale": "en",
+  "localizedText": {
+    "L_EtherCAT": "EtherCAT",
+    "L_Events": "Events",
+    "L_FGT_Drive": "Conveyor drives",
+    "L_FGT_Index": "Index units",
+    "L_FGT_Lift": "Lift units",
+    "L_FGT_Overview": "Overview",
+    "L_FGT_Stopper": "Stopper units",
+    "L_FG_Stations": "Stations",
+    "L_FG_01": "FG_01 Identify and Mark",
+    "L_FG_02": "FG_02 Optical Inspection",
+    "L_FG_03": "FG_03 Transfer and Flip",
+    "L_FG_04": "FG_04 Press and Seat Check",
+    "L_FG_05": "FG_05 Capping",
+    "L_FG_Transport": "Transport",
+    "L_FunctionalGroups": "Functional Groups",
+    "L_Localization": "Localization",
+    "L_Settings": "Settings",
+    "L_StartPage": "Start Page",
+    "L_Theme": "Theme",
+    "EStop_Released": "Released",
+    "EStop_Latched": "LATCHED",
+    "EStop_Inverted": "Inverted",
+    "Door_ClosedShort": "C",
+    "Door_LockedShort": "L"
+  }
+}

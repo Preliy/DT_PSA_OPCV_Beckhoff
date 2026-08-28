@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_01" Id="{fac1830d-aaa3-45b3-b55f-ecb0d3876a50}" SpecialFunc="None">
+    <Declaration><![CDATA[// FG_01 - identify, mark, verify identity. Nine SPT components.
+// Triggered by Index01; reports OperationDone. A wrong serial aborts (fault 1).
+// Y_Gate1/Y_Gate2 CLOSE on Extend - the opposite sense to a transport stopper.
+// Twin side: FB_Camera in OC_SIM - both halves must agree on the bit layout.
+// Contract: _workflow/reference/fg-01-behaviour.md
+FUNCTION_BLOCK FG_01 EXTENDS FB_PackML_BaseModule
+VAR
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Gripper		: FB_DoubleSolenoidFeedback := (Name := 'Y_Gripper');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Platform		: FB_DoubleSolenoidFeedback := (Name := 'Y_Platform');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_ReaderWindow	: FB_DoubleSolenoidFeedback := (Name := 'Y_ReaderWindow');
+	P_Camera		: FB_AbstractCamera := (Name := 'P_Camera');
+	Y_LaserMark		: FB_AbstractLightSource := (Name := 'Y_LaserMark');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Gate1			: FB_SingleSolenoidFeedback := (Name := 'Y_Gate1');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Gate2			: FB_SingleSolenoidFeedback := (Name := 'Y_Gate2');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_SafetyGate1	: FB_DigitalSensor := (Name := 'B_SafetyGate1');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_SafetyGate2	: FB_DigitalSensor := (Name := 'B_SafetyGate2');
+
+	// Group level fault - see ST_FG_01_Identify_Status. Cleared in Clearing.
+	_FaultCode		: DINT;
+	// The verdict of the last completed read, latched so the panel still shows it
+	// once ResultValid has dropped.
+	_LastResultOK	: BOOL;
+
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_HMI_FG_01;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Aborting" Id="{da4cad6c-e0e8-40d3-a230-6e46c75e3229}">
+      <Declaration><![CDATA[METHOD PROTECTED Aborting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		// Laser first - it is the only hazardous output here.
+
+		Y_LaserMark.Disable();
+		P_Camera.Disable();
+		SequenceState			:= SequenceState + 10;
+
+	10:	// Shield the optics. The gripper keeps its grip on purpose - releasing a
+		// clamped payload on abort would drop it.
+		Y_ReaderWindow.Retract();
+		IF Y_ReaderWindow.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Aborting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clearing" Id="{707a1031-734c-4664-8fe8-51977a56ef67}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		// Cleared by the act of clearing, not by the condition going away.
+		_FaultCode := 0;
+		SequenceState := SequenceState + 10;
+
+	10:	// Clear latched component alarms - the solenoid travel timeouts latch.
+		IF Y_Gripper.Reset()
+			AND Y_Platform.Reset()
+			AND Y_ReaderWindow.Reset()
+			AND P_Camera.Reset()
+			AND Y_LaserMark.Reset()
+			AND Y_Gate1.Reset()
+			AND Y_Gate2.Reset()
+			AND B_SafetyGate1.Reset()
+			AND B_SafetyGate2.Reset() THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{fa65d91d-dae3-445b-9852-01195917a487}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// No process image copy step: component members map straight to terminal channels.
+SUPER^.CyclicLogic();
+
+PublishStatus();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Execute" Id="{4542f0ff-3fa5-4908-a5bb-a6f221cc8db2}">
+      <Declaration><![CDATA[METHOD PROTECTED Execute
+VAR_INPUT
+END_VAR
+VAR_INST
+	ClampSettleTimer	: TON;
+	MarkTimer			: TON;
+	ReadyTimer			: TON;
+	ShotTimer			: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Y_Platform is deliberately absent: it positions the laser head in service
+// only and is never actuated during the cycle.
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:
+
+		CASE SequenceState OF
+			0:
+				NoStateTasksToComplete	:= FALSE;
+				Y_LaserMark.Disable();
+				// Camera on at the start, not at the read: it has the whole
+				// gate-clamp-mark sequence to come Ready in.
+				P_Camera.Enable();
+				P_Camera.ClearTrigger();
+				SequenceState			:= SequenceState + 10;
+
+			10:	// Shut the cell. Both gates commanded on one scan, both limits
+				// waited on, so they travel together.
+				Y_Gate1.Extend();
+				Y_Gate2.Extend();
+				IF Y_Gate1.Extended AND Y_Gate2.Extended AND B_SafetyGate1.Active AND B_SafetyGate2.Active THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			20:	// Clamp the payload
+				Y_Gripper.Extend();
+				SequenceState := SequenceState + 10;
+
+			30:	// Let the clamp settle before firing
+				IF ClampSettleTimer.Q THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			40:	// Mark. The gates were proven at step 10 and nothing opens them until
+				// step 120, so there is no per-scan permissive here by design.
+				Y_LaserMark.Enable();
+				IF MarkTimer.Q THEN
+					Y_LaserMark.Disable();
+					SequenceState	:= SequenceState + 10;
+				END_IF
+
+			50:	// Open the window for the read
+				Y_ReaderWindow.Extend();
+				SequenceState := SequenceState + 10;
+
+			60:	// Window open. Wait for Ready; a timeout here is a wiring or
+				// device fault, not a slow start.
+				IF Y_ReaderWindow.Extended THEN
+					IF P_Camera.Ready THEN
+						SequenceState := SequenceState + 10;
+					ELSIF ReadyTimer.Q THEN
+						_FaultCode := 2;
+						AbortImmediate();
+					END_IF
+				END_IF
+
+			70:	// Trigger. ResultValid also acknowledges: a fast camera can raise
+				// and drop Busy inside one scan.
+				P_Camera.Trigger();
+				IF P_Camera.DeviceBusy OR P_Camera.ResultValid THEN
+					SequenceState := SequenceState + 10;
+				ELSIF ShotTimer.Q THEN
+					_FaultCode := 3;
+					AbortImmediate();
+				END_IF
+
+			80:	// Read the verdict. It stands until the trigger is released.
+				IF P_Camera.ResultValid THEN
+					_LastResultOK := P_Camera.ResultOK;
+					IF P_Camera.ResultOK THEN
+						SequenceState := SequenceState + 10;
+					ELSE
+						_FaultCode := 1;
+						AbortImmediate();
+					END_IF
+				ELSIF ShotTimer.Q THEN
+					_FaultCode := 3;
+					AbortImmediate();
+				END_IF
+
+			90:	// Release the trigger - that is what tells the camera its verdict
+				// was read. Enable stays on to the end of the cycle.
+				P_Camera.ClearTrigger();
+				SequenceState := SequenceState + 10;
+
+			100: // Shield the optics again
+				Y_ReaderWindow.Retract();
+				IF Y_ReaderWindow.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			110: // Release the payload
+				Y_Gripper.Retract();
+				IF Y_Gripper.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			120: // Open the cell, both gates together. Only now: opening while the
+				// payload is clamped would expose a held part.
+				Y_Gate1.Retract();
+				Y_Gate2.Retract();
+				IF Y_Gate1.Retracted AND Y_Gate2.Retracted AND NOT B_SafetyGate1.Active AND NOT B_SafetyGate2.Active THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			130: // Execute is the one acting state that does not self-complete.
+				// StateComplete() would be wrong here.
+				P_Camera.Disable();
+				ChangeState(E_PMLCommand.ePMLCommand_Complete);
+		END_CASE
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		// No group sequence. Y_Platform and P_Camera stay reachable
+			// through their own component HMI control.
+		;
+END_CASE
+
+SUPER^.Execute();
+
+// These conditions name step numbers: renumbering a step moves its timer too.
+ClampSettleTimer(IN := (SequenceState = 30) AND Y_Gripper.Extended,	PT := T#500MS);
+MarkTimer(IN := SequenceState = 40,									PT := T#1S);
+
+// ReadyTimer is armed on the WINDOW BEING OPEN, not on the step alone. Step 50
+// extends and advances on the same scan, so arming on the step would let a slow
+// window burn the camera's budget and raise fault 2 for a pneumatic fault.
+ReadyTimer(IN := (SequenceState = 60) AND Y_ReaderWindow.Extended,	PT := T#2S);
+ShotTimer(IN := (SequenceState = 70) OR (SequenceState = 80),		PT := T#3S);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{c1ce0903-bb94-4fdd-97f4-23101cb48894}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Command half of the HMI bridge; PublishStatus is the status half. MUST be in
+// this method: the base calls it immediately before ModeControl() and
+// StateControl(), and reads its own PackMLBaseModule_HMI.Command, never ours.
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{ad3610f0-bcc5-473d-8856-5b1f144b2597}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		RegisterComponent(Y_Gripper);
+		RegisterComponent(Y_Platform);
+		RegisterComponent(Y_ReaderWindow);
+		RegisterComponent(P_Camera);
+		RegisterComponent(Y_LaserMark);
+		RegisterComponent(Y_Gate1);
+		RegisterComponent(Y_Gate2);
+		RegisterComponent(B_SafetyGate1);
+		RegisterComponent(B_SafetyGate2);
+
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= TRUE;
+		HMI.Config.Name		:= THIS^._Name;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// Travel timeouts in ms. They alarm on a jam; they do not pace the cycle.
+		Y_Gripper.ExtendTime		:= 2000.0;
+		Y_Gripper.RetractTime		:= 2000.0;
+		Y_Platform.ExtendTime		:= 3000.0;
+		Y_Platform.RetractTime		:= 3000.0;
+		Y_ReaderWindow.ExtendTime	:= 2000.0;
+		Y_ReaderWindow.RetractTime	:= 2000.0;
+		// The gates are a longer stroke than the small pneumatics above.
+		Y_Gate1.ExtendTime			:= 3000.0;
+		Y_Gate1.RetractTime			:= 3000.0;
+		Y_Gate2.ExtendTime			:= 3000.0;
+		Y_Gate2.RetractTime			:= 3000.0;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="PublishStatus" Id="{ab1b3319-5cdc-4255-ac7f-abb22655cb46}">
+      <Implementation>
+        <ST><![CDATA[// Status half of the HMI bridge. Called AFTER SUPER^.CyclicLogic(), so every
+// field is this scan's. Copy the base struct wholesale - setting fields one by
+// one leaves Busy, Error, ErrorID and HMIControlAvailable at zero.
+// The nine devices publish themselves; what is added here is what none owns.
+HMI.Config		:= PackMLBaseModule_HMI.Config;
+HMI.Status		:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName				:= F_PMLStateName(_CurrentState);
+HMI.Sequence.StepIndex		:= SequenceState;
+HMI.Identify.FaultCode		:= _FaultCode;
+HMI.Identify.LastResultOK	:= _LastResultOK;]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Resetting" Id="{2a12de6f-81f5-44e7-a76e-4b4a4cf6e273}">
+      <Declaration><![CDATA[METHOD PROTECTED Resetting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Home: nothing energised, optics shielded, payload released.
+
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		Y_LaserMark.Disable();
+		P_Camera.Disable();
+		SequenceState			:= SequenceState + 10;
+
+	10:	// Shield the optics first
+		Y_ReaderWindow.Retract();
+		IF Y_ReaderWindow.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:	// Then release
+		Y_Gripper.Retract();
+		IF Y_Gripper.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	30:	// Gates last, once the payload is free. Retracted is home, which is OPEN.
+		Y_Gate1.Retract();
+		Y_Gate2.Retract();
+		IF Y_Gate1.Retracted AND Y_Gate2.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	40:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Resetting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stopping" Id="{e996f8db-92e0-43d7-9b6f-0625aa7493b0}">
+      <Declaration><![CDATA[METHOD PROTECTED Stopping
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Stop leaves the payload clamped and optics shielded, so the cycle resumes
+// after a reset without re-fixturing.
+
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		Y_LaserMark.Disable();
+		P_Camera.Disable();
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		Y_ReaderWindow.Retract();
+		IF Y_ReaderWindow.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Stopping();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

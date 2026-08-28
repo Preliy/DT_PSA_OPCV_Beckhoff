@@ -1,0 +1,10 @@
+{
+  "name": "DT_PSA_OPCV_Beckhoff",
+  "vendor": "Beckhoff",
+  "version": "1.0.0",
+  "platform": "Beckhoff TwinCAT 3",
+  "repository": "https://github.com/Preliy/DT_PSA_OPCV_Beckhoff",
+  "main": "https://github.com/Preliy/DT_PSA_OPCV",
+  "description": "The Beckhoff realisation of DT_PSA_OPCV - the Digital Twin for Laser Welding & Assembly System (PSA OPCV). PLC_1 control on the SPT framework, SIM_1 twin devices, TE2000 HMI.",
+  "license": "GPL-3.0"
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_HMI_FG_05" Id="{7b31e0d5-6a24-4f8c-b019-c58d2f74a3e6}">
+    <Declaration><![CDATA[// FG_05 HMI interface - ONE struct for the group tile.
+//
+// Extends ST_BaseModule_HMI, so it inherits the whole SPT module interface:
+//   Config.Name / LogStateChanges / LogModeChanges / ModeNames
+//   Command.Mode / State / Activate*Log / Deactivat*Log      (writable)
+//   Status.Busy / Error / ErrorID / Mode / State / HMIControlAvailable
+//   Sequence.StepIndex / StepName
+//   StateName
+//
+// The one added member CANNOT be called Config, Command, Status or Sequence -
+// those are inherited and redeclaring them is a compile error. Hence Capping.
+//
+// Same shape as ST_HMI_FG_01 and ST_HMI_FG_02. The three camera stations now
+// publish the same two facts under three names that say which station it is -
+// Identify, Inspection, Capping - rather than one shared name that would say
+// nothing on any of them.
+TYPE ST_HMI_FG_05 EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Capping	: ST_FG_05_Capping_Status;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

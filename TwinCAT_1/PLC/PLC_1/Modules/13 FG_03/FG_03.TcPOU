@@ -1,0 +1,647 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_03" Id="{97bb629d-5deb-4d42-9ce2-d4d95c1e4725}" SpecialFunc="None">
+    <Declaration><![CDATA[// FG_03 - slot 1 to slot 2 transfer, with a 180 degree flip.
+// !! THE TWO ARMS NAME THEIR AXES THE OPPOSITE WAY ROUND. Arm 1: X1 vertical,
+// Y1 horizontal. Arm 2: X2 horizontal, Y2 vertical (factor -0.001, so a rising
+// value descends). Every earlier version of this file had arm 1 wrong.
+// Arm 1 NEVER lowers to place - the R1 flip is what carries the part down.
+// A cylinder limit is not a grip witness: only B_Detect1/B_Detect2 are.
+// Contract: _workflow/reference/fg-03-behaviour.md and gripper-station-reset.md
+FUNCTION_BLOCK FG_03 EXTENDS FB_PackML_BaseModule
+VAR
+	// --- Arm 1, the placing arm ---------------------------------------------
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisX1	: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisX1');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisY1	: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisY1');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisR1	: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisR1');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Gripper1	: FB_DoubleSolenoidFeedback := (Name := 'Y_Gripper1');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_Detect1	: FB_DigitalSensor := (Name := 'B_Detect1');
+
+	// --- Arm 2, the picking arm ---------------------------------------------
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisX2	: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisX2');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_AxisY2	: FB_DoubleSolenoidFeedback := (Name := 'Y_AxisY2');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Gripper2	: FB_DoubleSolenoidFeedback := (Name := 'Y_Gripper2');
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_Detect2	: FB_DigitalSensor := (Name := 'B_Detect2');
+
+	// Group level fault - see ST_FG_03_Transfer_Status. Cleared in Clearing.
+	_FaultCode	: DINT;
+
+	// What Resetting found in the grippers, sampled ONCE at its step 0. They decide
+	// which grippers it may open and which way it turns arm 1, and the fact that they
+	// are a snapshot rather than a live read is the whole reason the reset cannot
+	// hang: no step waits on a sensor, only on its own cylinders. Step 10 clears
+	// _Held2 when it has VERIFIED arm 2 let go - updating the snapshot from a checked
+	// fact, which is not the same thing as reading the sensor in a wait.
+	_Held1		: BOOL;
+	_Held2		: BOOL;
+
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_HMI_FG_03;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Aborting" Id="{54144d78-a670-4191-ba9b-4222947cfc28}">
+      <Declaration><![CDATA[METHOD PROTECTED Aborting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// AN ABORT COMMANDS NO MOTION IN THIS GROUP, and that is the whole design.
+// No hazardous output to kill. What there is, at almost every step, is a part held
+// in the air, and commanding an axis on an abort risks dropping it.
+// COMMANDING NOTHING IS NOT THE SAME AS HOLDING ON: the grippers are held closed
+// by the CyclicLogic interlock. This method leaves the AXES alone.
+// Homing happens in Resetting, where the operator has asked for it.
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Aborting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clearing" Id="{6c7a44ad-701b-4c93-b664-71ad31662405}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		// The group fault is cleared by the act of clearing, not by the condition
+		// going away. A part jammed in a gripper is still jammed after the sensor
+		// has stopped being interesting; the operator has to have taken it out, and
+		// Execute's step 0 guard is what checks that they did.
+		_FaultCode := 0;
+		SequenceState := SequenceState + 10;
+
+	10:	// Clear latched component alarms - the solenoid travel timeouts latch.
+		IF Y_AxisX1.Reset()
+			AND Y_AxisY1.Reset()
+			AND Y_AxisR1.Reset()
+			AND Y_Gripper1.Reset()
+			AND B_Detect1.Reset()
+			AND Y_AxisX2.Reset()
+			AND Y_AxisY2.Reset()
+			AND Y_Gripper2.Reset()
+			AND B_Detect2.Reset() THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{7fa26bc0-2672-4582-9cfe-234ff55c639a}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// A HELD PART IS GRIPPED ACTIVELY, IN EVERY STATE EXCEPT Execute.
+//
+// A DE-ENERGISED DOUBLE SOLENOID DOES NOT HOLD THE PART IN THE TWIN. True of the
+// real valve, false here. The scene wires the gripper cylinder as:
+//     OnLimitMaxEvent  -> Gripper.Pick(bool)
+//     OnLimitMinEvent  -> Gripper.Place(bool)
+//     OnActiveChanged  -> Gripper.Place(bool)    IsActive = "moving"
+// and Cylinder sets IsActive := (target <> value), so the payload is held only
+// while the cylinder is at max AND STANDING STILL. Leaving it uncommanded through
+// Clearing and Resetting was enough to nudge it off the limit, and arm 1 dropped
+// its part mid-reset.
+//
+// So the grip is re-asserted every scan off the live sensor. It commands no MOTION
+// - Extend on a closed gripper is a no-op at the valve.
+// BEFORE SUPER^, WHICH IS WHAT MAKES IT AN INTERLOCK: it overwrites whatever a
+// state method asked for on the previous scan. HMICommunication runs inside SUPER^
+// and still gets the last word, so Manual can jog a gripper open.
+// Execute is excluded because Execute is the only state allowed to put a part down.
+IF _CurrentState <> E_PMLState.ePMLState_Execute THEN
+	IF B_Detect1.Active THEN
+		Y_Gripper1.Extend();
+	END_IF
+	IF B_Detect2.Active THEN
+		Y_Gripper2.Extend();
+	END_IF
+END_IF
+
+// No process image copy step: component process-image members are mapped directly
+// to terminal channels.
+SUPER^.CyclicLogic();
+
+PublishStatus();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Execute" Id="{61d30ac7-82ab-40a4-a80c-25d506619718}">
+      <Declaration><![CDATA[METHOD PROTECTED Execute
+VAR_INPUT
+END_VAR
+VAR_INST
+	SettleTimer		: TON;
+
+	// One grace timer per confirming step, and they cannot be shared. Steps 90 and
+	// 100 are adjacent, so a timer armed on "either of them" would never see its IN
+	// drop between the two and would carry step 80's elapsed time into step 90.
+	// Each is armed only once its cylinder has reached its limit: the cylinder's own
+	// ExtendTime/RetractTime covers the travel, and this covers only the question
+	// that follows it - did the payload do what the stroke was supposed to make it do.
+	PickTimer		: TON;
+	HandoverTimer	: TON;
+	Release2Timer	: TON;
+	Release1Timer	: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Ordering from the authored Process entry, confirmed motion by motion against
+// The SIL's 0.2 s dwells are replaced by the limit switches they stood in for.
+// EVERY GRIP AND EVERY RELEASE IS CONFIRMED BY A SENSOR, not by the cylinder limit
+// alone: a gripper closing on nothing reaches Extended SOONER than one closing on
+// a part, so .Extended proves the jaws moved, never that they caught anything.
+// Each confirmation is bounded and faults rather than waiting; the cylinder's own
+// travel timeout covers the stroke, these timers only the question after it.
+
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:
+
+		CASE SequenceState OF
+			0:	// WHERE THE CYCLE STARTS IS DERIVED, NOT REMEMBERED. A part in a
+				// gripper is a legal starting condition: Resetting parks a held part
+				// at its arm's safe position instead of putting it back, so the next
+				// Start picks the cycle up from there. Which sub-sequence that is
+				// follows from which gripper is carrying something and from nothing
+				// else - no stored step index, no "was I interrupted" flag.
+				//
+				// The arm must actually BE at its safe position. If a part is held
+				// somewhere else - someone jogged an axis in Manual - the entry point
+				// would be a guess, so this refuses rather than moves. Reset is the
+				// recovery: Resetting reaches a safe position from anywhere.
+				NoStateTasksToComplete	:= FALSE;
+
+				IF B_Detect1.Active THEN
+					IF Y_AxisX1.Extended AND Y_AxisY1.Retracted AND Y_AxisR1.Retracted THEN
+						SequenceState := 100;		// at SAFE B - resume into SUB 3
+					ELSE
+						_FaultCode := 5;
+						AbortImmediate();
+					END_IF
+
+				ELSIF B_Detect2.Active THEN
+					IF Y_AxisX2.Retracted AND Y_AxisY2.Retracted THEN
+						SequenceState := 50;		// at SAFE A - resume into SUB 2
+					ELSE
+						_FaultCode := 5;
+						AbortImmediate();
+					END_IF
+
+				ELSE
+					SequenceState := 10;			// nothing held - the whole cycle
+				END_IF
+
+			10:	// Let the pallet settle on the index lift before touching it. No
+				// sensor reports this, so it is a timer. A resume skips this step
+				// entirely - the pallet has been standing still since the E-Stop.
+				IF SettleTimer.Q THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+		//===================== SUB 1 - pick out of slot 1 ======================
+		// Entered only with both grippers empty. Ends at SAFE A.
+			20:	// Arm 2 down into slot 1. Arm in Ready pos
+				Y_AxisX1.Extend();
+				Y_AxisY2.Extend();
+				IF Y_AxisY2.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+				
+
+			30:	// Grip the part, and confirm the grip caught something. An empty
+				// slot 1, a mispositioned pallet or a part that slipped all look
+				// identical on the cylinder limit and are all fault 2 here.
+				Y_Gripper2.Extend();
+				IF Y_Gripper2.Extended THEN
+					IF B_Detect2.Active THEN
+						SequenceState := SequenceState + 10;
+					ELSIF PickTimer.Q THEN
+						_FaultCode := 2;
+						AbortImmediate();
+					END_IF
+				END_IF
+
+			40:	// Lift clear of the pallet before anything traverses.
+				//
+				// *** SAFE A *** - X2 min, Y2 min, part in gripper 2. Arm 2 raised at
+				// its home over slot 1. This is a state the cycle passes through in
+				// the ordinary course, which is why a resume re-enters at step 50 and
+				// nothing had to be inserted to make the position real.
+				Y_AxisY2.Retract();
+				IF Y_AxisY2.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+		//=================== SUB 2 - the transfer (resume: 50) =================
+		// Entered with the part in gripper 2 and arm 2 at SAFE A. Ends at SAFE B.
+			50:	// Arm 2 traverses to the transfer position
+				Y_AxisX2.Extend();
+				IF Y_AxisX2.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			60:	// ARM 1 RISES, AND THEN STAYS UP FOR THE WHOLE CYCLE. 			
+				IF Y_AxisX1.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			70:	// Arm 1 traverses across to meet arm 2. 
+				Y_AxisY1.Extend();
+				IF Y_AxisY1.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			80:	// Arm 1 takes hold. BOTH GRIPPERS NOW HOLD THE PART, and what makes
+				// the next step safe is B_Detect1 - not the cylinder limit. Arm 1's
+				// jaws reach Extended whether or not the part is between them, and a
+				// dwell here (which is what the SIL does) proves even less. Only the
+				// sensor says arm 1 actually has it, and step 90 opens arm 2 on the
+				// strength of that.
+				//
+				// THIS IS THE ONE WINDOW WITH NO SAFE POSITION. Neither arm can move
+				// while both hold one part, which is why Resetting has to break the
+				// tie here before it can park anything.
+				Y_Gripper1.Extend();
+				IF Y_Gripper1.Extended THEN
+					IF B_Detect1.Active THEN
+						SequenceState := SequenceState + 10;
+					ELSIF HandoverTimer.Q THEN
+						_FaultCode := 3;
+						AbortImmediate();
+					END_IF
+				END_IF
+
+			90:	// Arm 2 lets go. Only now, and only once the part has actually left
+				// its jaws - a part still in the beam when arm 2 traverses away would
+				// be dragged off arm 1.
+				//
+				// *** SAFE B *** - X1 max, Y1 max, R1 min, part in gripper 1. Arm 1
+				// raised at the transfer position, holding the part unrotated. Like
+				// SAFE A this is a state the cycle really passes through, so a resume
+				// re-enters at step 100 and simply carries on.
+				Y_Gripper2.Retract();
+				IF Y_Gripper2.Retracted THEN
+					IF NOT B_Detect2.Active THEN
+						SequenceState := SequenceState + 10;
+					ELSIF Release2Timer.Q THEN
+						_FaultCode := 4;
+						AbortImmediate();
+					END_IF
+				END_IF
+
+		//================= SUB 3 - place into slot 2 (resume: 100) =============
+		// Entered with the part in gripper 1 at SAFE B.
+			100: // Arm 2 back home over slot 1, empty. 
+				Y_AxisX2.Retract();
+				IF Y_AxisX2.Retracted THEN
+					SequenceState := 105;
+				END_IF
+				
+			105: //Align arm 1 with slot
+				Y_AxisY1.Extend();
+				IF Y_AxisY1.Extended THEN
+					SequenceState := 110;
+				END_IF
+
+			110: // THE FLIP, AND IT IS ALSO THE PLACING MOVE. 
+				Y_AxisR1.Extend();
+				IF Y_AxisR1.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			120: // Traverse across to slot 2, carrying the part flipped
+				Y_AxisX1.Retract();
+				IF Y_AxisX1.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			130: // Release into slot 2. Confirm the part is out of the jaws before
+				// arm 1 traverses away: a part still gripped is carried back out of
+				// the pallet, and Index03 would release a pallet that looks finished
+				// and is empty.
+				Y_Gripper1.Retract();
+				IF Y_Gripper1.Retracted THEN
+					IF NOT B_Detect1.Active THEN
+						SequenceState := SequenceState + 10;
+					ELSIF Release1Timer.Q THEN
+						_FaultCode := 4;
+						AbortImmediate();
+					END_IF
+				END_IF
+
+			140: // Traverse clear of the part just placed. THIS IS NOT A DETOUR: the
+				// rotation home at step 150 sweeps the gripper through wherever it
+				// stands, and over slot 2 that is straight through the part. Arm 1
+				// has to be back at the transfer position before it may turn.
+				Y_AxisX1.Extend();
+				IF Y_AxisX1.Extended THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			150: // Rotate home, empty and clear
+				Y_AxisR1.Retract();
+				IF Y_AxisR1.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			160: // And back to the home position over slot 2
+				Y_AxisY1.Retract();
+				IF Y_AxisY1.Retracted THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			170: // Execute is the one acting state that does not self-complete.
+				// StateComplete() would be wrong here.
+				ChangeState(E_PMLCommand.ePMLCommand_Complete);
+		END_CASE
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		// Every cylinder is jogged through its own SolenoidHMI command struct,
+		// which FB_SingleSolenoid.HMICommunication honours whenever HMIPermissions
+		// has granted control. No group sequence runs and no code is needed here.
+		;
+END_CASE
+
+SUPER^.Execute();
+
+SettleTimer(IN := SequenceState = 10, PT := T#500MS);
+
+// The payload grace timers. Each is armed only once its cylinder has reached the
+// limit, so the budget is for the part settling in or falling out of the jaws, not
+// for the stroke - the stroke already has ExtendTime/RetractTime on the cylinder.
+// 500 ms is generous for a beam sensor that answers within one twin frame; it is
+// long enough that a slow physics step cannot fault a good grip.
+PickTimer(IN		:= (SequenceState = 30)  AND Y_Gripper2.Extended,	PT := T#500MS);
+HandoverTimer(IN	:= (SequenceState = 80)  AND Y_Gripper1.Extended,	PT := T#500MS);
+Release2Timer(IN	:= (SequenceState = 90)  AND Y_Gripper2.Retracted,	PT := T#500MS);
+Release1Timer(IN	:= (SequenceState = 130) AND Y_Gripper1.Retracted,	PT := T#500MS);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{ba239c7f-201d-422e-8e62-0148a89d66f4}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The command half of the HMI bridge; PublishStatus is the status half.
+//
+// The base reads its OWN PackMLBaseModule_HMI.Command and never looks at ours, so
+// without this a mode or state button on the FG_03 tile writes into a struct
+// nothing consumes. It has to happen in this method because the base calls it
+// immediately before ModeControl() and StateControl().
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on, so the panel
+// sees its request consumed instead of re-issuing it next scan.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{e5ea19c7-1694-4016-a05b-ef0db7795760}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		RegisterComponent(Y_AxisX1);
+		RegisterComponent(Y_AxisY1);
+		RegisterComponent(Y_AxisR1);
+		RegisterComponent(Y_Gripper1);
+		RegisterComponent(B_Detect1);
+		RegisterComponent(Y_AxisX2);
+		RegisterComponent(Y_AxisY2);
+		RegisterComponent(Y_Gripper2);
+		RegisterComponent(B_Detect2);
+
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= TRUE;
+		HMI.Config.Name		:= THIS^._Name;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// Travel timeouts in ms (LREAL). The twin completes a stroke well inside
+		// these; they exist to alarm on a jam, not to pace the cycle. Allowed by
+		// ROLE, not by name: the horizontal traverses and the rotate get the long
+		// budget, the vertical strokes and the grippers the short one - and on arm
+		// 1 it is X1 that is vertical and Y1 that traverses.
+		Y_AxisX1.ExtendTime			:= 2000.0;	// vertical
+		Y_AxisX1.RetractTime		:= 2000.0;
+		Y_AxisY1.ExtendTime			:= 3000.0;	// horizontal traverse
+		Y_AxisY1.RetractTime		:= 3000.0;
+		Y_AxisR1.ExtendTime			:= 3000.0;
+		Y_AxisR1.RetractTime		:= 3000.0;
+		Y_Gripper1.ExtendTime		:= 2000.0;
+		Y_Gripper1.RetractTime		:= 2000.0;
+		Y_AxisX2.ExtendTime			:= 3000.0;
+		Y_AxisX2.RetractTime		:= 3000.0;
+		Y_AxisY2.ExtendTime			:= 2000.0;
+		Y_AxisY2.RetractTime		:= 2000.0;
+		Y_Gripper2.ExtendTime		:= 2000.0;
+		Y_Gripper2.RetractTime		:= 2000.0;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="PublishStatus" Id="{2bd3523c-d70d-47d1-bb8a-7130a9726e5f}">
+      <Implementation>
+        <ST><![CDATA[// Local HMI surface, and the status half of the HMI bridge - HMICommunication is
+// the command half. Called from CyclicLogic AFTER SUPER^.CyclicLogic(), so every
+// field is this scan's. Copy the base struct wholesale - setting fields one by
+// one leaves Busy, Error, ErrorID and HMIControlAvailable at zero.
+// Every device publishes itself; what is added here is what no device owns.
+//
+// ResumePoint IS DERIVED HERE, NOT COPIED FROM _Held1/_Held2. Those are Resetting's
+// private snapshot and are stale everywhere else. This runs the same derivation
+// Execute step 0 runs, off the live sensors, so the panel shows what pressing Start
+// would actually do.
+HMI.Config		:= PackMLBaseModule_HMI.Config;
+HMI.Status		:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName				:= F_PMLStateName(_CurrentState);
+HMI.Sequence.StepIndex		:= SequenceState;
+HMI.Transfer.FaultCode		:= _FaultCode;
+
+IF B_Detect1.Active THEN
+	HMI.Transfer.ResumePoint := 3;		// place into slot 2
+ELSIF B_Detect2.Active THEN
+	HMI.Transfer.ResumePoint := 2;		// the handover
+ELSE
+	HMI.Transfer.ResumePoint := 1;		// the whole cycle
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Resetting" Id="{35fa91d6-cb29-4671-97b4-5675ed5134ad}">
+      <Declaration><![CDATA[METHOD PROTECTED Resetting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Bring both arms to their SAFE POSITIONS, keeping hold of whatever they are
+// holding. This state does not undo the cycle and does not finish it - it puts the
+// machine somewhere Execute step 0 can pick up again.
+//
+// THE SAFE POSITIONS ARE STATES THE CYCLE ALREADY RESTS AT - neither was invented:
+//   SAFE A   X2 min, Y2 min          arm 2 raised at home over slot 1, holding.
+//                                    Left by step 40; resume at step 50.
+//   SAFE B   X1 max, Y1 max, R1 min  arm 1 raised at the TRANSFER position,
+//                                    holding, not yet rotated. Left by step 90;
+//                                    resume at step 100.
+// Arm 1's safe position is NOT its home: home is Y1 min over slot 2, the place
+// position, where a part would hover un-rotated and wrong way up.
+//
+// THE GRIPPERS ARE HELD CLOSED, NOT LEFT ALONE - see CyclicLogic. Only empty
+// grippers are driven open.
+//
+// THE SENSORS ARE SAMPLED ONCE, AT STEP 0, AND NEVER READ AGAIN. From then on every
+// step waits on its own cylinders and nothing else - not a sensor, not another
+// unit, not an event that may not arrive. A snapshot cannot fail to arrive.
+//
+// STEPS 80..90 ARE THE ONE WINDOW WITH NO SAFE POSITION: both grippers hold the
+// same part and moving either arm tears it. Step 10 below is entered only for that
+// case. ARM 1 HAS PRIORITY - it keeps the part, arm 2 lets go, resume from SAFE B.
+
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+
+		_Held1 := B_Detect1.Active;
+		_Held2 := B_Detect2.Active;
+
+		IF _Held1 AND _Held2 THEN
+			SequenceState := 10;
+		ELSE
+			SequenceState := 100;
+		END_IF
+
+	//============ 10 - both grippers hold one part, mid-transfer ==============
+	10:	// Arm 1 has priority, so arm 2 is the one that lets go - which is also
+		// exactly what Execute step 90 does, at the position the arms already
+		// stand in, before anything travels.
+		Y_Gripper2.Retract();
+		IF Y_Gripper2.Retracted THEN
+			IF B_Detect2.Active THEN
+				// ARM 2 HAS NOT LET GO, SO NOTHING MOVES. Every path from here
+				// separates the arms, and separating them while both still hold
+				// the part is the failure this method exists to remove. The reset
+				// completes where it stands - arms at the transfer, part held,
+				// code 1 raised - and Execute's step 0 refuses the next cycle
+				// because the part is not at a safe position. Terminating on time
+				// without moving is the safe answer; parking at any cost is not.
+				_FaultCode		:= 1;
+				SequenceState	:= 900;
+			ELSE
+				_Held2			:= FALSE;	// verified empty, not assumed
+				SequenceState	:= 100;
+			END_IF
+		END_IF
+
+	//================== 100 - to the safe positions ===========================
+	100: //Arm 2 to home
+		Y_AxisX2.Retract();
+		Y_AxisY2.Retract();
+		IF Y_AxisX2.Retracted AND Y_AxisY2.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	110: //ARm 1 to home
+		Y_AxisX1.Extend();
+		Y_AxisY1.Retract();
+		
+		IF Y_AxisX1.Extended AND Y_AxisY1.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	120: // Rotate home. ONLY EVER HERE: over slot 2 the sweep goes straight
+		// through whatever is in the slot, which is why Execute traverses back to
+		// this position at step 140 before turning at 150. Turning with a part
+		// held is Execute step 110's move, so it is safe loaded too.
+		Y_AxisR1.Retract();
+		IF Y_AxisR1.Retracted THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	130: // Open the EMPTY grippers, and only those. A gripper holding a part is
+		// not touched here - CyclicLogic is holding it closed, and that command
+		// wins because it runs first. The wait is on the cylinders this step
+		// actually commanded: a held gripper contributes no condition, because
+		// there is nothing to wait for.
+		IF NOT _Held1 THEN
+			Y_Gripper1.Retract();
+		END_IF
+		IF NOT _Held2 THEN
+			Y_Gripper2.Retract();
+		END_IF
+
+		IF (_Held1 OR Y_Gripper1.Retracted) AND (_Held2 OR Y_Gripper2.Retracted) THEN
+			SequenceState := 900;
+		END_IF
+
+	//========================== common exit ===================================
+	900:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Resetting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stopping" Id="{c694d82f-4f8f-4242-9722-6d1ec0b330fe}">
+      <Declaration><![CDATA[METHOD PROTECTED Stopping
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// A controlled stop commands no axis motion, for the same reason an abort does not:
+// the part is held in the air for most of this cycle. The grip itself is held by
+// the CyclicLogic interlock, not by leaving the valve alone. The transfer is
+// resumed by a reset, which parks the part at a safe position.
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Stopping();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

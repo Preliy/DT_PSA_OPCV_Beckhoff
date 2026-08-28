@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractLightSource_Command" Id="{623b7130-c3bc-418a-acff-b6dc56984967}">
+    <Declaration><![CDATA[TYPE ST_AbstractLightSource_Command :
+STRUCT
+	Enable : BOOL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

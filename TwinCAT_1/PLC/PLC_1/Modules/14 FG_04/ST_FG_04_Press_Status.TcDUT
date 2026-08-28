@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_FG_04_Press_Status" Id="{4c19f964-7f7e-4f5a-97dd-22eecdccebbb}">
+    <Declaration><![CDATA[// What the press has to say beyond the PackML state.
+//
+// ONE FAULT CODE, not a set of six like the transport stations. FG_04 has exactly
+// one condition worth reporting - the press bottomed out with nothing correctly
+// seated - and padding the enumeration out to look like FB_TransferIndex's would
+// be inventing failure modes this station does not have.
+//
+//   1  NIO - press reached its bottom limit and B_NIO reports no part seated
+//
+// Cleared in FG_04.Clearing, alongside the component resets.
+TYPE ST_FG_04_Press_Status :
+STRUCT
+	FaultCode	: DINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

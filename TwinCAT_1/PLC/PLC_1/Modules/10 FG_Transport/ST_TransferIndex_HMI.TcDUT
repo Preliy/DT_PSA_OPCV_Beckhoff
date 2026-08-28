@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_TransferIndex_HMI" Id="{f9b271ed-391c-4416-a36f-8dc4bcd7a7eb}">
+    <Declaration><![CDATA[// Index unit HMI interface - ONE struct per tile.
+//
+// Extends ST_BaseModule_HMI, so it inherits the whole SPT module interface:
+//   Config.Name / LogStateChanges / LogModeChanges / ModeNames
+//   Command.Mode / State / Activate*Log / Deactivat*Log      (writable)
+//   Status.Busy / Error / ErrorID / Mode / State / HMIControlAvailable
+//   Sequence.StepIndex / StepName
+//   StateName
+// FB_TransferIndex.HMICommunication bridges Command into the base's own
+// PackMLBaseModule_HMI before the base acts on it, and PublishHMI copies Config
+// and Status back out afterwards.
+//
+// The one added member CANNOT be called Config, Command, Status or Sequence -
+// those are inherited and redeclaring them is a compile error. Hence Station.
+//
+// There is still no per-device command block here: an index unit is jogged
+// through its two SPT components, which own their command structs themselves -
+//   MAIN.Machine.FG_Transport.Index03.Y_Stopper.SolenoidHMI.Command.Extend
+//   MAIN.Machine.FG_Transport.Index03.Y_Lift.SolenoidHMI.Command.Extend
+TYPE ST_TransferIndex_HMI EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Station	: ST_TransferIndex_Status;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

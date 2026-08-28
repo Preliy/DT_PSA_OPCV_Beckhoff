@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_IlluminatedButton_Status" Id="{0220ac86-786a-479d-9135-636118332233}">
+    <Declaration><![CDATA[TYPE ST_IlluminatedButton_Status :
+STRUCT
+	// TRUE while pressed. On the emergency stops this means LATCHED - the twin's
+	// mushrooms are Toggle type, so a click holds until clicked again.
+	Active	: BOOL;
+	// The lamp as the PLC is driving it this scan. Solid while latched, flashing
+	// while latched during Clearing - the owning module decides, not this device.
+	Lamp	: BOOL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

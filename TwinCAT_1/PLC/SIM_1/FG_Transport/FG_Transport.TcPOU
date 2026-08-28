@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_Transport" Id="{1a228305-b0f2-406a-9e1d-b7bb3646ef17}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FG_Transport
+
+{region generated code}
+VAR_INPUT
+	Index01_B_Detect : FB_SensorBinary;
+	Index01_B_Exit : FB_SensorBinary;
+	Index01_Y_Lift : FB_Cylinder;
+	Index01_Y_Stopper : FB_Cylinder;
+	Index02_B_Detect : FB_SensorBinary;
+	Index02_B_Exit : FB_SensorBinary;
+	Index02_Y_Lift : FB_Cylinder;
+	Index02_Y_Stopper : FB_Cylinder;
+	Index03_B_Detect : FB_SensorBinary;
+	Index03_B_Exit : FB_SensorBinary;
+	Index03_Y_Lift : FB_Cylinder;
+	Index03_Y_Stopper : FB_Cylinder;
+	Index04_B_Detect : FB_SensorBinary;
+	Index04_B_Exit : FB_SensorBinary;
+	Index04_Y_Lift : FB_Cylinder;
+	Index04_Y_Stopper : FB_Cylinder;
+	Index05_B_Detect : FB_SensorBinary;
+	Index05_B_Exit : FB_SensorBinary;
+	Index05_Y_Lift : FB_Cylinder;
+	Index05_Y_Stopper : FB_Cylinder;
+	Lift01_B_Detect : FB_SensorBinary;
+	Lift01_B_Exit : FB_SensorBinary;
+	Lift01_M_Conveyor : FB_Drive;
+	Lift01_Y_Lift : FB_Cylinder;
+	Lift02_B_Detect : FB_SensorBinary;
+	Lift02_B_Exit : FB_SensorBinary;
+	Lift02_M_Conveyor : FB_Drive;
+	Lift02_Y_Lift : FB_Cylinder;
+	Stopper01_B_Detect : FB_SensorBinary;
+	Stopper01_B_Exit : FB_SensorBinary;
+	Stopper01_Y_Stopper : FB_Cylinder;
+	Stopper02_B_Detect : FB_SensorBinary;
+	Stopper02_B_Exit : FB_SensorBinary;
+	Stopper02_Y_Stopper : FB_Cylinder;
+	Stopper03_B_Detect : FB_SensorBinary;
+	Stopper03_B_Exit : FB_SensorBinary;
+	Stopper03_Y_Stopper : FB_Cylinder;
+	Stopper04_B_Detect : FB_SensorBinary;
+	Stopper04_B_Exit : FB_SensorBinary;
+	Stopper04_Y_Stopper : FB_Cylinder;
+	Transport01_M_Conveyor : FB_Drive;
+	Transport02_M_Conveyor : FB_Drive;
+END_VAR
+{endregion}]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[{region generated code}
+	InitRun();
+	Index01_B_Detect();
+	Index01_B_Exit();
+	Index01_Y_Lift();
+	Index01_Y_Stopper();
+	Index02_B_Detect();
+	Index02_B_Exit();
+	Index02_Y_Lift();
+	Index02_Y_Stopper();
+	Index03_B_Detect();
+	Index03_B_Exit();
+	Index03_Y_Lift();
+	Index03_Y_Stopper();
+	Index04_B_Detect();
+	Index04_B_Exit();
+	Index04_Y_Lift();
+	Index04_Y_Stopper();
+	Index05_B_Detect();
+	Index05_B_Exit();
+	Index05_Y_Lift();
+	Index05_Y_Stopper();
+	Lift01_B_Detect();
+	Lift01_B_Exit();
+	Lift01_M_Conveyor();
+	Lift01_Y_Lift();
+	Lift02_B_Detect();
+	Lift02_B_Exit();
+	Lift02_M_Conveyor();
+	Lift02_Y_Lift();
+	Stopper01_B_Detect();
+	Stopper01_B_Exit();
+	Stopper01_Y_Stopper();
+	Stopper02_B_Detect();
+	Stopper02_B_Exit();
+	Stopper02_Y_Stopper();
+	Stopper03_B_Detect();
+	Stopper03_B_Exit();
+	Stopper03_Y_Stopper();
+	Stopper04_B_Detect();
+	Stopper04_B_Exit();
+	Stopper04_Y_Stopper();
+	Transport01_M_Conveyor();
+	Transport02_M_Conveyor();
+{endregion}
+
+Mapping();
+
+]]></ST>
+    </Implementation>
+    <Method Name="InitRun" Id="{6e770fd6-c41f-4ee9-9c0d-3a96a1be5f92}">
+      <Declaration><![CDATA[METHOD InitRun
+{region generated code}
+VAR_INST
+	bInitRun : BOOL := TRUE;
+END_VAR
+{endregion}]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[{region generated code}
+	IF NOT bInitRun THEN RETURN; END_IF
+	bInitRun := FALSE;
+{endregion}
+]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="Mapping" Id="{62ee953e-c687-4d6b-a096-748c09bae4e3}">
+      <Implementation>
+        <ST><![CDATA[// ============================================================================
+// FG_Transport twin <-> EtherCAT simulation process image.
+//
+// The control side has no GVL: every device is an SPT component that owns its
+// hardware variables and is bound to a terminal channel by the attribute on its
+// unit instance in OC_PLC\Modules\10 FG_Transport\FG_Transport.TcPOU. This
+// action drives the same channels from the simulation side, direction inverted.
+//
+// Both halves are generated from one allocation table, so they cannot disagree
+// about a channel. Terminals are ONE SET PER SECTION - a card carries Index or
+// Stopper or Lift or Drive channels, never a mixture.
+//
+// Two things that are easy to get backwards:
+//   * a stopper is a SINGLE solenoid with a limit switch at EACH end. Extending
+//     RELEASES the pallet; the spring blocks it.
+//   * on every drive the LOWER channel of the pair is nControl.1 (backward) and
+//     the higher is nControl.0 (forward).
+//
+// nStatus.6 is the drive's real "turning" bit, published every scan by the twin.
+// nStatus.7 is NOT wired: it is a one second init pulse, not a health bit.
+//
+// 58 DI + 31 DO.
+// ============================================================================
+
+// --- Index01  (FG_Transport_Index_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn1	:= Index01_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn2	:= Index01_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn3	:= Index01_Y_Lift.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn4	:= Index01_Y_Lift.bExtended;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn5	:= Index01_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn6	:= Index01_Y_Stopper.bExtended;
+
+// --- Index02  (FG_Transport_Index_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn7	:= Index02_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn8	:= Index02_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn9	:= Index02_Y_Lift.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn10	:= Index02_Y_Lift.bExtended;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn11	:= Index02_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn12	:= Index02_Y_Stopper.bExtended;
+
+// --- Index03  (FG_Transport_Index_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn13	:= Index03_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn14	:= Index03_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn15	:= Index03_Y_Lift.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_1.bIn16	:= Index03_Y_Lift.bExtended;
+
+// --- Index03  (FG_Transport_Index_EL1809_2) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn1	:= Index03_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn2	:= Index03_Y_Stopper.bExtended;
+
+// --- Index04  (FG_Transport_Index_EL1809_2) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn3	:= Index04_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn4	:= Index04_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn5	:= Index04_Y_Lift.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn6	:= Index04_Y_Lift.bExtended;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn7	:= Index04_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn8	:= Index04_Y_Stopper.bExtended;
+
+// --- Index05  (FG_Transport_Index_EL1809_2) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn9	:= Index05_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn10	:= Index05_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn11	:= Index05_Y_Lift.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn12	:= Index05_Y_Lift.bExtended;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn13	:= Index05_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Index_EL1809_2.bIn14	:= Index05_Y_Stopper.bExtended;
+
+// --- Stopper01  (FG_Transport_Stopper_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn1	:= Stopper01_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn2	:= Stopper01_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn3	:= Stopper01_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn4	:= Stopper01_Y_Stopper.bExtended;
+
+// --- Stopper02  (FG_Transport_Stopper_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn5	:= Stopper02_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn6	:= Stopper02_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn7	:= Stopper02_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn8	:= Stopper02_Y_Stopper.bExtended;
+
+// --- Stopper03  (FG_Transport_Stopper_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn9	:= Stopper03_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn10	:= Stopper03_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn11	:= Stopper03_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn12	:= Stopper03_Y_Stopper.bExtended;
+
+// --- Stopper04  (FG_Transport_Stopper_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn13	:= Stopper04_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn14	:= Stopper04_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn15	:= Stopper04_Y_Stopper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn16	:= Stopper04_Y_Stopper.bExtended;
+
+// --- Lift01  (FG_Transport_Lift_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn1	:= Lift01_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn2	:= Lift01_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn3	:= Lift01_Y_Lift.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn4	:= Lift01_Y_Lift.bExtended;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn5	:= Lift01_M_Conveyor.nStatus.6;
+
+// --- Lift02  (FG_Transport_Lift_EL1809_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn6	:= Lift02_B_Detect.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn7	:= Lift02_B_Exit.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn8	:= Lift02_Y_Lift.bRetracted;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn9	:= Lift02_Y_Lift.bExtended;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn10	:= Lift02_M_Conveyor.nStatus.6;
+
+// --- Transport01  (FG_Transport_Drive_EL1008_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Drive_EL1008_1.bIn1	:= Transport01_M_Conveyor.nStatus.6;
+
+// --- Transport02  (FG_Transport_Drive_EL1008_1) ---
+GVL_EtherCAT_1_SIM.FG_Transport_Drive_EL1008_1.bIn2	:= Transport02_M_Conveyor.nStatus.6;
+
+// --- Index01  (FG_Transport_Index_EL2809_1) ---
+Index01_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut1;
+Index01_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut2;
+Index01_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut3;
+
+// --- Index02  (FG_Transport_Index_EL2809_1) ---
+Index02_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut4;
+Index02_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut5;
+Index02_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut6;
+
+// --- Index03  (FG_Transport_Index_EL2809_1) ---
+Index03_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut7;
+Index03_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut8;
+Index03_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut9;
+
+// --- Index04  (FG_Transport_Index_EL2809_1) ---
+Index04_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut10;
+Index04_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut11;
+Index04_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut12;
+
+// --- Index05  (FG_Transport_Index_EL2809_1) ---
+Index05_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut13;
+Index05_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut14;
+Index05_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut15;
+
+// --- Stopper01  (FG_Transport_Stopper_EL2008_1) ---
+Stopper01_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL2008_1.bOut1;
+
+// --- Stopper02  (FG_Transport_Stopper_EL2008_1) ---
+Stopper02_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL2008_1.bOut2;
+
+// --- Stopper03  (FG_Transport_Stopper_EL2008_1) ---
+Stopper03_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL2008_1.bOut3;
+
+// --- Stopper04  (FG_Transport_Stopper_EL2008_1) ---
+Stopper04_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL2008_1.bOut4;
+
+// --- Lift01  (FG_Transport_Lift_EL2008_1) ---
+Lift01_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut1;
+Lift01_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut2;
+Lift01_M_Conveyor.nControl.1	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut3;
+Lift01_M_Conveyor.nControl.0	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut4;
+
+// --- Lift02  (FG_Transport_Lift_EL2008_1) ---
+Lift02_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut5;
+Lift02_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut6;
+Lift02_M_Conveyor.nControl.1	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut7;
+Lift02_M_Conveyor.nControl.0	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut8;
+
+// --- Transport01  (FG_Transport_Drive_EL2008_1) ---
+Transport01_M_Conveyor.nControl.1	:= GVL_EtherCAT_1_SIM.FG_Transport_Drive_EL2008_1.bOut1;
+Transport01_M_Conveyor.nControl.0	:= GVL_EtherCAT_1_SIM.FG_Transport_Drive_EL2008_1.bOut2;
+
+// --- Transport02  (FG_Transport_Drive_EL2008_1) ---
+Transport02_M_Conveyor.nControl.1	:= GVL_EtherCAT_1_SIM.FG_Transport_Drive_EL2008_1.bOut3;
+Transport02_M_Conveyor.nControl.0	:= GVL_EtherCAT_1_SIM.FG_Transport_Drive_EL2008_1.bOut4;]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

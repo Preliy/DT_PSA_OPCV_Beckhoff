@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_HMI_FG_03" Id="{13ecf951-a52c-4854-95dd-56f203d6644c}">
+    <Declaration><![CDATA[// FG_03 HMI interface - ONE struct for the group tile.
+//
+// Extends ST_BaseModule_HMI, so it inherits the whole SPT module interface:
+//   Config.Name / LogStateChanges / LogModeChanges / ModeNames
+//   Command.Mode / State / Activate*Log / Deactivat*Log      (writable)
+//   Status.Busy / Error / ErrorID / Mode / State / HMIControlAvailable
+//   Sequence.StepIndex / StepName
+//   StateName
+//
+// The one added member CANNOT be called Config, Command, Status or Sequence -
+// those are inherited and redeclaring them is a compile error. Hence Transfer.
+//
+// FG_03 used the bare ST_BaseModule_HMI until it acquired something of its own to
+// say. Same shape as ST_HMI_FG_01, ST_HMI_FG_02, ST_HMI_FG_04 and ST_HMI_FG_05.
+TYPE ST_HMI_FG_03 EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Transfer	: ST_FG_03_Transfer_Status;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

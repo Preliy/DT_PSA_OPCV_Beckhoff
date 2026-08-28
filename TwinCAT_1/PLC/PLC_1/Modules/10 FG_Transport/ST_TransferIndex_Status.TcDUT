@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_TransferIndex_Status" Id="{5e03e219-9201-4b24-9a48-0d0c1f24642f}">
+    <Declaration><![CDATA[// What an index unit publishes BEYOND what the SPT base already gives it.
+//
+// State, StateName, SequenceState and HMIControlAvailable used to live here and
+// have all been removed: ST_TransferIndex_HMI extends ST_BaseModule_HMI, so they
+// arrive inherited from ST_PackMLBaseModule_Status and ST_BaseModule_HMI.
+// Duplicating them meant two copies of the same truth kept in step by hand.
+//
+// Everything left is genuinely this unit type's own.
+TYPE ST_TransferIndex_Status :
+STRUCT
+	// --- Ring handshake -----------------------------------------------------
+	// Ready: idle and empty, will accept a pallet.
+	// Occupied: holding a pallet. Deliberately not called Busy - the base FB
+	// already uses Busy to mean "mid async operation", which is something else.
+	Ready				: BOOL;
+	Occupied			: BOOL;
+	NextReady			: BOOL;
+	SendToNext			: BOOL;
+
+	// --- Functional group handshake -----------------------------------------
+	// ReadyForOperation: pallet stopped AND lifted, the group may run.
+	// OperationDone: the group has reported finished.
+	ReadyForOperation	: BOOL;
+	OperationDone		: BOOL;
+
+	// --- Diagnostics --------------------------------------------------------
+	// 0 none  1 no home  2 lift did not raise  3 group did not finish
+	// 4 lift did not lower  5 no release  6 pallet never reached the exit sensor
+	FaultCode			: DINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

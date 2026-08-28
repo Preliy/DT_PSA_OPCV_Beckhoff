@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_System" Id="{3cb645fe-3f74-471a-8ae3-0aab11d97387}" SpecialFunc="None">
+    <Declaration><![CDATA[// FG_System - cell infrastructure: enclosure, six interlocked doors, two
+// E-stops, signal tower. Processes no parts.
+// It publishes GuardsSecure and EmergencyStopActive and applies NO policy to
+// them - only Machine owns the PackML mode, so Machine composes SafetyOk.
+// Contract: _workflow/reference/fg-system-safety.md
+FUNCTION_BLOCK FG_System EXTENDS FB_PackML_BaseModule
+VAR
+	// Named exactly as the twin names them, so MAIN.Machine.FG_System.<name>
+	// matches MAIN.FG_System.<name> in the twin's PLC tree. Side 1, then side 2.
+	B_SafetyDoor11 : FB_SafetyDoor := (Name := 'B_SafetyDoor11');
+	B_SafetyDoor12 : FB_SafetyDoor := (Name := 'B_SafetyDoor12');
+	B_SafetyDoor13 : FB_SafetyDoor := (Name := 'B_SafetyDoor13');
+	B_SafetyDoor21 : FB_SafetyDoor := (Name := 'B_SafetyDoor21');
+	B_SafetyDoor22 : FB_SafetyDoor := (Name := 'B_SafetyDoor22');
+	B_SafetyDoor23 : FB_SafetyDoor := (Name := 'B_SafetyDoor23');
+
+	// One component per mushroom, signal bit and lamp bit together - they are one
+	// device. Both read NORMALLY CLOSED: the input is TRUE while healthy, FALSE
+	// while latched. Initialize sets .Inverted := TRUE for that, and SIM_1's
+	// Mapping inverts the twin's FB_Button so the twin presents the same sense as
+	// the real hardware. See _workflow/reference/plc-io-exceptions.md.
+	SS_EStop1 : FB_IlluminatedButton := (Name := 'SS_EStop1');
+	SS_EStop2 : FB_IlluminatedButton := (Name := 'SS_EStop2');
+
+	H_SignalTower : FB_SignalTower := (Name := 'H_SignalTower');
+
+	// Written by SetMachineIndication before this module's CyclicLogic runs.
+	_MachineState : Tc3_PackML_V2.E_PMLState;
+	_MachineMode : E_PMLUnitMode;
+
+	_DoorsRequestedLocked : BOOL;
+
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_HMI_FG_System;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="CyclicLogic" Id="{3ed54c2c-9aa5-44b5-88f4-7efb2fab6d73}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// --- Lock policy ------------------------------------------------------------
+// Sealed in Production, free in Maintenance and Manual. Commanded at power-up,
+// so a reset never has to wait for a lock. Consequence: an operator in
+// Production CANNOT open a door - getting in means selecting another mode.
+_DoorsRequestedLocked := (_MachineMode = E_PMLUnitMode.ePMLUnitMode_Production);
+
+B_SafetyDoor11.RequestLock := _DoorsRequestedLocked;
+B_SafetyDoor12.RequestLock := _DoorsRequestedLocked;
+B_SafetyDoor13.RequestLock := _DoorsRequestedLocked;
+B_SafetyDoor21.RequestLock := _DoorsRequestedLocked;
+B_SafetyDoor22.RequestLock := _DoorsRequestedLocked;
+B_SafetyDoor23.RequestLock := _DoorsRequestedLocked;
+
+// --- Indication -------------------------------------------------------------
+// The tower shows the MACHINE's state, not this module's.
+H_SignalTower.State := _MachineState;
+
+// DriveEStopLamps runs BEFORE the base: FB_IlluminatedButton copies Lamp to its
+// coil inside its own CyclicLogic, so setting Lamp after would be a scan late.
+DriveEStopLamps();
+
+// The base walks ipComponents, so everything set above is in place first.
+SUPER^.CyclicLogic();
+
+PublishStatus();]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="DriveEStopLamps" Id="{f7e97785-e827-4687-b103-68be11aa156e}">
+      <Implementation>
+        <ST><![CDATA[// dark = not latched, solid = latched, FLASHING = latched and machine Clearing.
+// The flashing case says WHICH mushroom is blocking a clear, which solid-on-both
+// cannot. Phase comes from the tower so everything blinks together.
+// The decision lives here, not in FB_IlluminatedButton: a component must not
+// know which PackML state the machine is in.
+IF _MachineState = Tc3_PackML_V2.E_PMLState.ePMLState_Clearing THEN
+	SS_EStop1.Lamp := SS_EStop1.Active AND H_SignalTower.Flash;
+	SS_EStop2.Lamp := SS_EStop2.Active AND H_SignalTower.Flash;
+ELSE
+	SS_EStop1.Lamp := SS_EStop1.Active;
+	SS_EStop2.Lamp := SS_EStop2.Active;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Property Name="EmergencyStopActive" Id="{2b3b1c31-90db-4f2c-9f1b-fc4df840f404}">
+      <Declaration><![CDATA[// TRUE while either mushroom is latched. Derived on every read.
+// Machine acts on this in EVERY mode, unlike the guard doors.
+PROPERTY EmergencyStopActive : BOOL]]></Declaration>
+      <Get Name="Get" Id="{e5a4db8b-7789-4ba2-9662-b2dd87f5c93c}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[EmergencyStopActive := SS_EStop1.Active OR SS_EStop2.Active;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="GuardsSecure" Id="{fceef82f-3103-4a6e-96ac-6e818a6a3934}">
+      <Declaration><![CDATA[// Every enclosure door shut AND locked. Closed alone is not enough.
+// A getter, never a stored flag: a remembered readiness flag maintained in one
+// state is stale in all the others.
+PROPERTY GuardsSecure : BOOL]]></Declaration>
+      <Get Name="Get" Id="{d6190d95-5985-442d-8ac1-2d82365a0544}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[GuardsSecure :=	B_SafetyDoor11.Secure
+				AND	B_SafetyDoor12.Secure
+				AND	B_SafetyDoor13.Secure
+				AND	B_SafetyDoor21.Secure
+				AND	B_SafetyDoor22.Secure
+				AND	B_SafetyDoor23.Secure;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="HMICommunication" Id="{49cb33dc-c414-4dfb-87e2-7f5badb3d129}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Command half of the HMI bridge; PublishStatus is the status half. MUST be in
+// this method: the base calls it immediately before ModeControl() and
+// StateControl(), and reads its own PackMLBaseModule_HMI.Command, never ours.
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="IndicationFlash" Id="{54855d14-553b-4682-ad43-f89866f0ecd0}">
+      <Declaration><![CDATA[// The tower's flash phase, re-exposed so panel lamps blink with it rather than
+// against it.
+PROPERTY IndicationFlash : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4f1bda1f-60c2-4d19-b40c-499243258752}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IndicationFlash := H_SignalTower.Flash;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Initialize" Id="{177b6064-3d10-4d01-a629-e27b4933de3b}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		// Nine components. Forgetting one is SILENT: its CyclicLogic is never
+			// called, and the device reports nothing for ever.
+		RegisterComponent(B_SafetyDoor11);
+		RegisterComponent(B_SafetyDoor12);
+		RegisterComponent(B_SafetyDoor13);
+		RegisterComponent(B_SafetyDoor21);
+		RegisterComponent(B_SafetyDoor22);
+		RegisterComponent(B_SafetyDoor23);
+		RegisterComponent(SS_EStop1);
+		RegisterComponent(SS_EStop2);
+		RegisterComponent(H_SignalTower);
+
+		// NC sense, and it belongs in step 0 rather than with the other parameters
+		// in step 10: Machine.EnforceSafety reads EmergencyStopActive through a
+		// getter that does not care whether this module has initialised, so every
+		// scan the polarity is still FALSE is a scan a healthy mushroom reads as
+		// LATCHED and aborts the machine. Set it in the same step that registers
+		// the components, and there is no such scan after the first.
+		//
+		// The process-image bit is TRUE while the mushroom is HEALTHY and FALSE
+		// while latched - a real normally-closed contact, and what SIM_1's Mapping
+		// now emits. Active is HardwareInput XOR _Inverted, so Active stays TRUE
+		// while pressed and EmergencyStopActive is unchanged.
+		//
+		// With no process image at all - SIM_1 not running, EtherCAT down, a cut
+		// cable - both bits read 0, so both mushrooms report ACTIVE and the machine
+		// will not leave Aborted. That is the fail-safe direction and it is
+		// intended. See _workflow/reference/plc-io-exceptions.md.
+		SS_EStop1.Inverted := TRUE;
+		SS_EStop2.Inverted := TRUE;
+
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= TRUE;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// A lock has 3 s to confirm before its door raises fault 1.
+		B_SafetyDoor11.LockTime := T#3S;
+		B_SafetyDoor12.LockTime := T#3S;
+		B_SafetyDoor13.LockTime := T#3S;
+		B_SafetyDoor21.LockTime := T#3S;
+		B_SafetyDoor22.LockTime := T#3S;
+		B_SafetyDoor23.LockTime := T#3S;
+
+		H_SignalTower.FlashTime := T#500MS;
+
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="PublishStatus" Id="{9575ee3e-c804-41ea-b4bf-2fdf4bea00ca}">
+      <Implementation>
+        <ST><![CDATA[// Status half of the HMI bridge. Called AFTER SUPER^.CyclicLogic(), so every
+// field is this scan's.
+HMI.Config	:= PackMLBaseModule_HMI.Config;
+HMI.Status	:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName := F_PMLStateName(_CurrentState);
+
+// --- Safety -----------------------------------------------------------------
+HMI.Safety.GuardsSecure			:= GuardsSecure;
+HMI.Safety.EmergencyStopActive	:= EmergencyStopActive;
+HMI.Safety.DoorsRequestedLocked	:= _DoorsRequestedLocked;
+
+HMI.Safety.DoorClosed[1] := B_SafetyDoor11.Closed;
+HMI.Safety.DoorClosed[2] := B_SafetyDoor12.Closed;
+HMI.Safety.DoorClosed[3] := B_SafetyDoor13.Closed;
+HMI.Safety.DoorClosed[4] := B_SafetyDoor21.Closed;
+HMI.Safety.DoorClosed[5] := B_SafetyDoor22.Closed;
+HMI.Safety.DoorClosed[6] := B_SafetyDoor23.Closed;
+
+HMI.Safety.DoorLocked[1] := B_SafetyDoor11.Locked;
+HMI.Safety.DoorLocked[2] := B_SafetyDoor12.Locked;
+HMI.Safety.DoorLocked[3] := B_SafetyDoor13.Locked;
+HMI.Safety.DoorLocked[4] := B_SafetyDoor21.Locked;
+HMI.Safety.DoorLocked[5] := B_SafetyDoor22.Locked;
+HMI.Safety.DoorLocked[6] := B_SafetyDoor23.Locked;
+
+HMI.Safety.DoorFaultCode[1] := B_SafetyDoor11.FaultCode;
+HMI.Safety.DoorFaultCode[2] := B_SafetyDoor12.FaultCode;
+HMI.Safety.DoorFaultCode[3] := B_SafetyDoor13.FaultCode;
+HMI.Safety.DoorFaultCode[4] := B_SafetyDoor21.FaultCode;
+HMI.Safety.DoorFaultCode[5] := B_SafetyDoor22.FaultCode;
+HMI.Safety.DoorFaultCode[6] := B_SafetyDoor23.FaultCode;
+
+HMI.Safety.EStopActive[1] := SS_EStop1.Active;
+HMI.Safety.EStopActive[2] := SS_EStop2.Active;]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="SetMachineIndication" Id="{4ed37d5e-6ef4-48ea-881f-48f575ce9196}">
+      <Declaration><![CDATA[// The machine hands its state and mode down every scan. A parent commanding its
+// direct child is the only direction SPT layering allows.
+// MUST be called before the machine's SUPER^.CyclicLogic(), which is what calls
+// this module's CyclicLogic - otherwise both act on last scan's state.
+METHOD PUBLIC SetMachineIndication
+VAR_INPUT
+	State : Tc3_PackML_V2.E_PMLState;
+	Mode : E_PMLUnitMode;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_MachineState	:= State;
+_MachineMode	:= Mode;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

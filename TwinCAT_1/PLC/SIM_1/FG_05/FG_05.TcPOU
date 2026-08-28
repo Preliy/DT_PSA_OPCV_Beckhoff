@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_05" Id="{4d5c652d-69ed-4faa-9522-386134bcffdc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FG_05
+
+{region generated code}
+VAR_INPUT
+	B_Detect : FB_SensorBinary;
+	B_Part : FB_SensorBinary;
+	P_Camera : FB_Camera;
+	Y_AxisR : FB_Cylinder;
+	Y_AxisX : FB_Cylinder;
+	Y_AxisZ1 : FB_Cylinder;
+	Y_AxisZ2 : FB_Cylinder;
+	Y_CapsSource : FB_DeviceByte;
+	Y_CapsSourceStopper : FB_Cylinder;
+	Y_Gripper : FB_Cylinder;
+END_VAR
+{endregion}]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[{region generated code}
+	InitRun();
+	B_Detect();
+	B_Part();
+	P_Camera();
+	Y_AxisR();
+	Y_AxisX();
+	Y_AxisZ1();
+	Y_AxisZ2();
+	Y_CapsSource();
+	Y_CapsSourceStopper();
+	Y_Gripper();
+{endregion}
+
+Mapping();
+
+]]></ST>
+    </Implementation>
+    <Method Name="InitRun" Id="{c59dc9db-a98f-4494-a214-3581f3c7962a}">
+      <Declaration><![CDATA[METHOD InitRun
+{region generated code}
+VAR_INST
+	bInitRun : BOOL := TRUE;
+END_VAR
+{endregion}]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[{region generated code}
+	IF NOT bInitRun THEN RETURN; END_IF
+	bInitRun := FALSE;
+{endregion}
+]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="Mapping" Id="{66c4bd2c-e617-40b7-a0ca-a12b9a98746f}">
+      <Implementation>
+        <ST><![CDATA[// ============================================================================
+// FG_05 twin <-> EtherCAT simulation process image.
+//
+// Six double solenoids, B_Part and B_Detect share FG_05_EL1809_1 /
+// FG_05_EL2809_1. The two byte devices get a card each, as FG_01's do:
+//
+//   Y_CapsSource  FB_DeviceByte  FG_05_EL1859_1   control 0 table, 1 conveyor
+//   P_Camera      FB_Camera      FG_05_EL1859_2   2 DO / 4 DI, see below
+//
+// The bunker reports nothing back, so its status byte is mapped and always reads
+// zero. That is the honest wiring: the channels exist because the twin device is
+// an FB_DeviceByte and carries nStatusData whatever this side does.
+// ============================================================================
+
+// --- B_Part - cap present at the pick position, on the FEED ----------------
+// DI FG_05_EL1809_1 13.
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn13	:= B_Part.bValue;
+
+// --- B_Detect - cap held in the gripper's JAWS, input only -----------------
+// DI FG_05_EL1809_1 14. Not the same question as B_Part and not interchangeable
+// with it: B_Part is on the feed and reports the next cap as soon as this one is
+// lifted away. See the FG_05 block header in OC_PLC. Channels 15 and 16 stay free.
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn14	:= B_Detect.bValue;
+
+// --- P_Camera: FG_05_EL1859_2 ----------------------------------------------
+// Was an FB_Reader whose whole byte was copied across because the byte was the
+// interface. It is a camera now - the third and last of the three optical devices
+// to move - with six named signals and four bits on the wire. The bit positions
+// are the contract with FB_AbstractCamera in OC_PLC and are IDENTICAL in FG_01,
+// FG_02 and FG_05:
+//
+//   DO 1 (Ch 9)  Enable        DI 1 (Ch 1)  Ready
+//   DO 2 (Ch 10) Trigger       DI 2 (Ch 2)  Busy
+//                              DI 3 (Ch 3)  ResultValid
+//                              DI 4 (Ch 4)  ResultOK
+//
+// The GVL holds the SIM box id and is regenerated with the emulation, so it is
+// deliberately not repeated in this comment - that is what went stale in FG_01
+// when the emulation was rebuilt.
+
+// What the read has to return.
+//
+// IT READS THE ASSEMBLY ON THE PALLET, NOT THE CAP. The camera is mounted on the
+// feed side but looks across at the pallet, and the key it reads - CapsID - is
+// authored on Assembly Part 1, which carries 810. So the read answers "which cap
+// does this assembly want", and the station passes only on the type it is set up
+// to fit. An empty pallet reads 0 and fails.
+//
+// That is also why the read can sit before the pick: the pallet is already
+// stopped and lifted by Index05 before FG_05 is triggered at all, so the assembly
+// is in view from the first scan of the cycle.
+//
+// SET HERE AND NOT IN InitRun BECAUSE Mapping IS THE ONLY ACTION WE OWN - OC
+// Assistant regenerates everything inside the {region generated code} blocks on
+// the next twin regeneration.
+P_Camera.nExpectedData := 810;
+
+P_Camera.bEnable	:= GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bOut1;
+P_Camera.bTrigger	:= GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bOut2;
+
+GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bIn1 := P_Camera.bReady;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bIn2 := P_Camera.bBusy;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bIn3 := P_Camera.bResultValid;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bIn4 := P_Camera.bResultOK;
+
+// --- Y_AxisR - double solenoid, both coils and both limits -----------------
+// DI FG_05_EL1809_1 7/8, DO FG_05_EL2809_1 7/8.
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn7	:= Y_AxisR.bExtended;
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn8	:= Y_AxisR.bRetracted;
+Y_AxisR.bExtend	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut7;
+Y_AxisR.bRetract	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut8;
+
+// --- Y_AxisX - double solenoid, both coils and both limits -----------------
+// DI FG_05_EL1809_1 1/2, DO FG_05_EL2809_1 1/2.
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn1	:= Y_AxisX.bExtended;
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn2	:= Y_AxisX.bRetracted;
+Y_AxisX.bExtend	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut1;
+Y_AxisX.bRetract	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut2;
+
+// --- Y_AxisZ1 - double solenoid, both coils and both limits ----------------
+// DI FG_05_EL1809_1 3/4, DO FG_05_EL2809_1 3/4.
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn3	:= Y_AxisZ1.bExtended;
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn4	:= Y_AxisZ1.bRetracted;
+Y_AxisZ1.bExtend	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut3;
+Y_AxisZ1.bRetract	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut4;
+
+// --- Y_AxisZ2 - double solenoid, both coils and both limits ----------------
+// DI FG_05_EL1809_1 5/6, DO FG_05_EL2809_1 5/6.
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn5	:= Y_AxisZ2.bExtended;
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn6	:= Y_AxisZ2.bRetracted;
+Y_AxisZ2.bExtend	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut5;
+Y_AxisZ2.bRetract	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut6;
+
+// --- Y_CapsSource - byte device, owns FG_05_EL1859_1 -----------------------
+// Control byte PLC -> twin, status byte twin -> PLC. The card carries both,
+// so the whole interface travels together instead of borrowing channels.
+// The GVL holds the SIM box id and is regenerated with the emulation, so it
+// is deliberately not repeated in this comment - that is what went stale in
+// FG_01 when the emulation was rebuilt.
+Y_CapsSource.nControlData.0 := GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bOut1;
+Y_CapsSource.nControlData.1 := GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bOut2;
+Y_CapsSource.nControlData.2 := GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bOut3;
+Y_CapsSource.nControlData.3 := GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bOut4;
+Y_CapsSource.nControlData.4 := GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bOut5;
+Y_CapsSource.nControlData.5 := GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bOut6;
+Y_CapsSource.nControlData.6 := GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bOut7;
+Y_CapsSource.nControlData.7 := GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bOut8;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bIn1 := Y_CapsSource.nStatusData.0;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bIn2 := Y_CapsSource.nStatusData.1;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bIn3 := Y_CapsSource.nStatusData.2;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bIn4 := Y_CapsSource.nStatusData.3;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bIn5 := Y_CapsSource.nStatusData.4;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bIn6 := Y_CapsSource.nStatusData.5;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bIn7 := Y_CapsSource.nStatusData.6;
+GVL_EtherCAT_1_SIM.FG_05_EL1859_1.bIn8 := Y_CapsSource.nStatusData.7;
+
+// --- Y_CapsSourceStopper - double solenoid, both coils and both limits -----
+// DI FG_05_EL1809_1 11/12, DO FG_05_EL2809_1 11/12.
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn11	:= Y_CapsSourceStopper.bExtended;
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn12	:= Y_CapsSourceStopper.bRetracted;
+Y_CapsSourceStopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut11;
+Y_CapsSourceStopper.bRetract	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut12;
+
+// --- Y_Gripper - double solenoid, both coils and both limits ---------------
+// DI FG_05_EL1809_1 9/10, DO FG_05_EL2809_1 9/10.
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn9	:= Y_Gripper.bExtended;
+GVL_EtherCAT_1_SIM.FG_05_EL1809_1.bIn10	:= Y_Gripper.bRetracted;
+Y_Gripper.bExtend	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut9;
+Y_Gripper.bRetract	:= GVL_EtherCAT_1_SIM.FG_05_EL2809_1.bOut10;]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

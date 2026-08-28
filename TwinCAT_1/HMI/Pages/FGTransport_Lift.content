@@ -1,0 +1,12 @@
+<div id="FGTransport_Lift" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-width-unit="%" data-tchmi-height-unit="%">
+
+<div id="FGTLft_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="FG_Transport - Lift units" class="headline-2">
+</div>
+
+<div id="UC_Lift01" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/TransferLift.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="284" data-tchmi-height-unit="px" data-tchmi-unit="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.HMI%/s%" data-tchmi-b-detect="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.B_Detect::DigitalSensor_HMI%/s%" data-tchmi-b-exit="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.B_Exit::DigitalSensor_HMI%/s%" data-tchmi-y-lift="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.Y_Lift::SolenoidHMI%/s%" data-tchmi-y-lift-component="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.Y_Lift::ComponentBase_HMI%/s%" data-tchmi-conveyor="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.M_Conveyor.HMI%/s%">
+</div>
+
+<div id="UC_Lift02" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/TransferLift.usercontrol" data-tchmi-left="336" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="284" data-tchmi-height-unit="px" data-tchmi-unit="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.HMI%/s%" data-tchmi-b-detect="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.B_Detect::DigitalSensor_HMI%/s%" data-tchmi-b-exit="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.B_Exit::DigitalSensor_HMI%/s%" data-tchmi-y-lift="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.Y_Lift::SolenoidHMI%/s%" data-tchmi-y-lift-component="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.Y_Lift::ComponentBase_HMI%/s%" data-tchmi-conveyor="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.M_Conveyor.HMI%/s%">
+</div>
+
+</div>

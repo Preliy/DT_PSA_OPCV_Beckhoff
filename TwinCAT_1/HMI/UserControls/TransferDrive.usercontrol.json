@@ -1,0 +1,24 @@
+{
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.5.1/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": "Operator tile for an FB_TransferDrive conveyor. Running is what was commanded, Active is what the drive reports back; commanded and not active is a dropped contactor. Used for Transport01/02 and both lift carriage belts.",
+  "parameters": [
+    {
+      "allowSymbolExpressionsInObject": false,
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setDrive",
+      "propertyGetterName": "getDrive",
+      "refTo": "",
+      "name": "data-tchmi-drive",
+      "displayName": "Drive",
+      "visible": true,
+      "type": "tchmi:project#/definitions/PLC1.ST_AbstractBinaryDrive_HMI",
+      "category": "",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "Drive"
+    }
+  ],
+  "virtualRights": []
+}

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_TransferLift_HMI" Id="{856159ec-a043-4f1a-adcf-498e65c2e811}">
+    <Declaration><![CDATA[// Lift unit HMI interface - ONE struct per tile.
+//
+// Extends ST_BaseModule_HMI, so Config, Command, Status, Sequence and StateName
+// all arrive inherited from the SPT module interface. See ST_TransferIndex_HMI
+// for the full member list and the bridge that keeps it current.
+//
+// The carriage belt publishes itself: M_Conveyor is an FB_AbstractBinaryDrive and
+// carries its own ST_AbstractBinaryDrive_HMI at
+//   MAIN.Machine.FG_Transport.Lift01.M_Conveyor.HMI
+// which the tile binds as a second parameter. The two cylinders are jogged
+// through their own SolenoidHMI structs.
+TYPE ST_TransferLift_HMI EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Station	: ST_TransferLift_Status;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

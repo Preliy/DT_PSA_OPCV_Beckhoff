@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_SafetyDoor_Status" Id="{7c775ea7-3571-4027-8505-632e3e8caa13}">
+    <Declaration><![CDATA[TYPE ST_SafetyDoor_Status :
+STRUCT
+	// The two bits that matter, and they are NOT redundant: a door can be shut
+	// without being locked, and that is precisely the state that must not let
+	// Production start.
+	Closed	: BOOL;
+	Locked	: BOOL;
+
+	// Closed AND Locked. Published as its own bit so a panel shows the same
+	// verdict the safety chain uses instead of ANDing two lamps by eye.
+	Secure	: BOOL;
+
+	// TRUE while the PLC is commanding this lock engaged - Production only.
+	LockRequested : BOOL;
+
+	// 0 none, 1 lock commanded but never confirmed within LockTime.
+	FaultCode : UDINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

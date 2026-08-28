@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_01" Id="{bee76962-c897-4aa3-8577-0f8981fbeba9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FG_01
+
+{region generated code}
+VAR_INPUT
+	B_SafetyGate1 : FB_SensorBinary;
+	B_SafetyGate2 : FB_SensorBinary;
+	P_Camera : FB_Camera;
+	Y_Gate1 : FB_Cylinder;
+	Y_Gate2 : FB_Cylinder;
+	Y_Gripper : FB_Cylinder;
+	Y_LaserMark : FB_DeviceByte;
+	Y_Platform : FB_Cylinder;
+	Y_ReaderWindow : FB_Cylinder;
+END_VAR
+{endregion}]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[{region generated code}
+	InitRun();
+	B_SafetyGate1();
+	B_SafetyGate2();
+	P_Camera();
+	Y_Gate1();
+	Y_Gate2();
+	Y_Gripper();
+	Y_LaserMark();
+	Y_Platform();
+	Y_ReaderWindow();
+{endregion}
+
+Mapping();]]></ST>
+    </Implementation>
+    <Method Name="InitRun" Id="{de406497-ddcd-4aa6-82ad-891697901ad0}">
+      <Declaration><![CDATA[METHOD InitRun
+{region generated code}
+VAR_INST
+	bInitRun : BOOL := TRUE;
+END_VAR
+{endregion}]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[{region generated code}
+	IF NOT bInitRun THEN RETURN; END_IF
+	bInitRun := FALSE;
+{endregion}
+]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="Mapping" Id="{efebdc0d-bbfa-42e5-b597-e18391e1b8e3}">
+      <Implementation>
+        <ST><![CDATA[// ============================================================================
+// FG_01 twin <-> EtherCAT simulation process image.
+//
+// The discrete cylinders and sensors remain on the shared EL1008/EL2008 cards.
+// Each byte device owns an EL1859, so its complete control and status bytes
+// travel together instead of borrowing individual channels from those cards.
+// GVL_EtherCAT_1_SIM is generated from the SIM master and carries the TIIB ids.
+// ============================================================================
+
+// --- Y_Gripper - double solenoid --------------------------------------------
+// DI 1/2, DO 1/5. It was a single solenoid with a spring return and no retract
+// coil at all; the control side is FB_DoubleSolenoidFeedback now, so the coil
+// exists and has to be driven from here or the twin cylinder never leaves the
+// extended limit once bExtend drops.
+//
+// THE PAIR IS NOT ADJACENT. The extend coil keeps DO 1 and the new retract coil
+// took the lowest free output on the card, which is 5 - renumbering the four
+// coils in between would have rewired FG_01 for cosmetics.
+GVL_EtherCAT_1_SIM.FG_01_EL1008_1.bIn1	:= Y_Gripper.bRetracted;
+GVL_EtherCAT_1_SIM.FG_01_EL1008_1.bIn2	:= Y_Gripper.bExtended;
+Y_Gripper.bExtend		:= GVL_EtherCAT_1_SIM.FG_01_EL2008_1.bOut1;
+Y_Gripper.bRetract		:= GVL_EtherCAT_1_SIM.FG_01_EL2008_1.bOut5;
+
+// --- Y_Platform - double solenoid -------------------------------------------
+// DI 3/4, DO 2/3.
+GVL_EtherCAT_1_SIM.FG_01_EL1008_1.bIn3	:= Y_Platform.bRetracted;
+GVL_EtherCAT_1_SIM.FG_01_EL1008_1.bIn4	:= Y_Platform.bExtended;
+Y_Platform.bExtend		:= GVL_EtherCAT_1_SIM.FG_01_EL2008_1.bOut2;
+Y_Platform.bRetract		:= GVL_EtherCAT_1_SIM.FG_01_EL2008_1.bOut3;
+
+// --- Y_ReaderWindow - double solenoid ---------------------------------------
+// DI 5/6, DO 4/6. Same change as Y_Gripper above, and the pair is split for the
+// same reason: extend keeps DO 4, retract took the next free output.
+GVL_EtherCAT_1_SIM.FG_01_EL1008_1.bIn5	:= Y_ReaderWindow.bRetracted;
+GVL_EtherCAT_1_SIM.FG_01_EL1008_1.bIn6	:= Y_ReaderWindow.bExtended;
+Y_ReaderWindow.bExtend	:= GVL_EtherCAT_1_SIM.FG_01_EL2008_1.bOut4;
+Y_ReaderWindow.bRetract	:= GVL_EtherCAT_1_SIM.FG_01_EL2008_1.bOut6;
+
+// --- P_Camera: FG_01_EL1859_1 ----------------------------------------------
+// Was P_Reader, an FB_Reader whose whole byte was copied across because the byte
+// was the interface. It is a camera now, with six named signals and four bits on
+// the wire, and the bit positions below are the contract with FB_AbstractCamera
+// in OC_PLC:
+//
+//   DO 1 (Ch 9)  Enable        DI 1 (Ch 1)  Ready
+//   DO 2 (Ch 10) Trigger       DI 2 (Ch 2)  Busy
+//                              DI 3 (Ch 3)  ResultValid
+//                              DI 4 (Ch 4)  ResultOK
+//
+// The SIM box id is deliberately not written here. It used to say TIIB 45; the
+// EtherCAT emulation was rebuilt, every box renumbered, and the comment became
+// quietly wrong while the GVL it describes stayed correct. GVL_EtherCAT_1_SIM is
+// regenerated with the emulation and is the only place that id belongs.
+
+// What the part must be carrying. FG_01 is the identify station: the twin's
+// DataReader reads the payload's SerialNumber key, and Assembly Part 1 carries
+// 60. A pallet with no part, or a part with no serial number, reads 0 and fails.
+//
+// SET HERE AND NOT IN InitRun BECAUSE Mapping IS THE ONLY ACTION WE OWN - OC
+// Assistant regenerates everything inside the {region generated code} blocks on
+// the next twin regeneration.
+P_Camera.nExpectedData := 60;
+
+P_Camera.bEnable	:= GVL_EtherCAT_1_SIM.FG_01_EL1859_1.bOut1;
+P_Camera.bTrigger	:= GVL_EtherCAT_1_SIM.FG_01_EL1859_1.bOut2;
+
+GVL_EtherCAT_1_SIM.FG_01_EL1859_1.bIn1 := P_Camera.bReady;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_1.bIn2 := P_Camera.bBusy;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_1.bIn3 := P_Camera.bResultValid;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_1.bIn4 := P_Camera.bResultOK;
+
+// --- Y_LaserMark: FG_01_EL1859_2 -------------------------------------------
+// FB_DeviceByte stores its byte interface in the low eight bits of the data words.
+Y_LaserMark.nControlData.0 := GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bOut1;
+Y_LaserMark.nControlData.1 := GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bOut2;
+Y_LaserMark.nControlData.2 := GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bOut3;
+Y_LaserMark.nControlData.3 := GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bOut4;
+Y_LaserMark.nControlData.4 := GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bOut5;
+Y_LaserMark.nControlData.5 := GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bOut6;
+Y_LaserMark.nControlData.6 := GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bOut7;
+Y_LaserMark.nControlData.7 := GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bOut8;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bIn1 := Y_LaserMark.nStatusData.0;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bIn2 := Y_LaserMark.nStatusData.1;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bIn3 := Y_LaserMark.nStatusData.2;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bIn4 := Y_LaserMark.nStatusData.3;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bIn5 := Y_LaserMark.nStatusData.4;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bIn6 := Y_LaserMark.nStatusData.5;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bIn7 := Y_LaserMark.nStatusData.6;
+GVL_EtherCAT_1_SIM.FG_01_EL1859_2.bIn8 := Y_LaserMark.nStatusData.7;
+
+// --- Y_Gate1 / Y_Gate2 - single solenoid, spring return ---------------------
+// Moved in from FG_Transport with the twin. EXTEND CLOSES the gate; the spring
+// opens it, so both limits are read and the coil is the closing command.
+// EL1008 #2 DI 1..4, EL2008 #1 DO 7/8.
+Y_Gate1.bExtend		:= GVL_EtherCAT_1_SIM.FG_01_EL2008_1.bOut7;
+GVL_EtherCAT_1_SIM.FG_01_EL1008_2.bIn1	:= Y_Gate1.bRetracted;
+GVL_EtherCAT_1_SIM.FG_01_EL1008_2.bIn2	:= Y_Gate1.bExtended;
+
+Y_Gate2.bExtend		:= GVL_EtherCAT_1_SIM.FG_01_EL2008_1.bOut8;
+GVL_EtherCAT_1_SIM.FG_01_EL1008_2.bIn3	:= Y_Gate2.bRetracted;
+GVL_EtherCAT_1_SIM.FG_01_EL1008_2.bIn4	:= Y_Gate2.bExtended;
+
+// --- B_SafetyGate1 / B_SafetyGate2 -----------------------------------------
+// Independent gate position monitoring, moved across with the gates. The control
+// side reads these through each FB_DigitalSensor's own HardwareInput, so they
+// appear in no GVL - but the twin still has to drive the channels.
+// EL1008 #2 DI 5/6.
+GVL_EtherCAT_1_SIM.FG_01_EL1008_2.bIn5	:= B_SafetyGate1.bValue;
+GVL_EtherCAT_1_SIM.FG_01_EL1008_2.bIn6	:= B_SafetyGate2.bValue;
+
+// Spare after FG_01: EL1008 #1 DI 7/8; EL1008 #2 DI 7/8;
+// EL1859 #1 DI 5..8 and DO 3..8, freed when P_Reader became P_Camera.
+//
+// EL2008 #1 IS NOW FULL. DO 5/6 were the last two free outputs on it and the
+// Y_Gripper / Y_ReaderWindow retract coils took them. A further coil in this
+// group needs another EL2008 on the FG_01 coupler, on both masters.]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

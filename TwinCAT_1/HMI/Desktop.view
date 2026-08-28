@@ -1,0 +1,299 @@
+<div id="Desktop" data-tchmi-type="TcHmi.Controls.System.TcHmiView" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width-unit="%" data-tchmi-width="100" data-tchmi-height-unit="%" data-tchmi-height="100" data-tchmi-background-image-width-unit="%" data-tchmi-background-image-height-unit="%" data-tchmi-background-image-width="100" data-tchmi-background-image-height="100" data-tchmi-creator-viewport-width="1920" data-tchmi-creator-viewport-height="1080"><div id="Header_Top" data-tchmi-type="TcHmi.Controls.BaseTemplate.TcHmiHeader" data-tchmi-height="80" data-tchmi-left="0" data-tchmi-top="0" data-tchmi-right="0">
+<script data-tchmi-target-attribute="data-tchmi-class-names" type="application/json">[
+"divider",
+"divider-top"
+]
+</script><script data-tchmi-target-attribute="data-tchmi-header-items" type="application/json">
+[
+  {
+    "accessRights": [],
+    "altText": "Beckhoff",
+    "classList": [],
+    "image": "Images/Beckhoff_Logo.svg",
+    "itemAlign": "Left",
+    "itemType": "Image",
+    "minWidth": 128.0,
+    "minWidthUnit": "px",
+    "prefHeight": 95.0,
+    "prefHeightUnit": "px",
+    "prefWidth": 288.0,
+    "prefWidthUnit": "px",
+    "priority": "2",
+    "targetContent": "Pages/StartPage.content",
+    "targetRegion": "%ctrl%Region_Center%/ctrl%"
+  },
+  {
+    "accessRights": [],
+    "classList": [],
+    "itemAlign": "Left",
+    "itemType": "Text",
+    "minWidth": 128.0,
+    "minWidthUnit": "px",
+    "prefHeight": 95.0,
+    "prefHeightUnit": "px",
+    "prefWidth": 288.0,
+    "prefWidthUnit": "px",
+    "priority": "1",
+    "text": "Virtual Commissioning DEMO"
+  },
+  {
+    "accessRights": [],
+    "classList": [],
+    "filter": [
+      {
+        "path": "domain",
+        "comparator": "==",
+        "value": "TcHmiEventLogger"
+      },
+      {
+        "logic": "OR"
+      },
+      {
+        "path": "domain",
+        "comparator": "==",
+        "value": "TcHmiAlarm"
+      }
+    ],
+    "itemAlign": "Right",
+    "itemType": "EventLine",
+    "messageFormat": [
+      {
+        "name": "timeRaised"
+      },
+      {
+        "text": " | "
+      },
+      {
+        "name": "domain"
+      },
+      {
+        "text": " | "
+      },
+      {
+        "name": "text"
+      }
+    ],
+    "minWidth": 288.0,
+    "minWidthUnit": "px",
+    "prefHeight": 48.0,
+    "prefHeightUnit": "px",
+    "prefWidth": 800.0,
+    "prefWidthUnit": "px",
+    "priority": "5",
+    "targetContent": "Pages/Events.content",
+    "targetRegion": "%ctrl%Region_Center%/ctrl%"
+  },
+  {
+    "accessRights": [],
+    "adsRuntime": "TcSysService",
+    "classList": [],
+    "iconWidth": 48,
+    "iconWidthUnit": "px",
+    "itemAlign": "Right",
+    "itemType": "AdsState",
+    "minWidth": 48.0,
+    "minWidthUnit": "px",
+    "prefHeight": 48.0,
+    "prefHeightUnit": "px",
+    "prefWidth": 160.0,
+    "prefWidthUnit": "px",
+    "priority": "3",
+    "serverDomain": "ADS",
+    "serverInterval": 1000,
+    "stateImages": {
+      "Fallback": "%tr%TwinCAT_Fallback%/tr%",
+      "Run": "%tr%TwinCAT_Run%/tr%",
+      "Stop": "%tr%TwinCAT_Stop%/tr%",
+      "Config": "%tr%TwinCAT_Config%/tr%",
+      "Exception": "%tr%TwinCAT_Exception%/tr%"
+    },
+    "text": "TwinCAT",
+    "textPosition": "Left"
+  },
+  {
+    "accessRights": [],
+    "adsRuntime": "PLC1",
+    "classList": [],
+    "iconWidth": 48,
+    "iconWidthUnit": "px",
+    "itemAlign": "Right",
+    "itemType": "AdsState",
+    "minWidth": 48.0,
+    "minWidthUnit": "px",
+    "prefHeight": 48.0,
+    "prefHeightUnit": "px",
+    "prefWidth": 160.0,
+    "prefWidthUnit": "px",
+    "priority": "3",
+    "serverDomain": "ADS",
+    "serverInterval": 1000,
+    "stateImages": {
+      "Fallback": "%tr%PLC_Fallback%/tr%",
+      "Run": "%tr%PLC_Run%/tr%",
+      "Stop": "%tr%PLC_Stop%/tr%",
+      "Config": "%tr%PLC_Config%/tr%",
+      "Exception": "%tr%PLC_Exception%/tr%"
+    },
+    "text": "PLC",
+    "textPosition": "Left"
+  },
+  {
+    "accessRights": [],
+    "allowLogout": true,
+    "allowSwitchUser": false,
+    "classList": [],
+    "itemAlign": "Right",
+    "itemType": "UserManagement",
+    "minWidth": 176.0,
+    "minWidthUnit": "px",
+    "prefHeight": 48.0,
+    "prefHeightUnit": "px",
+    "prefWidth": 288.0,
+    "prefWidthUnit": "px",
+    "priority": "3"
+  },
+  {
+    "accessRights": [],
+    "classList": [],
+    "itemAlign": "Right",
+    "itemType": "Time",
+    "minWidth": 96.0,
+    "minWidthUnit": "px",
+    "prefHeight": 48.0,
+    "prefHeightUnit": "px",
+    "prefWidth": 128.0,
+    "prefWidthUnit": "px",
+    "priority": "4",
+    "timeDisplayLayout": "TimeDateMultiLine"
+  }
+]
+</script></div><div id="Accordion_Navigation_Right" data-tchmi-type="TcHmi.Controls.BaseTemplate.TcHmiAccordionNavigation" data-tchmi-top="%ctrl%Header_Top::Height%/ctrl%" data-tchmi-bottom="15" data-tchmi-right="0" data-tchmi-target-region="%ctrl%Region_Center%/ctrl%" data-tchmi-show-back-button="True" data-tchmi-auto-collapse="True" data-tchmi-breakpoint="50" data-tchmi-close-when-clicked="True">
+
+<script data-tchmi-target-attribute="data-tchmi-class-names" type="application/json">[
+"divider",
+"divider-right"
+]
+</script><script data-tchmi-target-attribute="data-tchmi-navigation-items" type="application/json">
+[
+  {
+    "content": "Pages/StartPage.content",
+    "icon": "%tr%TR_Icon_StartPage_normal%/tr%",
+    "iconActive": "%tr%TR_Icon_StartPage_active%/tr%",
+    "iconPressed": "%tr%TR_Icon_StartPage_pressed%/tr%",
+    "id": "StartPage",
+    "name": "%l%L_StartPage%/l%"
+  },
+  {
+    "id": "FG_Transport",
+    "name": "%l%L_FG_Transport%/l%",
+    "subItems": [
+      {
+        "content": "Pages/FG_Transport.content",
+        "id": "FGT_Overview",
+        "name": "%l%L_FGT_Overview%/l%"
+      },
+      {
+        "content": "Pages/FGTransport_Index.content",
+        "id": "FGT_Index",
+        "name": "%l%L_FGT_Index%/l%"
+      },
+      {
+        "content": "Pages/FGTransport_Stopper.content",
+        "id": "FGT_Stopper",
+        "name": "%l%L_FGT_Stopper%/l%"
+      },
+      {
+        "content": "Pages/FGTransport_Lift.content",
+        "id": "FGT_Lift",
+        "name": "%l%L_FGT_Lift%/l%"
+      },
+      {
+        "content": "Pages/FGTransport_Drive.content",
+        "id": "FGT_Drive",
+        "name": "%l%L_FGT_Drive%/l%"
+      }
+    ]
+  },
+  {
+    "id": "FG_Stations",
+    "name": "%l%L_FG_Stations%/l%",
+    "subItems": [
+      {
+        "content": "Pages/FG_01.content",
+        "id": "FG_01",
+        "name": "%l%L_FG_01%/l%"
+      },
+      {
+        "content": "Pages/FG_02.content",
+        "id": "FG_02",
+        "name": "%l%L_FG_02%/l%"
+      },
+      {
+        "content": "Pages/FG_03.content",
+        "id": "FG_03",
+        "name": "%l%L_FG_03%/l%"
+      },
+      {
+        "content": "Pages/FG_04.content",
+        "id": "FG_04",
+        "name": "%l%L_FG_04%/l%"
+      },
+      {
+        "content": "Pages/FG_05.content",
+        "id": "FG_05",
+        "name": "%l%L_FG_05%/l%"
+      }
+    ]
+  },
+  {
+    "content": "Pages/Events.content",
+    "icon": "%tr%TR_Icon_Events_normal%/tr%",
+    "iconActive": "%tr%TR_Icon_Events_active%/tr%",
+    "iconPressed": "%tr%TR_Icon_Events_pressed%/tr%",
+    "id": "Events",
+    "name": "%l%L_Events%/l%"
+  },
+  {
+    "content": "Pages/Settings.content",
+    "icon": "%tr%TR_Icon_Settings_normal%/tr%",
+    "iconActive": "%tr%TR_Icon_Settings_active%/tr%",
+    "iconPressed": "%tr%TR_Icon_Settings_pressed%/tr%",
+    "id": "Settings",
+    "name": "%l%L_Settings%/l%"
+  },
+  {
+    "content": "Pages/EtherCAT.content",
+    "icon": "%tr%TR_Icon_EtherCAT_normal%/tr%",
+    "iconActive": "%tr%TR_Icon_EtherCAT_active%/tr%",
+    "iconPressed": "%tr%TR_Icon_EtherCAT_pressed%/tr%",
+    "id": "EtherCAT",
+    "name": "%l%L_EtherCAT%/l%"
+  }
+]
+</script></div><div id="Region_Center" data-tchmi-type="TcHmi.Controls.System.TcHmiRegion" data-tchmi-left="0" data-tchmi-top="%ctrl%Header_Top::Height%/ctrl%" data-tchmi-scrolling="Yes" data-tchmi-bottom="-18" data-tchmi-right="270" data-tchmi-scale-mode="ScaleToFill">
+
+<script data-tchmi-target-attribute="data-tchmi-class-names" type="application/json"></script></div><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%ctx%owner::RenderedWidth%/ctx%",
+    "actions": [
+      {
+        "objectType": "Function",
+        "active": true,
+        "fn": "TcHmiResponsiveBehaviour",
+        "fnParams": [
+          {
+            "objectType": "Symbol",
+            "valueType": "tchmi:general#/definitions/String",
+            "symbolExpression": "%i%MediaQueryList%/i%"
+          },
+          {
+            "objectType": "Symbol",
+            "valueType": "tchmi:general#/definitions/String",
+            "symbolExpression": "%i%AffectedControls%/i%"
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]</script></div>

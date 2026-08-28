@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_02" Id="{7fb5558f-557a-4b00-ac43-0e8d1c5a11c7}" SpecialFunc="None">
+    <Declaration><![CDATA[// FG_02 - optical inspection. Camera handshake, no moving parts.
+// Triggered by Index02; reports OperationDone. A NOK aborts (fault 1).
+// Twin side: FB_Camera in OC_SIM - both halves must agree on the bit layout,
+// and nothing checks it for you.
+// Contract: _workflow/reference/fg-02-behaviour.md
+FUNCTION_BLOCK FG_02 EXTENDS FB_PackML_BaseModule
+VAR
+	P_Camera	: FB_AbstractCamera := (Name := 'P_Camera');
+
+	// Group level fault - see ST_FG_02_Inspection_Status. Cleared in Clearing.
+	_FaultCode		: DINT;
+	// The verdict of the last completed shot, latched so the panel still shows it
+	// once ResultValid has dropped.
+	_LastResultOK	: BOOL;
+
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_HMI_FG_02;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Aborting" Id="{b1d74de1-4efa-4860-9507-6e980f481c30}">
+      <Declaration><![CDATA[METHOD PROTECTED Aborting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Disable() drops the trigger before the enable, so a shot is never left armed.
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		P_Camera.Disable();
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Aborting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clearing" Id="{d322ab70-95ea-440b-b38c-20af32eff75d}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		// Cleared by the act of clearing, not by the condition going away.
+		_FaultCode := 0;
+		SequenceState := SequenceState + 10;
+
+	10:	// Clear any latched component alarm.
+		IF P_Camera.Reset() THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{e5e7e34e-1ba6-4ca6-ada5-668f3dcbb609}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// No process image copy step: component members map straight to terminal channels.
+SUPER^.CyclicLogic();
+
+PublishStatus();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Execute" Id="{273e979d-dbcd-4103-a600-5c857094df5b}">
+      <Declaration><![CDATA[METHOD PROTECTED Execute
+VAR_INPUT
+END_VAR
+VAR_INST
+	ReadyTimer	: TON;
+	ShotTimer	: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The vision-sensor handshake. Every wait is bounded; every timeout faults.
+
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:
+
+		CASE SequenceState OF
+			0:
+				NoStateTasksToComplete	:= FALSE;
+				P_Camera.Disable();
+				SequenceState			:= SequenceState + 10;
+
+			10:	// Power up, wait for Ready. Timeout -> the camera is not answering.
+				P_Camera.Enable();
+				IF P_Camera.Ready THEN
+					SequenceState := SequenceState + 10;
+				ELSIF ReadyTimer.Q THEN
+					_FaultCode := 2;
+					AbortImmediate();
+				END_IF
+
+			20:	// Trigger. ResultValid also acknowledges: a fast camera can raise
+				// and drop Busy inside one scan.
+				P_Camera.Trigger();
+				IF P_Camera.DeviceBusy OR P_Camera.ResultValid THEN
+					SequenceState := SequenceState + 10;
+				ELSIF ShotTimer.Q THEN
+					_FaultCode := 3;
+					AbortImmediate();
+				END_IF
+
+			30:	// Read the verdict. It stands until the trigger is released.
+				IF P_Camera.ResultValid THEN
+					_LastResultOK := P_Camera.ResultOK;
+					IF P_Camera.ResultOK THEN
+						SequenceState := SequenceState + 10;
+					ELSE
+						_FaultCode := 1;
+						AbortImmediate();
+					END_IF
+				ELSIF ShotTimer.Q THEN
+					_FaultCode := 3;
+					AbortImmediate();
+				END_IF
+
+			40:	// Power down. Disable() clears the trigger first, which tells the
+				// camera its verdict was read.
+				P_Camera.Disable();
+				SequenceState := SequenceState + 10;
+
+			50:	// Execute is the one acting state that does not self-complete.
+				// StateComplete() would be wrong here.
+				ChangeState(E_PMLCommand.ePMLCommand_Complete);
+		END_CASE
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		// No group sequence. The camera stays reachable through its own
+		// component HMI control.
+		;
+END_CASE
+
+SUPER^.Execute();
+
+// ShotTimer spans steps 20 and 30 on purpose: the camera's total response time is
+// one number, and that is what an operator is told.
+ReadyTimer(IN := SequenceState = 10,								PT := T#2S);
+ShotTimer(IN := (SequenceState = 20) OR (SequenceState = 30),		PT := T#3S);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{6c4d5d83-10f6-41af-b071-95bcf47f192a}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Command half of the HMI bridge; PublishStatus is the status half. MUST be in
+// this method: the base calls it immediately before ModeControl() and
+// StateControl(), and reads its own PackMLBaseModule_HMI.Command, never ours.
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{3a4a9f91-3d78-48e5-a831-2f5dc3d90446}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		RegisterComponent(P_Camera);
+
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= TRUE;
+		HMI.Config.Name		:= THIS^._Name;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// No travel timeouts - nothing in this group moves.
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="PublishStatus" Id="{627be366-c1ef-4ff0-8d36-24c5bd8f0170}">
+      <Implementation>
+        <ST><![CDATA[// Status half of the HMI bridge. Called AFTER SUPER^.CyclicLogic(), so every
+// field is this scan's. Copy the base struct wholesale - setting fields one by one
+// leaves Busy, Error, ErrorID and HMIControlAvailable at zero.
+// P_Camera publishes its own handshake; what is added here is what no device owns.
+HMI.Config		:= PackMLBaseModule_HMI.Config;
+HMI.Status		:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName				:= F_PMLStateName(_CurrentState);
+HMI.Sequence.StepIndex		:= SequenceState;
+HMI.Inspection.FaultCode	:= _FaultCode;
+HMI.Inspection.LastResultOK	:= _LastResultOK;]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Resetting" Id="{aac9e387-b24d-4810-82f8-91e9f340efed}">
+      <Declaration><![CDATA[METHOD PROTECTED Resetting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Home is "nothing energised". Terminates on its own call and nothing else.
+
+CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		P_Camera.Disable();
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Resetting();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stopping" Id="{0a52778d-585c-4481-8d38-2866525c8710}">
+      <Declaration><![CDATA[METHOD PROTECTED Stopping
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		P_Camera.Disable();
+		SequenceState			:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Stopping();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,117 @@
+<!-- FG_03. The two arms are laid out as two labelled bands because that is how the
+     station is reasoned about: arm 2 picks out of slot 1, arm 1 places into
+     slot 2, and the handover is the moment both grippers hold the part. Reading
+     the seven cylinders as one undifferentiated grid loses that.
+
+     Grid: columns at x = 20 / 290 / 560 / 830 / 1100 (260 wide, 270 pitch); a
+     Cylinder tile is 260x250, a BinarySensor tile 260x120. A section label is 20
+     tall and the band under it starts 26 lower, so the label breaks the row rhythm
+     deliberately - it is not a tile. See FG_01.content for the full grid note.
+
+     EACH GRIP SENSOR SITS IN ITS OWN ARM'S BAND, immediately after that arm's
+     gripper, because that is the pairing that matters: the gripper tile says where
+     the jaws are and the sensor tile says whether anything is between them, and the
+     two disagree exactly when something has gone wrong. -->
+<div id="FG03_Devices" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-width-unit="%" data-tchmi-height-unit="%">
+
+<div id="FG03_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="FG_03 - transfer and flip" class="headline-2">
+</div>
+
+<div id="FG03_Module" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/PackML_BaseModul.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="48" data-tchmi-top-unit="px" data-tchmi-width="650" data-tchmi-width-unit="px" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-module="%s%ADS.PLC1.MAIN.Machine.FG_03.HMI%/s%">
+</div>
+
+<div id="FG03_Arm2Label" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="413" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Arm 2 - picks out of slot 1">
+</div>
+
+<!-- Arm 2 band (y 110..360) -->
+<div id="FG03_Y_AxisX2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="439" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisX2::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisX2::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG03_Y_AxisY2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="290" data-tchmi-left-unit="px" data-tchmi-top="439" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisY2::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisY2::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG03_Y_Gripper2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="560" data-tchmi-left-unit="px" data-tchmi-top="439" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_Gripper2::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_Gripper2::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG03_B_Detect2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/BinarySensor.usercontrol" data-tchmi-left="830" data-tchmi-left-unit="px" data-tchmi-top="439" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-sensor="%s%ADS.PLC1.MAIN.Machine.FG_03.B_Detect2::DigitalSensor_HMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.B_Detect2::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG03_Arm1Label" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="709" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Arm 1 - flips and places into slot 2">
+</div>
+
+<!-- Arm 1 band (y 406..656, continued at y 666..916) -->
+<div id="FG03_Y_AxisX1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="735" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisX1::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisX1::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG03_Y_AxisY1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="290" data-tchmi-left-unit="px" data-tchmi-top="735" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisY1::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisY1::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG03_Y_AxisR1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="560" data-tchmi-left-unit="px" data-tchmi-top="735" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisR1::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_AxisR1::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG03_Y_Gripper1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="830" data-tchmi-left-unit="px" data-tchmi-top="735" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_Gripper1::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.Y_Gripper1::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG03_B_Detect1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/BinarySensor.usercontrol" data-tchmi-left="1100" data-tchmi-left-unit="px" data-tchmi-top="735" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-sensor="%s%ADS.PLC1.MAIN.Machine.FG_03.B_Detect1::DigitalSensor_HMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_03.B_Detect1::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<!-- Group-level readout, in the free space beside the state machine (which spans
+     x 20..820, y 73..394). The two lamps are not faults - they are what the LAST
+     RESET FOUND in the grippers, which is what tells an operator why the reset took
+     the route it took: straight home, back into slot 1, or on into slot 2. -->
+
+
+
+
+
+
+
+
+<div id="TcHmiStateMachineV2_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiPackML.TcHmiStateMachineV2" data-tchmi-height="321" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="800" data-tchmi-width-unit="px" data-tchmi-unit-mode-current="%s%ADS.PLC1.MAIN.Machine.FG_03.HMI::Status::Mode%/s%" data-tchmi-command="%s%ADS.PLC1.MAIN.Machine.FG_03.HMI::Command::State%/s%" data-tchmi-state-current="%s%ADS.PLC1.MAIN.Machine.FG_03.HMI::Status::State%/s%">
+</div>
+<div id="Cmd_Clear_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="720" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="46" data-tchmi-height-unit="px" data-tchmi-text="Complete">
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.MAIN.Machine.FG_03.HMI::Command::State%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:server#/definitions/ADS-PLC1.Tc3_PackML_V2.E_PMLCommand",
+          "value": 10
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
+{
+  "color": "rgba(0, 114, 255, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
+{
+  "left": 1,
+  "right": 1,
+  "top": 1,
+  "bottom": 1,
+  "leftUnit": "px",
+  "rightUnit": "px",
+  "topUnit": "px",
+  "bottomUnit": "px"
+}
+</script>
+
+
+</div>
+</div>

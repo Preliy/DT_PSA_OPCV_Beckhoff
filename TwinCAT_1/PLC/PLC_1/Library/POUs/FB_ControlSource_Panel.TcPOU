@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_ControlSource_Panel" Id="{0069ad3a-4634-4cc8-945c-2be014e898c3}" SpecialFunc="None">
+    <Declaration><![CDATA[// ============================================================================
+// The physical operator panel, H_ControlPanel, as a PackML control source.
+//
+// WHY A CONTROL SOURCE AND NOT A DEVICE. FB_ControlSource already contains the
+// whole START/STOP/RESET ladder, and ST_PackML_Control_Simplified declares its
+// three *Pressed members AT %I* - so three of the eight buttons need no code at
+// all: they are linked in Mapping_PLC.xml. Only the other five are translated here.
+//
+// Twin bit layout, verified 2026-08-20 against the live PanelSampler:
+//   StatusData bit0 START  bit1 RESET  bit2 STOP    bit3 CLEAR
+//              bit4 ABORT  bit5 PRODUCTION  bit6 MAINTANANCE  bit7 MANUAL
+//   ControlData carries each button's own lamp at the same bit.
+//
+// DELIBERATE DEVIATION: the SPT library says Abort "should not be directly
+// commanded from any user inteface". This panel does exactly that - chosen
+// knowingly by the project owner over routing the button into the safety chain.
+FUNCTION_BLOCK FB_ControlSource_Panel EXTENDS FB_ControlSource
+VAR
+	// The five buttons the base does not handle. START / STOP / RESET are the
+	// inherited MainPMLControl_Simplified.*Pressed members and are linked there.
+	ClearPressed AT %I* : BOOL;
+	AbortPressed AT %I* : BOOL;
+	ProductionPressed AT %I* : BOOL;
+	MaintenancePressed AT %I* : BOOL;
+	ManualPressed AT %I* : BOOL;
+
+	// Button lamps, ControlData bits 0..7 in panel order.
+	LampStart AT %Q* : BOOL;
+	LampReset AT %Q* : BOOL;
+	LampStop AT %Q* : BOOL;
+	LampClear AT %Q* : BOOL;
+	LampAbort AT %Q* : BOOL;
+	LampProduction AT %Q* : BOOL;
+	LampMaintenance AT %Q* : BOOL;
+	LampManual AT %Q* : BOOL;
+
+	// Written by MAIN each scan.
+	_Flash : BOOL;		// shared flash phase, from the signal tower
+	_SafetyOk : BOOL;	// the machine's derived safety chain
+
+	ButtonTrigger : R_TRIG;
+
+	StartFlash : BOOL;
+	StartSolid : BOOL;
+	ResetFlash : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="CyclicLogic" Id="{763987a5-8f5f-4332-97cf-d61d184249f7}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Until RegisterExternalController has run, the base has no module to talk to
+// and its CyclicLogic would dereference a null interface.
+IF NOT Registered THEN
+	RETURN;
+END_IF
+
+// Before SUPER^: the base's command R_TRIG folds StateCommand / ModeCommand
+// changes into its clock, so a command written now is acted on this scan.
+TranslateButtons();
+
+SUPER^.CyclicLogic();
+
+ReleaseCommandLatch();
+
+// AFTER SUPER^, which has just recomputed the permissives. Vetoing them here gates
+// the NEXT scan's command ladder, and keeps the lamps honest - a vetoed button
+// stays dark instead of inviting a press that would do nothing.
+IF NOT _SafetyOk THEN
+	MainPMLControl_Simplified.StartPermissive := FALSE;
+	MainPMLControl_Simplified.ResetPermissive := FALSE;
+END_IF
+
+DriveLamps();]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="DriveLamps" Id="{9d0ccf73-2371-41a5-bd20-48f553e1ad5a}">
+      <Implementation>
+        <ST><![CDATA[// The three rows of state-lamp.md that name a button, plus five lamps the table
+// says nothing about. The latter are a project choice and are marked as such.
+
+// --- Ready to Start -> Start Button Flashing --------------------------------
+// The table says Idle only. StartPermissive is Idle OR Held, so both are tested:
+// the lamp then reflects what a press would actually do.
+StartFlash := (MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Idle)
+			AND MainPMLControl_Simplified.StartPermissive;
+
+// --- Running -> Start Button Solid ------------------------------------------
+// NOTE this row is NOT the same set as the green lamp's Running row: the button
+// stays solid through Suspending and Suspended, the tower's green does not.
+StartSolid :=	(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Starting)
+			OR	(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Execute)
+			OR	(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Completing)
+			OR	(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Unholding)
+			OR	(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Suspending)
+			OR	(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Suspended)
+			OR	(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Unsuspending);
+
+// --- Ready to Reset -> Reset Button Flashing --------------------------------
+// Aborted, Complete and Stopped - which is exactly ResetPermissive, so the
+// vetoed permissive alone carries it.
+ResetFlash := MainPMLControl_Simplified.ResetPermissive;
+
+LampStart	:= (StartFlash AND _Flash) OR StartSolid;
+LampReset	:= ResetFlash AND _Flash;
+
+// --- Beyond the table -------------------------------------------------------
+// state-lamp.md does not cover these five. Solid-when-actionable for the command
+// buttons, solid-on-active for the mode buttons.
+LampStop	:= MainPMLControl_Simplified.StopPermissive;
+LampClear	:= (MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Aborted);
+LampAbort	:= ((MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Aborting)
+			 OR		(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Aborted)
+			 OR		(MainPMLControl_Standard.CurrentState = Tc3_PackML_V2.E_PMLState.ePMLState_Clearing));
+
+LampProduction		:= (MainPMLControl_Standard.CurrentMode = E_PMLUnitMode.ePMLUnitMode_Production);
+LampMaintenance	:= (MainPMLControl_Standard.CurrentMode = E_PMLUnitMode.ePMLUnitMode_Maintenance);
+LampManual			:= (MainPMLControl_Standard.CurrentMode = E_PMLUnitMode.ePMLUnitMode_Manual);]]></ST>
+      </Implementation>
+    </Action>
+    <Property Name="Flash" Id="{c5622e3c-ef09-4187-bb56-b413b97b5e24}">
+      <Declaration><![CDATA[// Shared flash phase, taken from the signal tower so every flashing lamp on the
+// machine blinks together.
+PROPERTY Flash : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9c78163b-ac72-4a83-b12a-413adf2ee937}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Flash := _Flash;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{aeb997c9-c4ed-4ff7-b8b9-56e999d5aee5}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Flash := Flash;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Action Name="ReleaseCommandLatch" Id="{744953f5-2149-443e-8537-d17891662ee3}">
+      <Implementation>
+        <ST><![CDATA[// Identical to FB_ControlSource_HMI's latch release, and needed for the same
+// reason: the base stamps StateCommandLast once it has acted, so the same button
+// pressed twice would be swallowed. ModeCommand is deliberately NOT cleared.
+IF MainPMLControl_Standard.StateCommand <> E_PMLCommand.ePMLCommand_Undefined THEN
+	MainPMLControl_Standard.StateCommand		:= E_PMLCommand.ePMLCommand_Undefined;
+	MainPMLControl_Standard.StateCommandLast	:= E_PMLCommand.ePMLCommand_Undefined;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Property Name="SafetyOk" Id="{61f7dec3-6e2a-48f3-8fa0-822935f6e774}">
+      <Declaration><![CDATA[// The machine's derived safety chain, written by MAIN each scan. FALSE vetoes
+// the Start and Reset permissives.
+PROPERTY SafetyOk : BOOL]]></Declaration>
+      <Get Name="Get" Id="{0cba687c-cd4c-4138-9705-2a9f5c045717}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SafetyOk := _SafetyOk;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{99aec715-b028-4b2b-b6db-6664c5ccae8e}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_SafetyOk := SafetyOk;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Action Name="TranslateButtons" Id="{f110908d-a1c7-49e8-b601-758d2e8be976}">
+      <Implementation>
+        <ST><![CDATA[// One edge across all five, then priority order. Two buttons pressed on the same
+// scan resolve by the ELSIF chain rather than fighting.
+ButtonTrigger(CLK :=	ClearPressed
+					OR	AbortPressed
+					OR	ProductionPressed
+					OR	MaintenancePressed
+					OR	ManualPressed);
+
+IF ButtonTrigger.Q THEN
+	IF AbortPressed THEN
+		// See the deviation note in the declaration header.
+		MainPMLControl_Standard.StateCommand := E_PMLCommand.ePMLCommand_Abort;
+
+	ELSIF ClearPressed THEN
+		MainPMLControl_Standard.StateCommand := E_PMLCommand.ePMLCommand_Clear;
+
+	ELSIF ProductionPressed THEN
+		MainPMLControl_Standard.ModeCommand := E_PMLUnitMode.ePMLUnitMode_Production;
+
+	ELSIF MaintenancePressed THEN
+		MainPMLControl_Standard.ModeCommand := E_PMLUnitMode.ePMLUnitMode_Maintenance;
+
+	ELSIF ManualPressed THEN
+		MainPMLControl_Standard.ModeCommand := E_PMLUnitMode.ePMLUnitMode_Manual;
+	END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

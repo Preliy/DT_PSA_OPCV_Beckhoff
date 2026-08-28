@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_HMI_FG_01" Id="{c4a80f13-7e56-4b92-9d0a-3f81b2e6c705}">
+    <Declaration><![CDATA[// FG_01 HMI interface - ONE struct for the group tile.
+//
+// Extends ST_BaseModule_HMI, so it inherits the whole SPT module interface:
+//   Config.Name / LogStateChanges / LogModeChanges / ModeNames
+//   Command.Mode / State / Activate*Log / Deactivat*Log      (writable)
+//   Status.Busy / Error / ErrorID / Mode / State / HMIControlAvailable
+//   Sequence.StepIndex / StepName
+//   StateName
+//
+// The one added member CANNOT be called Config, Command, Status or Sequence -
+// those are inherited and redeclaring them is a compile error. Hence Identify.
+//
+// FG_01 bound a plain ST_BaseModule_HMI while its reader had a status bit that
+// echoed the trigger: there was no group-level fact that no device already owned.
+// A real verdict and three distinguishable failure modes are exactly such a fact.
+// Same shape as ST_HMI_FG_02, which is the struct this one was modelled on.
+TYPE ST_HMI_FG_01 EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Identify	: ST_FG_01_Identify_Status;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

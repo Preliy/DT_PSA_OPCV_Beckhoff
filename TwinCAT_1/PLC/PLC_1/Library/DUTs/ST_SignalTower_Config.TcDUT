@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_SignalTower_Config" Id="{b938f046-8dba-44f7-bb0c-61d623e781b6}">
+    <Declaration><![CDATA[TYPE ST_SignalTower_Config :
+STRUCT
+	// Half period of the flash clock. Writable from the panel, which is the only
+	// practical way to tune a blink rate against a running machine.
+	FlashTime : TIME;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,159 @@
+<!-- FG_05. Split into the cap handling unit and the cap feed, because they
+     run on different clocks: the handling unit is the pallet cycle, and the feed
+     runs continuously outside it (see FG_05.DriveBunker). An operator who cannot
+     see that split will read a stopped feed as a stopped station.
+
+     Grid: columns at x = 20 / 290 / 560 (260 wide, 270 pitch); small tiles are
+     260x120, tall tiles (Cylinder, Camera) 260x250. The capping readout takes
+     the free column-2 slot of the second handling band rather than a row of its
+     own. See FG_01.content for the full grid note. -->
+<div id="FG05_Devices" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-width-unit="%" data-tchmi-height-unit="%">
+
+<div id="FG05_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="FG_05 - capping" class="headline-2">
+</div>
+
+<div id="FG05_Module" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/PackML_BaseModul.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="48" data-tchmi-top-unit="px" data-tchmi-width="650" data-tchmi-width-unit="px" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-module="%s%ADS.PLC1.MAIN.Machine.FG_05.HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG05_UnitLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="23" data-tchmi-left-unit="px" data-tchmi-top="436" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Cap handling unit - runs the pallet cycle">
+</div>
+
+<!-- Handling band 1 (y 110..360) -->
+<div id="FG05_Y_AxisX" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="23" data-tchmi-left-unit="px" data-tchmi-top="462" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_AxisX::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_AxisX::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG05_Y_AxisZ1" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="293" data-tchmi-left-unit="px" data-tchmi-top="462" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_AxisZ1::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_AxisZ1::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG05_Y_AxisZ2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="563" data-tchmi-left-unit="px" data-tchmi-top="462" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_AxisZ2::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_AxisZ2::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<!-- Handling band 2 (y 370..620) -->
+<div id="FG05_Y_AxisR" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="23" data-tchmi-left-unit="px" data-tchmi-top="722" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_AxisR::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_AxisR::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG05_Y_Gripper" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="293" data-tchmi-left-unit="px" data-tchmi-top="722" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_Gripper::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_Gripper::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<!-- Group-level readout, in the same 260x120 frame as a small device tile. -->
+<div id="FG05_ResultFrame" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="563" data-tchmi-left-unit="px" data-tchmi-top="722" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px">
+</div>
+
+<div id="FG05_ResultTitle" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="573" data-tchmi-left-unit="px" data-tchmi-top="732" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Capping result">
+</div>
+
+<div id="FG05_FaultLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="573" data-tchmi-left-unit="px" data-tchmi-top="764" data-tchmi-top-unit="px" data-tchmi-width="84" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Fault code">
+</div>
+
+<div id="FG05_FaultValue" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="667" data-tchmi-left-unit="px" data-tchmi-top="763" data-tchmi-top-unit="px" data-tchmi-width="80" data-tchmi-width-unit="px" data-tchmi-height="22" data-tchmi-height-unit="px" data-tchmi-is-read-only="true" data-tchmi-value="%s%ADS.PLC1.MAIN.Machine.FG_05.HMI::Capping::FaultCode%/s%">
+</div>
+
+<div id="FG05_ResumeLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="573" data-tchmi-left-unit="px" data-tchmi-top="820" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Start resumes from">
+</div>
+
+<div id="FG05_ResumeValue" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="729" data-tchmi-left-unit="px" data-tchmi-top="819" data-tchmi-top-unit="px" data-tchmi-width="60" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-is-read-only="true" data-tchmi-value="%s%ADS.PLC1.MAIN.Machine.FG_05.HMI::Capping::ResumePoint%/s%">
+</div>
+
+<div id="FG05_LastResultLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="595" data-tchmi-left-unit="px" data-tchmi-top="798" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Last read OK">
+</div>
+
+<div id="FG05_LastResultLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="573" data-tchmi-left-unit="px" data-tchmi-top="798" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(125, 125, 125, 1)"
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%s%ADS.PLC1.MAIN.Machine.FG_05.HMI::Capping::LastResultOK%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.MAIN.Machine.FG_05.HMI::Capping::LastResultOK%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%FG05_LastResultLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(10, 255, 0, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%FG05_LastResultLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(125, 125, 125, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+
+<!-- B_Detect takes the lower half of column 3, under the capping readout - it is a
+     property of the handling unit, not of the feed, and B_Part over on the feed
+     side is deliberately far from it. The two answer different questions and the
+     names are close enough to invite the mistake: B_Part says a cap has ARRIVED at
+     the pick position, B_Detect says this gripper is CARRYING one. -->
+<div id="FG05_B_Detect" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/BinarySensor.usercontrol" data-tchmi-left="563" data-tchmi-left-unit="px" data-tchmi-top="852" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-sensor="%s%ADS.PLC1.MAIN.Machine.FG_05.B_Detect::DigitalSensor_HMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_05.B_Detect::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG05_FeedLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="833" data-tchmi-left-unit="px" data-tchmi-top="432" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Cap feed - runs continuously, outside the cycle">
+</div>
+
+<!-- Feed band (y 664..914). Column 2 stacks two small tiles into the height of
+     one tall one: 664..784 and 794..914. -->
+<div id="FG05_Y_CapsSourceStopper" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="833" data-tchmi-left-unit="px" data-tchmi-top="458" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_CapsSourceStopper::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_CapsSourceStopper::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG05_P_Camera" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Camera.usercontrol" data-tchmi-left="1103" data-tchmi-left-unit="px" data-tchmi-top="458" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-camera="%s%ADS.PLC1.MAIN.Machine.FG_05.P_Camera.HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG05_B_Part" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/BinarySensor.usercontrol" data-tchmi-left="1373" data-tchmi-left-unit="px" data-tchmi-top="458" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-sensor="%s%ADS.PLC1.MAIN.Machine.FG_05.B_Part::DigitalSensor_HMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_05.B_Part::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG05_Y_CapsSource" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Bunker.usercontrol" data-tchmi-left="1373" data-tchmi-left-unit="px" data-tchmi-top="588" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-bunker="%s%ADS.PLC1.MAIN.Machine.FG_05.Y_CapsSource.HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="TcHmiStateMachineV2_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiPackML.TcHmiStateMachineV2" data-tchmi-height="321" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="800" data-tchmi-width-unit="px" data-tchmi-state-current="%s%ADS.PLC1.MAIN.Machine.FG_05.HMI::Status::State%/s%" data-tchmi-unit-mode-current="%s%ADS.PLC1.MAIN.Machine.FG_05.HMI::Status::Mode%/s%" data-tchmi-command="%s%ADS.PLC1.MAIN.Machine.FG_05.HMI::Command::State%/s%">
+</div>
+</div>

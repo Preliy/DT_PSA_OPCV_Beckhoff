@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractBinaryDrive_Status" Id="{d43cc7f6-42b9-4793-8a44-67067ffb5ff7}">
+    <Declaration><![CDATA[TYPE ST_AbstractBinaryDrive_Status :
+STRUCT
+	Running   : BOOL;
+	Active    : BOOL;
+	Forward   : BOOL;
+	Backward  : BOOL;
+	Error     : BOOL;
+	ErrorCode : UDINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

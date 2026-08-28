@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_ControlSource_HMI" Id="{507310ff-a833-41f2-a0b6-55490105062a}" SpecialFunc="None">
+    <Declaration><![CDATA[// ============================================================================
+// Connects the TwinCAT HMI to the machine's PackML state machine.
+// The HMI binds straight to the inherited structs - FB_ControlSource already
+// exposes the right shape in the standard PackML types
+// (MainPMLControl_Standard.CurrentState/CurrentMode/StateCommand/ModeCommand,
+// MainPMLControl_Simplified.*Permissive). The base refreshes the actuals,
+// recomputes the permissives and acts on a changed command; all this block adds is
+// the command latch release below.
+// Registered by MAIN via Machine.RegisterExternalController(THIS^).
+{ attribute 'TcHmiSymbol.AddSymbol' }
+FUNCTION_BLOCK FB_ControlSource_HMI EXTENDS FB_ControlSource
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="CyclicLogic" Id="{82053f56-572d-47cb-bbf7-d0dffcccdcc9}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Until RegisterExternalController has run, the base has no module to talk to
+// and its CyclicLogic would dereference a null interface.
+IF NOT Registered THEN
+	RETURN;
+END_IF
+
+SUPER^.CyclicLogic();
+
+ReleaseCommandLatch();]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="ReleaseCommandLatch" Id="{d1350bff-1498-48ca-999f-3a11ae1a2138}">
+      <Implementation>
+        <ST><![CDATA[// The base treats a command as "StateCommand differs from StateCommandLast", and
+// stamps StateCommandLast once it has acted, so pressing the same button twice in
+// a row would be swallowed the second time. Clearing both together, after the base
+// has acted, makes every press count.
+// ModeCommand is deliberately NOT cleared - selecting the same mode twice is a
+// no-op anyway.
+IF MainPMLControl_Standard.StateCommand <> E_PMLCommand.ePMLCommand_Undefined THEN
+	MainPMLControl_Standard.StateCommand		:= E_PMLCommand.ePMLCommand_Undefined;
+	MainPMLControl_Standard.StateCommandLast	:= E_PMLCommand.ePMLCommand_Undefined;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,32 @@
+# This module is its own repository, so it states its own rules. The main repo's
+# .gitignore never applied inside here - a nested repository has its own - and its
+# root-anchored /_data/ rule was doing nothing for this module's _data/ even when the
+# two lived in one tree.
+#
+# _data/ is deliberately NOT ignored. Third-party source material travels with this
+# module; it is gated by a permission prompt, not by being absent.
+
+__pycache__/
+*.pyc
+
+# The engineering TOOLS, and their own separate repository - the whole of this
+# module's private half. Its skills, its CLAUDE.md, its workflow guideline and its
+# committed machine handoff are all public, in _workflow/.
+/_private/
+
+# There is deliberately no .claude/ here - _workflow/ holds the agent material and its
+# skills are read by path. This rule is a guard against a tool creating one.
+/.claude/
+/_workflow/settings.local.json
+
+scheduled_tasks.lock
+
+# Generated documentation. build_wiki.py flattens this module's _docs/ into _wiki/,
+# ready to push to THIS repository's own GitHub wiki - a wiki is a separate repo with a
+# flat namespace, so the flat view has to be rendered somewhere. It is a build artifact,
+# rebuilt on demand and published by publish_wiki.py, never a second committed copy of
+# documentation that already exists here.
+/_wiki/
+
+# TwinCAT build artifacts are handled by TwinCAT_1/.gitignore, which is closer to what
+# it describes. Do not duplicate those rules here.

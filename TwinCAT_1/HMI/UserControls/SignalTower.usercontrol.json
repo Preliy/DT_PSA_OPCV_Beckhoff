@@ -1,0 +1,24 @@
+{
+  "parameters": [
+    {
+      "allowSymbolExpressionsInObject": false,
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setSignalTowerHMI",
+      "propertyGetterName": "getSignalTowerHMI",
+      "refTo": "",
+      "name": "data-tchmi-signaltowerhmi",
+      "displayName": "SignalTowerHMI",
+      "visible": true,
+      "type": "tchmi:server#/definitions/ADS-PLC1.ST_SignalTower_HMI",
+      "category": "",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "SignalTowerHMI"
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.5.1/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": ""
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_IlluminatedButton_Config" Id="{15b52c8e-85bf-4d09-aeef-bca5edb48b54}">
+    <Declaration><![CDATA[TYPE ST_IlluminatedButton_Config :
+STRUCT
+	// Contact polarity. TRUE means the input is NORMALLY CLOSED - it reads TRUE
+	// while healthy and FALSE while pressed - which is how a real emergency stop
+	// is wired, and how SIM_1 presents the twin's buttons. Both mushrooms set it
+	// TRUE. Surfaced on the panel because getting it wrong is invisible and
+	// dangerous - see _workflow/reference/plc-io-exceptions.md.
+	Inverted : BOOL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

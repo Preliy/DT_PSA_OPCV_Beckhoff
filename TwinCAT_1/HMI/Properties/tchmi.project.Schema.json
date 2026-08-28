@@ -1,0 +1,2598 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "EStop": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\EStop.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/EStop"
+    },
+    "PLC1.ARRAY_0..31_OF-STRING-80": {
+      "items": {
+        "$ref": "tchmi:general#/definitions/STRING%2880%29"
+      },
+      "maxItems": 32,
+      "minItems": 32,
+      "type": "array"
+    },
+    "PLC1.SPT_Components.E_DebounceMode": {
+      "attributes": {
+        "qualified_only": "",
+        "strict": ""
+      },
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "options": [
+        {
+          "label": "RawInput",
+          "value": 0
+        },
+        {
+          "label": "SimpleFlickerFilter",
+          "value": 1
+        },
+        {
+          "label": "EdgeDetectFilter",
+          "value": 2
+        },
+        {
+          "label": "MovingAverage",
+          "value": 3
+        }
+      ],
+      "type": "integer"
+    },
+    "PLC1.SPT_Components.E_SensorSimulationMode": {
+      "attributes": {
+        "qualified_only": "",
+        "strict": ""
+      },
+      "enum": [
+        0,
+        1
+      ],
+      "options": [
+        {
+          "label": "InputDriven",
+          "value": 0
+        },
+        {
+          "label": "Periodic",
+          "value": 1
+        }
+      ],
+      "type": "integer"
+    },
+    "PLC1.SPT_Components.ST_Cylinder_Command": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "3",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Extend": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "ExtendTime": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/LREAL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "Retract": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "RetractTime": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/LREAL"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        }
+      },
+      "required": [
+        "Extend",
+        "Retract",
+        "ExtendTime",
+        "RetractTime"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_Components.ST_Cylinder_Config": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "ExtendTime": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/LREAL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "RetractTime": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/LREAL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "ExtendTime",
+        "RetractTime"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_Components.ST_Cylinder_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_Components.ST_Cylinder_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_Components.ST_Cylinder_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_Components.ST_Cylinder_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_Components.ST_Cylinder_Status": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Extended": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Extending": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "Retracted": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Retracting": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        }
+      },
+      "required": [
+        "Extended",
+        "Retracted",
+        "Extending",
+        "Retracting"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_Components.ST_DigitalSensor_Command": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "3",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "type": "object"
+    },
+    "PLC1.SPT_Components.ST_DigitalSensor_Config": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "DebounceMode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_Components.E_DebounceMode"
+            },
+            {
+              "comment": "Status information",
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "DebounceTime": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/TIME"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Inverted": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "SimulationMode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_Components.E_SensorSimulationMode"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "SimulationTimebase": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/UDINT"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        }
+      },
+      "required": [
+        "DebounceMode",
+        "DebounceTime",
+        "Inverted",
+        "SimulationMode",
+        "SimulationTimebase"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_Components.ST_DigitalSensor_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_Components.ST_DigitalSensor_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_Components.ST_DigitalSensor_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_Components.ST_DigitalSensor_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_Components.ST_DigitalSensor_Status": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Active": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "TimeActive": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/LREAL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "TimeInactive": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/LREAL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Active",
+        "TimeActive",
+        "TimeInactive"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_PackMLBase.E_PMLUnitMode": {
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "options": [
+        {
+          "label": "ePMLUnitMode_Invalid",
+          "value": 0
+        },
+        {
+          "label": "ePMLUnitMode_Production",
+          "value": 1
+        },
+        {
+          "label": "ePMLUnitMode_Maintenance",
+          "value": 2
+        },
+        {
+          "label": "ePMLUnitMode_Manual",
+          "value": 3
+        },
+        {
+          "label": "ePMLUnitMode_UserMode1",
+          "value": 4
+        },
+        {
+          "label": "ePMLUnitMode_UserMode2",
+          "value": 5
+        },
+        {
+          "label": "ePMLUnitMode_UserMode3",
+          "value": 6
+        },
+        {
+          "label": "ePMLUnitMode_UserMode4",
+          "value": 7
+        },
+        {
+          "label": "ePMLUnitMode_UserMode5",
+          "value": 8
+        },
+        {
+          "label": "ePMLUnitMode_UserMode6",
+          "value": 9
+        },
+        {
+          "label": "ePMLUnitMode_UserMode7",
+          "value": 10
+        },
+        {
+          "label": "ePMLUnitMode_UserMode8",
+          "value": 11
+        },
+        {
+          "label": "ePMLUnitMode_UserMode9",
+          "value": 12
+        },
+        {
+          "label": "ePMLUnitMode_UserMode10",
+          "value": 13
+        },
+        {
+          "label": "ePMLUnitMode_UserMode11",
+          "value": 14
+        },
+        {
+          "label": "ePMLUnitMode_UserMode12",
+          "value": 15
+        },
+        {
+          "label": "ePMLUnitMode_UserMode13",
+          "value": 16
+        },
+        {
+          "label": "ePMLUnitMode_UserMode14",
+          "value": 17
+        },
+        {
+          "label": "ePMLUnitMode_UserMode15",
+          "value": 18
+        },
+        {
+          "label": "ePMLUnitMode_UserMode16",
+          "value": 19
+        },
+        {
+          "label": "ePMLUnitMode_UserMode17",
+          "value": 20
+        },
+        {
+          "label": "ePMLUnitMode_UserMode18",
+          "value": 21
+        },
+        {
+          "label": "ePMLUnitMode_UserMode19",
+          "value": 22
+        },
+        {
+          "label": "ePMLUnitMode_UserMode20",
+          "value": 23
+        },
+        {
+          "label": "ePMLUnitMode_UserMode21",
+          "value": 24
+        },
+        {
+          "label": "ePMLUnitMode_UserMode22",
+          "value": 25
+        },
+        {
+          "label": "ePMLUnitMode_UserMode23",
+          "value": 26
+        },
+        {
+          "label": "ePMLUnitMode_UserMode24",
+          "value": 27
+        },
+        {
+          "label": "ePMLUnitMode_UserMode25",
+          "value": 28
+        },
+        {
+          "label": "ePMLUnitMode_UserMode26",
+          "value": 29
+        },
+        {
+          "label": "ePMLUnitMode_UserMode27",
+          "value": 30
+        },
+        {
+          "label": "ePMLUnitMode_UserMode28",
+          "value": 31
+        }
+      ],
+      "type": "integer"
+    },
+    "PLC1.SPT_PackMLBase.ST_ComponentBase_Command": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "3",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Reset": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "SimulatedOperation": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "StandardOperation": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "SimulatedOperation",
+        "StandardOperation",
+        "Reset"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_PackMLBase.ST_ComponentBase_Config": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Name": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/STRING%2880%29"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "Name"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_PackMLBase.ST_ComponentBase_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_PackMLBase.ST_ComponentBase_Status": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Busy": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Error": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "ErrorID": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/UDINT"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "HMIControlAvailable": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "comment": "Set TRUE *FROM PLC* when HMI requests can be processed",
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "InSimulation": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "InSimulation",
+        "Busy",
+        "Error",
+        "ErrorID",
+        "HMIControlAvailable"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Command": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "3",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "ActivateModeLog": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "comment": "HMI requests to enable the module",
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "ActivateStateLog": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "comment": "HMI requests to enable the module",
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "DeactivatModeLog": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "comment": "HMI requests to disable the module",
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "DeactivateStateLog": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "comment": "HMI requests to disable the module",
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Mode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.E_PMLUnitMode"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "State": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.Tc3_PackML_V2.E_PMLCommand"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "Mode",
+        "State",
+        "ActivateStateLog",
+        "DeactivateStateLog",
+        "ActivateModeLog",
+        "DeactivatModeLog"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Config": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "LogModeChanges": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "comment": "Toggle to permit or suppress state change logging (Should be tied to HMI setting to optionally reduce event logger clutter)",
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "LogStateChanges": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "comment": "Toggle to permit or suppress state change logging (Should be tied to HMI setting to optionally reduce event logger clutter)",
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "ModeNames": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ARRAY_0..31_OF-STRING-80"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Name": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/STRING%2880%29"
+            },
+            {
+              "comment": "Human-readable module name for user-side messaging",
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "Name",
+        "LogStateChanges",
+        "LogModeChanges",
+        "ModeNames"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_PackMLBase.ST_PackMLBaseModule_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status"
+      ],
+      "type": "object"
+    },
+    "PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Status": {
+      "additionalProperties": false,
+      "attributes": {
+        "OPC.UA.DA": "1",
+        "OPC.UA.DA.Access": "1",
+        "OPC.UA.DA.StructuredType": "1"
+      },
+      "properties": {
+        "Busy": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Error": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "ErrorID": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/UDINT"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "HMIControlAvailable": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "Mode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.E_PMLUnitMode"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "State": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.Tc3_PackML_V2.E_PMLState"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        }
+      },
+      "required": [
+        "Busy",
+        "Error",
+        "ErrorID",
+        "Mode",
+        "State",
+        "HMIControlAvailable"
+      ],
+      "type": "object"
+    },
+    "PLC1.STRING-20": {
+      "allOf": [
+        {
+          "maxLength": 20
+        },
+        {
+          "$ref": "tchmi:general#/definitions/String"
+        }
+      ]
+    },
+    "PLC1.ST_AbstractBinaryDrive_Command": {
+      "additionalProperties": false,
+      "properties": {
+        "RunBackward": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "RunForward": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "RunForward",
+        "RunBackward"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractBinaryDrive_Config": {
+      "additionalProperties": false,
+      "properties": {
+        "StartTime": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/TIME"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "StartTime"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractBinaryDrive_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_HMI"
+        ],
+        "TcExtends": "SPT_PackMLBase.ST_ComponentBase_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Device": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractBinaryDrive_Status"
+            },
+            {
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "DeviceCommand": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractBinaryDrive_Command"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "DeviceConfig": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractBinaryDrive_Config"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "DeviceConfig",
+        "DeviceCommand",
+        "Device"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractBinaryDrive_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "Active": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Backward": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Error": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "ErrorCode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/UDINT"
+            },
+            {
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "Forward": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "Running": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "Running",
+        "Active",
+        "Forward",
+        "Backward",
+        "Error",
+        "ErrorCode"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractBunker_Command": {
+      "additionalProperties": false,
+      "properties": {
+        "RunConveyor": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "RunTable": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "RunTable",
+        "RunConveyor"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractBunker_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_HMI"
+        ],
+        "TcExtends": "SPT_PackMLBase.ST_ComponentBase_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Device": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractBunker_Status"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "DeviceCommand": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractBunker_Command"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "DeviceCommand",
+        "Device"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractBunker_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "ConveyorRunning": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "TableRunning": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "TableRunning",
+        "ConveyorRunning"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractCamera_Command": {
+      "additionalProperties": false,
+      "properties": {
+        "Enable": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Trigger": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "Enable",
+        "Trigger"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractCamera_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_HMI"
+        ],
+        "TcExtends": "SPT_PackMLBase.ST_ComponentBase_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Device": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractCamera_Status"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "DeviceCommand": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractCamera_Command"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "DeviceCommand",
+        "Device"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractCamera_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "Busy": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Ready": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "ResultOK": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "ResultValid": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Ready",
+        "Busy",
+        "ResultValid",
+        "ResultOK"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractLightSource_Command": {
+      "additionalProperties": false,
+      "properties": {
+        "Enable": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "Enable"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractLightSource_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_HMI"
+        ],
+        "TcExtends": "SPT_PackMLBase.ST_ComponentBase_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Device": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractLightSource_Status"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "DeviceCommand": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractLightSource_Command"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "DeviceCommand",
+        "Device"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractLightSource_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "Enabled": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Error": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "ErrorCode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BYTE"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Enabled",
+        "Error",
+        "ErrorCode"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractReader_Command": {
+      "additionalProperties": false,
+      "properties": {
+        "Enable": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Trigger": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "Enable",
+        "Trigger"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractReader_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_HMI"
+        ],
+        "TcExtends": "SPT_PackMLBase.ST_ComponentBase_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Device": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractReader_Status"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "DeviceCommand": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_AbstractReader_Command"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_ComponentBase_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "DeviceCommand",
+        "Device"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_AbstractReader_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "Enabled": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Error": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "ErrorCode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BYTE"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "Result": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "Triggered": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "Enabled",
+        "Triggered",
+        "Result",
+        "Error",
+        "ErrorCode"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_BaseModule_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_HMI"
+        ],
+        "TcExtends": "SPT_PackMLBase.ST_PackMLBaseModule_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Sequence": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_Sequence_Status"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "StateName": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.STRING-20"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "Sequence",
+        "StateName"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_Sequence_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "StepIndex": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/UDINT"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "StepName": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.STRING-20"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "StepIndex",
+        "StepName"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_TransferIndex_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.ST_BaseModule_HMI"
+        ],
+        "TcExtends": "ST_BaseModule_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Sequence": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_Sequence_Status"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "StateName": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.STRING-20"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "Station": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_TransferIndex_Status"
+            },
+            {
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "Sequence",
+        "StateName",
+        "Station"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_TransferIndex_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "FaultCode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/DINT"
+            },
+            {
+              "propertyOrder": 7
+            }
+          ]
+        },
+        "NextReady": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "Occupied": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "OperationDone": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "Ready": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "ReadyForOperation": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "SendToNext": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        }
+      },
+      "required": [
+        "Ready",
+        "Occupied",
+        "NextReady",
+        "SendToNext",
+        "ReadyForOperation",
+        "OperationDone",
+        "FaultCode"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_TransferLift_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.ST_BaseModule_HMI"
+        ],
+        "TcExtends": "ST_BaseModule_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Sequence": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_Sequence_Status"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "StateName": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.STRING-20"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "Station": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_TransferLift_Status"
+            },
+            {
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "Sequence",
+        "StateName",
+        "Station"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_TransferLift_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "FaultCode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/DINT"
+            },
+            {
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "NextReady": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "Occupied": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "PayloadIncoming": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "Ready": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "ReverseDirection": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        }
+      },
+      "required": [
+        "Ready",
+        "Occupied",
+        "NextReady",
+        "PayloadIncoming",
+        "ReverseDirection",
+        "FaultCode"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_TransferStopper_HMI": {
+      "additionalProperties": false,
+      "attributes": {
+        "$extends": [
+          "tchmi:project#/definitions/PLC1.ST_BaseModule_HMI"
+        ],
+        "TcExtends": "ST_BaseModule_HMI"
+      },
+      "properties": {
+        "Command": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Command"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Config": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Config"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "Sequence": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_Sequence_Status"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        },
+        "StateName": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.STRING-20"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "Station": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.ST_TransferStopper_Status"
+            },
+            {
+              "propertyOrder": 6
+            }
+          ]
+        },
+        "Status": {
+          "allOf": [
+            {
+              "$ref": "tchmi:project#/definitions/PLC1.SPT_PackMLBase.ST_PackMLBaseModule_Status"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        }
+      },
+      "required": [
+        "Config",
+        "Command",
+        "Status",
+        "Sequence",
+        "StateName",
+        "Station"
+      ],
+      "type": "object"
+    },
+    "PLC1.ST_TransferStopper_Status": {
+      "additionalProperties": false,
+      "properties": {
+        "FaultCode": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/DINT"
+            },
+            {
+              "propertyOrder": 5
+            }
+          ]
+        },
+        "NextReady": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 3
+            }
+          ]
+        },
+        "Occupied": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 2
+            }
+          ]
+        },
+        "Ready": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 1
+            }
+          ]
+        },
+        "SendToNext": {
+          "allOf": [
+            {
+              "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            {
+              "propertyOrder": 4
+            }
+          ]
+        }
+      },
+      "required": [
+        "Ready",
+        "Occupied",
+        "NextReady",
+        "SendToNext",
+        "FaultCode"
+      ],
+      "type": "object"
+    },
+    "PLC1.Tc3_PackML_V2.E_PMLCommand": {
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "options": [
+        {
+          "label": "ePMLCommand_Undefined",
+          "value": 0
+        },
+        {
+          "label": "ePMLCommand_Reset",
+          "value": 1
+        },
+        {
+          "label": "ePMLCommand_Start",
+          "value": 2
+        },
+        {
+          "label": "ePMLCommand_Stop",
+          "value": 3
+        },
+        {
+          "label": "ePMLCommand_Hold",
+          "value": 4
+        },
+        {
+          "label": "ePMLCommand_Unhold",
+          "value": 5
+        },
+        {
+          "label": "ePMLCommand_Suspend",
+          "value": 6
+        },
+        {
+          "label": "ePMLCommand_Unsuspend",
+          "value": 7
+        },
+        {
+          "label": "ePMLCommand_Abort",
+          "value": 8
+        },
+        {
+          "label": "ePMLCommand_Clear",
+          "value": 9
+        },
+        {
+          "label": "ePMLCommand_Complete",
+          "value": 10
+        }
+      ],
+      "type": "integer"
+    },
+    "PLC1.Tc3_PackML_V2.E_PMLState": {
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "options": [
+        {
+          "label": "ePMLState_Undefined",
+          "value": 0
+        },
+        {
+          "label": "ePMLState_Clearing",
+          "value": 1
+        },
+        {
+          "label": "ePMLState_Stopped",
+          "value": 2
+        },
+        {
+          "label": "ePMLState_Starting",
+          "value": 3
+        },
+        {
+          "label": "ePMLState_Idle",
+          "value": 4
+        },
+        {
+          "label": "ePMLState_Suspended",
+          "value": 5
+        },
+        {
+          "label": "ePMLState_Execute",
+          "value": 6
+        },
+        {
+          "label": "ePMLState_Stopping",
+          "value": 7
+        },
+        {
+          "label": "ePMLState_Aborting",
+          "value": 8
+        },
+        {
+          "label": "ePMLState_Aborted",
+          "value": 9
+        },
+        {
+          "label": "ePMLState_Holding",
+          "value": 10
+        },
+        {
+          "label": "ePMLState_Held",
+          "value": 11
+        },
+        {
+          "label": "ePMLState_Unholding",
+          "value": 12
+        },
+        {
+          "label": "ePMLState_Suspending",
+          "value": 13
+        },
+        {
+          "label": "ePMLState_Unsuspending",
+          "value": 14
+        },
+        {
+          "label": "ePMLState_Resetting",
+          "value": 15
+        },
+        {
+          "label": "ePMLState_Completing",
+          "value": 16
+        },
+        {
+          "label": "ePMLState_Complete",
+          "value": 17
+        }
+      ],
+      "type": "integer"
+    },
+    "PackML_BaseModul": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\PackML_BaseModul.usercontrol.json",
+      "id": "tchmi:project#/definitions/PackML_BaseModul",
+      "type": "object"
+    },
+    "PropertyFieldBool": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\PropertyFieldBool.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/PropertyFieldBool"
+    },
+    "SignalTower": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\SignalTower.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/SignalTower"
+    },
+    "UserControl1": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\UserControl1.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/UserControl1"
+    },
+    "Camera": {
+      "frameworkControlNamespace": "TcHmi.Controls.Beckhoff",
+      "frameworkControlType": "TcHmi.Controls.System.TcHmiUserControl",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkUserControlConfig": "UserControls\\Camera.usercontrol.json",
+      "type": "object",
+      "id": "tchmi:project#/definitions/Camera"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_TransferStopper_HMI" Id="{ab1b870f-2477-4848-8095-4ef704da54e9}">
+    <Declaration><![CDATA[// Stopper unit HMI interface - ONE struct per tile.
+//
+// Extends ST_BaseModule_HMI, so Config, Command, Status, Sequence and StateName
+// all arrive inherited from the SPT module interface. See ST_TransferIndex_HMI
+// for the full member list and the bridge that keeps it current.
+//
+// Still no command block of its own: a stopper is jogged through its one SPT
+// component - MAIN.Machine.FG_Transport.Stopper02.Y_Stopper.SolenoidHMI.Command.Extend
+TYPE ST_TransferStopper_HMI EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Station	: ST_TransferStopper_Status;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

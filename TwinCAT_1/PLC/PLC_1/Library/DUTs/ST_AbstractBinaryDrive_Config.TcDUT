@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractBinaryDrive_Config" Id="{4e335096-6191-4395-8e06-7bd38ae16042}">
+    <Declaration><![CDATA[TYPE ST_AbstractBinaryDrive_Config :
+STRUCT
+	StartTime : TIME;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

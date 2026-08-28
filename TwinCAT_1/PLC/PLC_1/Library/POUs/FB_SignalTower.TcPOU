@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_SignalTower" Id="{cbd7879e-f095-4f4e-a222-b22099bfefdf}" SpecialFunc="None">
+    <Declaration><![CDATA[// ============================================================================
+// Four colour signal tower, driven from the machine's PackML state.
+// Implements _workflow/reference/state-lamp.md. Two things that page is misread on:
+//   1. the rows are INDEPENDENT CONDITIONS, not a priority ladder - two lamps can
+//      legitimately be lit at once;
+//   2. its "Completed" column is V4 spelling. This project runs SPT V3.9, where the
+//      state is ePMLState_Complete and ePMLState_Completed will not compile.
+//
+// Amber and blue have no source in this machine yet - the inputs are present,
+// default FALSE and never asserted, so the table can be completed later without
+// touching the lamp logic. There is no horn device in the twin.
+//
+// State is written every scan by the owning module with the MACHINE's state, not
+// FG_System's own: Machine.Execute deliberately does not call SUPER^.Execute(), so
+// a tower driven from its own module would sit dark all through production.
+FUNCTION_BLOCK FB_SignalTower EXTENDS FB_ComponentBase
+VAR
+	Red AT %Q* : BOOL;
+	Yellow AT %Q* : BOOL;
+	Blue AT %Q* : BOOL;
+	Green AT %Q* : BOOL;
+
+	_State : Tc3_PackML_V2.E_PMLState;
+
+	// No source in this machine yet - see the header.
+	_StarvedUpstream : BOOL;
+	_BlockedDownstream : BOOL;
+	_LowMaterial : BOOL;
+	_MaterialExhausted : BOOL;
+
+	// One flash clock for the whole indication system. The panel's button lamps
+	// read it back through the module so every flashing lamp blinks in phase.
+	_FlashTime : TIME := T#500MS;
+	_Flash : BOOL;
+	FlashTimer : TON;
+
+	RedFlash : BOOL;
+	RedSolid : BOOL;
+	AmberFlash : BOOL;
+	AmberSolid : BOOL;
+	BlueFlash : BOOL;
+	BlueSolid : BOOL;
+	GreenFlash : BOOL;
+	GreenSolid : BOOL;
+
+	// Signal tower - the four lamps as driven, and the conditions behind them
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_SignalTower_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="BlockedDownstream" Id="{8967eded-cc6c-4b0f-b6eb-b6f0e4f9e2ab}">
+      <Declaration><![CDATA[// Amber solid. No source in this machine yet.
+PROPERTY BlockedDownstream : BOOL]]></Declaration>
+      <Get Name="Get" Id="{7ff74684-0693-4c4f-8fbb-50e5d38080ea}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[BlockedDownstream := _BlockedDownstream;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b9df56b7-dcbf-4f53-83e6-3b317fd7b070}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_BlockedDownstream := BlockedDownstream;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="CyclicLogic" Id="{3c1ef92e-f2ca-42b7-bd78-02b0bbc452da}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// --- Flash clock ------------------------------------------------------------
+// Self-retriggering TON. One clock for every flashing lamp on the machine.
+FlashTimer(IN := NOT FlashTimer.Q, PT := _FlashTime);
+IF FlashTimer.Q THEN
+	_Flash := NOT _Flash;
+END_IF
+
+// --- Red: Abnormal Stop (flash) / Controlled Stop (solid) -------------------
+RedFlash :=	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Aborting)
+		OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Clearing)
+		OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Aborted);
+
+RedSolid :=	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Complete)
+		OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Stopped)
+		OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Stopping)
+		OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Resetting);
+
+// --- Amber: Starved Upstream (flash) / Blocked Downstream (solid) -----------
+AmberFlash := _StarvedUpstream AND
+			((_State = Tc3_PackML_V2.E_PMLState.ePMLState_Suspending)
+		OR	 (_State = Tc3_PackML_V2.E_PMLState.ePMLState_Suspended));
+
+AmberSolid := _BlockedDownstream AND
+			((_State = Tc3_PackML_V2.E_PMLState.ePMLState_Suspending)
+		OR	 (_State = Tc3_PackML_V2.E_PMLState.ePMLState_Suspended));
+
+// --- Blue: Low Material (flash) / Material Exhausted (solid) ----------------
+// Low Material flashes in every state EXCEPT Holding and Held, which is where
+// Material Exhausted takes the lamp solid instead.
+BlueFlash := _LowMaterial AND
+		NOT	((_State = Tc3_PackML_V2.E_PMLState.ePMLState_Holding)
+		OR	 (_State = Tc3_PackML_V2.E_PMLState.ePMLState_Held));
+
+BlueSolid := _MaterialExhausted AND
+			((_State = Tc3_PackML_V2.E_PMLState.ePMLState_Holding)
+		OR	 (_State = Tc3_PackML_V2.E_PMLState.ePMLState_Held));
+
+// --- Green: Ready to Start (flash) / Running (solid) ------------------------
+GreenFlash := (_State = Tc3_PackML_V2.E_PMLState.ePMLState_Idle);
+
+GreenSolid :=	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Starting)
+			OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Execute)
+			OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Completing)
+			OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Unholding)
+			OR	(_State = Tc3_PackML_V2.E_PMLState.ePMLState_Unsuspending);
+
+// --- Drive the lamps --------------------------------------------------------
+Red	:= (RedFlash	AND _Flash) OR RedSolid;
+Yellow	:= (AmberFlash	AND _Flash) OR AmberSolid;
+Blue	:= (BlueFlash	AND _Flash) OR BlueSolid;
+Green	:= (GreenFlash	AND _Flash) OR GreenSolid;
+
+_Busy	:= FALSE;
+_Error	:= FALSE;
+
+SUPER^.CyclicLogic();
+
+// Device config and status only; the inherited half is bridged in
+// HMICommunication. The lamps are published ALREADY BLENDED - a flashing lamp
+// reads TRUE/FALSE at the flash rate - so a panel bound to these mirrors the
+// real tower instead of re-deriving the state table and drifting from it.
+HMI.DeviceConfig.FlashTime		:= _FlashTime;
+HMI.Device.Red					:= Red;
+HMI.Device.Yellow				:= Yellow;
+HMI.Device.Blue					:= Blue;
+HMI.Device.Green				:= Green;
+HMI.Device.Flash				:= _Flash;
+HMI.Device.StarvedUpstream		:= _StarvedUpstream;
+HMI.Device.BlockedDownstream	:= _BlockedDownstream;
+HMI.Device.LowMaterial			:= _LowMaterial;
+HMI.Device.MaterialExhausted	:= _MaterialExhausted;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{3692a116-d296-460f-a36a-d49c9c4ce83b}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// HMI is a published mirror of the base's own ComponentBase_HMI - carry operator
+// intent in before the base looks, and its answers back out afterwards.
+ComponentBase_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+HMI.Config	:= ComponentBase_HMI.Config;
+HMI.Status	:= ComponentBase_HMI.Status;
+HMI.Command	:= ComponentBase_HMI.Command;
+
+// A zero flash time would stop the clock dead and leave every flashing lamp
+// stuck on whichever half it was in, so it is refused rather than obeyed.
+IF HMI.DeviceConfig.FlashTime > T#0S THEN
+	_FlashTime := HMI.DeviceConfig.FlashTime;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Flash" Id="{33ac0a17-fbc8-4644-91e8-ad84c9af643c}">
+      <Declaration><![CDATA[// The shared flash phase, so the panel's button lamps blink with the tower.
+PROPERTY Flash : BOOL]]></Declaration>
+      <Get Name="Get" Id="{592de911-3b6e-45d2-8304-d1375fbfaa65}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Flash := _Flash;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="FlashTime" Id="{438b6fd8-3209-4ddf-8f72-2e2da7dd01b9}">
+      <Declaration><![CDATA[// Half period of the flash clock.
+PROPERTY FlashTime : TIME]]></Declaration>
+      <Get Name="Get" Id="{d279746c-3ecc-44a4-a899-5047b8122df2}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FlashTime := _FlashTime;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{76262673-f7ab-42bd-a72c-2f8ac965b24a}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_FlashTime := FlashTime;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Initialize" Id="{bd431915-cd54-4c74-a1ea-6c1aaeaf82ed}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := SUPER^.Initialize();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="LowMaterial" Id="{e6d3ed73-f461-47c0-abcf-d3b60419bb54}">
+      <Declaration><![CDATA[// Blue flashing. No source in this machine yet.
+PROPERTY LowMaterial : BOOL]]></Declaration>
+      <Get Name="Get" Id="{7bb2dad6-db29-4662-aa23-30e695ae4f30}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[LowMaterial := _LowMaterial;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{72c0b792-4e08-4059-b934-21634ce534a3}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_LowMaterial := LowMaterial;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="MaterialExhausted" Id="{ddd44c30-af85-48ed-aa2a-5e305173a06c}">
+      <Declaration><![CDATA[// Blue solid. No source in this machine yet.
+PROPERTY MaterialExhausted : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9f688655-6129-4d92-927a-ae5d2ad74481}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[MaterialExhausted := _MaterialExhausted;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{4e8b2568-07fa-42a3-b417-56948526d4e0}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_MaterialExhausted := MaterialExhausted;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="StarvedUpstream" Id="{5343357c-d842-4d72-8a21-13ef819eb532}">
+      <Declaration><![CDATA[// Amber flashing. No source in this machine yet.
+PROPERTY StarvedUpstream : BOOL]]></Declaration>
+      <Get Name="Get" Id="{aeda8891-9985-4d09-a49f-43b37f7ca92e}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[StarvedUpstream := _StarvedUpstream;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{cffb0922-0158-4b98-83a7-9f3f4e68225c}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_StarvedUpstream := StarvedUpstream;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="State" Id="{f038ae53-95c6-40fd-9419-0bda731198e6}">
+      <Declaration><![CDATA[// The MACHINE's PackML state, written down by the owning module every scan.
+PROPERTY State : Tc3_PackML_V2.E_PMLState]]></Declaration>
+      <Get Name="Get" Id="{6a5c7d26-8adf-4765-8f31-a871d9204591}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[State := _State;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b2391588-238d-42ae-aca0-bf0979254162}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_State := State;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

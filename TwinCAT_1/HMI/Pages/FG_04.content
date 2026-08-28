@@ -1,0 +1,45 @@
+<!-- FG_04. The fault readout is the only group-level value on any of these
+     four pages - every other fact belongs to a device and is shown on that
+     device's tile. It is bound through the module's own published struct
+     (HMI::Press::FaultCode) rather than reaching into a POU internal, and it
+     gets the same 260x120 frame as a device tile so it sits in the grid.
+
+     1 = NIO: the press reached its bottom limit and B_NIO reported no part
+     seated. That aborts FG_04, so the state on the module bar above will read
+     Aborted whenever this reads 1.
+
+     Grid: columns at x = 20 / 290 / 560 (260 wide, 270 pitch), rows at
+     y = 96 + j*130. See FG_01.content for the full grid note. -->
+<div id="FG04_Devices" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-width-unit="%" data-tchmi-height-unit="%">
+
+<div id="FG04_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="FG_04 - press and seat check" class="headline-2">
+</div>
+
+<div id="FG04_Module" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/PackML_BaseModul.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="48" data-tchmi-top-unit="px" data-tchmi-width="650" data-tchmi-width-unit="px" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-module="%s%ADS.PLC1.MAIN.Machine.FG_04.HMI%/s%">
+</div>
+
+<!-- Row band 1 (y 96..346) -->
+<div id="FG04_Y_AxisZ" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/Cylinder.usercontrol" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="404" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-cylinder="%s%ADS.PLC1.MAIN.Machine.FG_04.Y_AxisZ::SolenoidHMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_04.Y_AxisZ::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG04_B_NIO" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-target-user-control="UserControls/BinarySensor.usercontrol" data-tchmi-left="290" data-tchmi-left-unit="px" data-tchmi-top="404" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-sensor="%s%ADS.PLC1.MAIN.Machine.FG_04.B_NIO::DigitalSensor_HMI%/s%" data-tchmi-component="%s%ADS.PLC1.MAIN.Machine.FG_04.B_NIO::ComponentBase_HMI%/s%" data-tchmi-width-mode="Content" data-tchmi-height-mode="Content">
+</div>
+
+<div id="FG04_ResultFrame" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="560" data-tchmi-left-unit="px" data-tchmi-top="404" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-height="120" data-tchmi-height-unit="px">
+</div>
+
+<div id="FG04_ResultTitle" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="570" data-tchmi-left-unit="px" data-tchmi-top="414" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Press result">
+</div>
+
+<div id="FG04_FaultLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="570" data-tchmi-left-unit="px" data-tchmi-top="446" data-tchmi-top-unit="px" data-tchmi-width="84" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Fault code">
+</div>
+
+<div id="FG04_FaultValue" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="664" data-tchmi-left-unit="px" data-tchmi-top="445" data-tchmi-top-unit="px" data-tchmi-width="80" data-tchmi-width-unit="px" data-tchmi-height="22" data-tchmi-height-unit="px" data-tchmi-is-read-only="true" data-tchmi-value="%s%ADS.PLC1.MAIN.Machine.FG_04.HMI::Press::FaultCode%/s%">
+</div>
+
+<div id="FG04_FaultHint" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="570" data-tchmi-left-unit="px" data-tchmi-top="476" data-tchmi-top-unit="px" data-tchmi-width="240" data-tchmi-width-unit="px" data-tchmi-height="36" data-tchmi-height-unit="px" data-tchmi-word-wrap="True" data-tchmi-text="1 = bottom limit reached with no part seated">
+</div>
+
+<div id="TcHmiStateMachineV2_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiPackML.TcHmiStateMachineV2" data-tchmi-height="321" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="800" data-tchmi-width-unit="px" data-tchmi-state-current="%s%ADS.PLC1.MAIN.Machine.FG_04.HMI::Status::State%/s%" data-tchmi-unit-mode-current="%s%ADS.PLC1.MAIN.Machine.FG_04.HMI::Status::Mode%/s%" data-tchmi-command="%s%ADS.PLC1.MAIN.Machine.FG_04.HMI::Command::State%/s%">
+</div>
+</div>

@@ -1,0 +1,24 @@
+{
+  "parameters": [
+    {
+      "allowSymbolExpressionsInObject": false,
+      "requiredOnCompile": false,
+      "bindable": true,
+      "propertySetterName": "setCamera",
+      "propertyGetterName": "getCamera",
+      "refTo": "",
+      "name": "data-tchmi-camera",
+      "displayName": "Camera",
+      "visible": true,
+      "type": "tchmi:server#/definitions/ADS-PLC1.ST_AbstractCamera_HMI",
+      "category": "",
+      "description": "",
+      "readOnly": false,
+      "heritable": true,
+      "propertyName": "Camera"
+    }
+  ],
+  "virtualRights": [],
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.5.1/runtimes/native1.12-tchmi/Schema/UserControlConfig.Schema.json",
+  "description": ""
+}

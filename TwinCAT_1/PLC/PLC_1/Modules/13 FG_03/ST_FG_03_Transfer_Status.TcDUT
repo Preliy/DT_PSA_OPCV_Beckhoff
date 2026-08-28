@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_FG_03_Transfer_Status" Id="{502cb990-41d8-44d2-b458-07242aa9ccac}">
+    <Declaration><![CDATA[// What the two grip sensors have to say beyond the PackML state.
+//
+// FG_03 HAD NO FAULT CODE AT ALL until B_Detect1 and B_Detect2 arrived, because it
+// had nothing to report: every step waited on a cylinder limit, and a cylinder
+// limit cannot fail in a way the cylinder itself does not already alarm. A part
+// sensor can - it is the first thing in this group that can disagree with the
+// actuators.
+//
+//   1  stuck at   - Resetting could not separate the two grippers in the handover
+//      handover     window: arm 2 reported its jaws open and B_Detect2 still saw
+//                   the part. Nothing was moved, because every way out of that
+//                   window pulls the two arms apart with one part between them.
+//                   The arms are still standing at the handover; free the part by
+//                   hand, then Clear and Reset.
+//   2  no pick    - Y_Gripper2 closed on slot 1 and B_Detect2 never confirmed a
+//                   part. An empty slot, a mispositioned pallet, or a grip that
+//                   closed on nothing - which reaches its extended limit SOONER
+//                   than a real grip, so the limit alone cannot tell them apart.
+//   3  no handover- Y_Gripper1 closed at the handover and B_Detect1 never confirmed.
+//                   This is the dangerous one: without it, step 90 opens arm 2
+//                   against a grip that was never made and the part falls.
+//   4  no release - a gripper opened and its sensor still sees the part, inside
+//                   Execute. The part is jammed in the jaws.
+//   5  off safe   - a cycle was started with a part held by an arm that is NOT at
+//                   its safe position (X and Y retracted). The resume entry point
+//                   is derived from which gripper is full, and it is only right if
+//                   the arm is where the reset would have parked it. Someone jogged
+//                   it in Manual, or code 1 is standing. Reset fixes it, because
+//                   Resetting reaches a safe position from anywhere.
+//
+// WHY CODE 1 DOES NOT ABORT OUT OF Resetting. A reset must terminate on time and on
+// its own cylinders - transport-behaviour.md 4, learned twice the expensive way.
+// Aborting mid-reset would leave the arms wherever they happened to be, which is
+// worse than stopping cleanly and saying so. Resetting completes; Execute refuses
+// the next cycle through code 5, because a part stuck at the handover is by
+// definition not at a safe position.
+//
+// ResumePoint is not a fault. It is which sub-sequence the NEXT Start will enter,
+// derived every scan from the two grip sensors - the same derivation Execute step 0
+// makes, published so the panel can show it before anyone presses anything:
+//
+//   1  the whole cycle, from the pick out of slot 1  (both grippers empty)
+//   2  the handover, from arm 2's safe position      (B_Detect2)
+//   3  the placement into slot 2, from arm 1's       (B_Detect1)
+//
+// Cleared in FG_03.Clearing - the fault code, that is. ResumePoint is derived and
+// has nothing to clear.
+TYPE ST_FG_03_Transfer_Status :
+STRUCT
+	FaultCode	: DINT;
+	ResumePoint	: DINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

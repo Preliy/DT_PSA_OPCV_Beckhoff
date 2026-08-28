@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_SignalTower_HMI" Id="{8fdbe22a-d6da-46f4-aeea-69fbe5762e21}">
+    <Declaration><![CDATA[// Signal tower HMI interface - ONE struct per tile.
+// Extends ST_ComponentBase_HMI, so one bound parameter also carries Config,
+// Command and Status - and the added members may not reuse those three names.
+//
+// NO DeviceCommand: the lamps derive from the machine's PackML state and nothing
+// else may drive them.
+TYPE ST_SignalTower_HMI EXTENDS ST_ComponentBase_HMI :
+STRUCT
+	DeviceConfig	: ST_SignalTower_Config;
+	Device			: ST_SignalTower_Status;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

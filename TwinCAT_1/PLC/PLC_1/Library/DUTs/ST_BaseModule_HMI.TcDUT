@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_BaseModule_HMI" Id="{d6303e34-ef94-4f62-b228-69f3eb61d6a9}">
+    <Declaration><![CDATA[// The one HMI interface every module in this project publishes.
+// Extends the SPT module struct, so a tile gets Config, Command and Status in the
+// shape the framework already maintains.
+//
+// The base FB owns its own PackMLBaseModule_HMI and fills it; this is the
+// PUBLISHED MIRROR. The module bridges them in HMICommunication (commands, before
+// state control) and PublishHMI (status, after). NEITHER HALF IS OPTIONAL: without
+// the command push the panel's buttons reach nothing, without the status pull the
+// tile reads zeros.
+//
+// A descendant adds exactly one member, and it must NOT be named Config, Command,
+// Status or Sequence - redeclaring an inherited member is a compile error.
+TYPE ST_BaseModule_HMI EXTENDS ST_PackMLBaseModule_HMI :
+STRUCT
+	Sequence : ST_Sequence_Status;
+	// The PackML state as text. ST_PackMLBaseModule_Status carries State as an
+	// enum only, and tchmiconfig.json sets binding.symbolError to "Ignore", so a
+	// client side enum conversion that fails to resolve renders an empty control
+	// and reports nothing. See F_PMLStateName.
+	StateName : STRING(20);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

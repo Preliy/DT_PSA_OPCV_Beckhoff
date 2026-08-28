@@ -1,0 +1,713 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_TransferLift" Id="{42302f3c-3f24-48e4-a117-490beaecea58}" SpecialFunc="None">
+    <Declaration><![CDATA[// Lift unit - moves a pallet between the two conveyor levels. Two instances.
+// THE CARRIAGE BELT MAY ONLY RUN WHILE THE CARRIAGE IS AT A LEVEL; between
+// levels it drives the pallet into a fixed edge. Enforced in CyclicLogic for
+// every state and mode, including Manual.
+// Contract: _workflow/reference/transport-behaviour.md
+FUNCTION_BLOCK FB_TransferLift EXTENDS FB_PackML_BaseModule
+VAR
+	// --- Components ---------------------------------------------------------
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_Detect		: FB_DigitalSensor;		// on the carriage - pallet is aboard
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_Exit			: FB_DigitalSensor;		// on the fixed frame - pallet has left
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Lift			: FB_DoubleSolenoidFeedback;
+
+	// --- Carriage belt ------------------------------------------------------
+	// A drive module of its own, like the two main conveyor sections, so it can
+	// report that it failed to start rather than silently stalling the lift.
+	// Backward draws a pallet aboard, forward pushes it off.
+	M_Conveyor		: FB_AbstractBinaryDrive := (Name := 'M_Conveyor');
+
+	// --- Ring handshake -----------------------------------------------------
+	// THE INTERFACE IS DERIVED, NOT ASSIGNED. CanAccept and Occupied are getters,
+	// correct in every PackML state and mode. There is no _Ready to go stale.
+	// THE CARRIAGE MUST NOT CHANGE LEVEL while either latch is TRUE - a pallet drawn
+	// half aboard has not reached B_Detect, so no sensor can see that case alone.
+	// Two BOOLs, not one: the direction decides which sensor ends the crossing and
+	// which way a recovery must finish it. Each initialises FALSE, so neither can
+	// survive a download asserting what the sensors contradict - a four-valued phase
+	// did, and it put two pallets on one carriage.
+	_LoadingIn			: BOOL;		// drawing a pallet aboard; ends at B_Detect
+	_UnloadingOut		: BOOL;		// pushing a pallet off;    ends at B_Exit
+	// Edge detectors for the clearing rules. A level cannot be used: during an
+	// outbound crossing B_Detect is still made while the pallet leaves, and B_Exit
+	// may still be made by the previous pallet when the next crossing commits.
+	// Edges are also the only witness a stop cannot erase - an earlier version used
+	// the live belt command and deadlocked, because Stopping clears it.
+	DetectEdge			: R_TRIG;
+	ExitEdge			: R_TRIG;
+	_NextCanAccept		: BOOL;		// the successor can physically accept a pallet
+	_PayloadIncoming	: BOOL;		// the predecessor is releasing a pallet to us
+
+	// --- Diagnostics --------------------------------------------------------
+	// 0 none  1 no home  2 pallet never arrived aboard  3 travel failed
+	// 4 pallet never left
+	// Raised while finishing an interrupted crossing in Resetting:
+	// 5 reset: pallet never came aboard   6 reset: pallet never left
+	_FaultCode		: DINT;
+
+	// --- Parameters, set by the parent in Initialize ------------------------
+	// FALSE: home is the retracted (lower) end, travel is to extended (upper).
+	// TRUE:  the mirror image, for the lift that returns pallets downwards.
+	_ReverseDirection	: BOOL;
+
+	_HomeTime		: TIME := T#5S;
+	_LoadTime		: TIME := T#20S;	// belt running, waiting for the pallet aboard
+	_TravelTime		: TIME := T#10S;
+	_SettleTime		: TIME := T#500MS;	// let the pallet settle before travelling
+	_UnloadTime		: TIME := T#20S;
+	// How long a reset lets the line settle once this unit is home. The group runs
+	// the main conveyors throughout, so loose pallets travel up against the blocking
+	// stoppers and accumulate where a detect sensor can see them. Waiting a fixed
+	// time cannot deadlock, which is the whole reason a reset is paced this way
+	// rather than waiting on an event that may never arrive.
+	_AccumulateTime	: TIME := T#5S;
+
+	// --- HMI ----------------------------------------------------------------
+	// One struct for the whole tile, extending the SPT module interface. The
+	// inherited half is bridged to the base's own PackMLBaseModule_HMI in two
+	// places: HMICommunication pushes Command in before the base acts on it,
+	// PublishHMI copies Config and Status back out after. The Station half is this
+	// block's own and is filled by PublishHMI alone.
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI	: ST_TransferLift_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Aborting" Id="{893ba231-3b23-4bf2-bafa-409ce0ea7e16}">
+      <Declaration><![CDATA[METHOD PROTECTED Aborting
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		// Stop the belt immediately. The carriage is left where it is - moving a
+		// level with a pallet half on board is worse than standing still.
+		//
+		// Nothing is cleared. The interface is derived, and _Transferring stays
+		// TRUE precisely because stopping the belt here is what leaves a pallet on
+		// the boundary: Resetting needs to know that, and only the sensor that
+		// completes the crossing may clear it.
+		M_Conveyor.RunForward  := FALSE;
+		M_Conveyor.RunBackward := FALSE;
+		SequenceState		:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Aborting();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="AtFar" Id="{d0c758fe-9bff-4a8f-80ee-c1dedfcaabdc}">
+      <Declaration><![CDATA[// The carriage has reached the level it delivers to. Resolves the direction so
+// the step chain reads identically for both instances.
+PROPERTY PRIVATE AtFar : BOOL]]></Declaration>
+      <Get Name="Get" Id="{5730cb57-883f-45d2-a840-3b510a2425cd}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF _ReverseDirection THEN
+	AtFar := Y_Lift.Retracted;
+ELSE
+	AtFar := Y_Lift.Extended;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="AtHome" Id="{d38e4c0a-704c-4515-9b68-e3b8a95b7fd0}">
+      <Declaration><![CDATA[// The carriage has reached the level it loads from.
+PROPERTY PRIVATE AtHome : BOOL]]></Declaration>
+      <Get Name="Get" Id="{173c0b9f-8ff0-473a-a504-db91f8449743}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF _ReverseDirection THEN
+	AtHome := Y_Lift.Extended;
+ELSE
+	AtHome := Y_Lift.Retracted;
+END_IF]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="CanAccept" Id="{e7a912db-9cf1-4a8c-bbcb-a613632347fa}">
+      <Declaration><![CDATA[// This lift can physically take a pallet right now. The predecessor gates its
+// release on this, and it is the whole of the readiness contract.
+//
+// DERIVED, NOT ASSIGNED - and that is what fixed the collision. The old _Ready was
+// written only inside the Execute step chain, so a reset that homed the carriage
+// with a pallet still aboard came back announcing an empty lift and the stopper
+// released a second pallet into it. Computed from the carriage position, the
+// detect sensor and the transfer latch, this is correct in every PackML state and
+// every mode, which is also why the reset recovery can use the same contract.
+PROPERTY CanAccept : BOOL]]></Declaration>
+      <Get Name="Get" Id="{8679ff2e-eace-4f5a-a62a-cfadaab4a81f}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CanAccept := AtHome
+	AND NOT B_Detect.Active
+	AND NOT Transferring
+	AND (_FaultCode = 0);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clearing" Id="{cd03727c-7363-4086-ab68-764e7704fcd3}">
+      <Declaration><![CDATA[METHOD PROTECTED Clearing
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete := FALSE;
+		_FaultCode := 0;
+		SequenceState := SequenceState + 10;
+
+	10:
+		IF Y_Lift.Reset()
+			AND B_Detect.Reset()
+			AND B_Exit.Reset()
+			AND M_Conveyor.Reset() THEN
+			SequenceState := SequenceState + 10;
+		END_IF
+
+	20:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Clearing();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicLogic" Id="{183e0997-cb3a-4868-bb9c-e51492a131ac}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// Nothing to copy: every output is linked to its terminal at the instance
+// declaration in FG_Transport.
+
+// THE TRANSFER LATCHES ARE RESOLVED BY SENSOR EDGES, IN EVERY STATE. B_Detect ends
+// an inbound crossing, B_Exit an outbound one; each latch carries its direction.
+// EDGES, NOT LEVELS, AND NOT THE BELT COMMAND. Using the live belt direction as
+// the witness deadlocked the machine: Stopping and Aborting clear the belt command
+// immediately, destroying the witness, and the latch could never clear.
+DetectEdge(CLK := B_Detect.Active);
+ExitEdge(CLK := B_Exit.Active);
+
+IF _LoadingIn AND DetectEdge.Q THEN
+	_LoadingIn := FALSE;
+END_IF
+IF _UnloadingOut AND ExitEdge.Q THEN
+	_UnloadingOut := FALSE;
+END_IF
+
+// TWO STATES MAY DRIVE THE CARRIAGE BELT: Execute, and Resetting - which finishes
+// an interrupted transfer. In every other state a run request is stale.
+// THIS GUARD RUNS BEFORE SUPER^.CyclicLogic(), so it does not merely veto the
+// output for a scan - it WIPES the request Resetting set on the previous scan.
+// Leaving a state out of this condition makes its belt commands invisible to the
+// drive: it looks exactly like a conveyor commanded and never moving.
+IF (_CurrentState <> E_PMLState.ePMLState_Execute)
+	AND (_CurrentState <> E_PMLState.ePMLState_Resetting) THEN
+	M_Conveyor.RunForward := FALSE;
+	M_Conveyor.RunBackward := FALSE;
+END_IF
+
+// THE CARRIAGE BELT MAY ONLY RUN WHILE THE CARRIAGE IS AT A LEVEL. Between levels
+// it drives the pallet into a fixed edge. A physical property, so it is enforced
+// here for every state and mode - including Manual, where the operator jogs.
+// It is also what the transfer latches rest on: a crossing can only START at a
+// level, so a set latch is proof the carriage is in position.
+IF NOT (AtHome OR AtFar) THEN
+	M_Conveyor.RunForward := FALSE;
+	M_Conveyor.RunBackward := FALSE;
+END_IF
+
+SUPER^.CyclicLogic();
+
+// After the base, so the published struct carries this scan's state and
+// this scan's HMI permission rather than last scan's.
+PublishHMI();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Execute" Id="{1b25ba0c-3b4e-4e53-bbf1-2b84113e097d}">
+      <Declaration><![CDATA[METHOD PROTECTED Execute
+VAR_INPUT
+END_VAR
+VAR_INST
+	HomeTimer		: TON;
+	LoadTimer		: TON;
+	SettleTimer		: TON;
+	TravelTimer		: TON;
+	UnloadTimer		: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The ring runs continuously, so this state loops instead of completing.
+//
+// AtHome / AtFar resolve the direction once, so the step chain below reads the
+// same for both instances and only Initialize differs between them.
+
+CASE _CurrentMode OF
+
+	//============================= PRODUCTION =================================
+	E_PMLUnitMode.ePMLUnitMode_Production:
+
+		CASE SequenceState OF
+			0:	// Return to the loading level with the belt stopped - but only if
+				// the carriage is actually clear. Commanding a level change under
+				// a pallet is the one thing this unit must never do blindly, and
+				// this step is where that command is issued.
+				//
+				// The sensor decides. There is no remembered occupancy to consult
+				// and nothing to publish: CanAccept is derived and is already
+				// correct before this step runs.
+				NoStateTasksToComplete	:= FALSE;
+				M_Conveyor.RunForward  := FALSE;
+				M_Conveyor.RunBackward := FALSE;
+
+				IF B_Detect.Active THEN
+					// A pallet is aboard. Do not command the carriage anywhere:
+					// resume the delivery from the settle step, which is where the
+					// normal load path hands over once a pallet is on board.
+					SequenceState	:= 40;
+				ELSE
+					IF _ReverseDirection THEN
+						Y_Lift.Extend();
+					ELSE
+						Y_Lift.Retract();
+					END_IF
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			10:
+				IF AtHome THEN
+					SequenceState	:= SequenceState + 10;
+				ELSIF HomeTimer.Q THEN
+					_FaultCode := 1;
+					ChangeState(E_PMLCommand.ePMLCommand_Hold);
+				END_IF
+
+			20:	// Wait to be told a pallet is coming. Unlike every other unit a
+				// lift does not self-detect here - it has to run its belt to
+				// draw the pallet aboard, so it must be told first.
+				// B_Detect IS TESTED FIRST, and that ordering is load bearing. A
+				// latch armed while its ending sensor is already made can never see
+				// a rising edge, so it would stay TRUE for ever. Testing the sensor
+				// first guarantees _LoadingIn is only ever armed with B_Detect
+				// clear, which guarantees the edge that clears it.
+				IF B_Detect.Active THEN
+					// Already aboard - unannounced, or the announcement arrived with
+					// the pallet. Nothing is crossing; go straight to settle.
+					SequenceState		:= 40;
+				ELSIF _PayloadIncoming THEN
+					M_Conveyor.RunBackward := TRUE;
+					// The inbound crossing starts here. Until B_Detect confirms, the
+					// pallet spans the carriage and the fixed conveyor and nothing
+					// may change level. Cleared on the B_Detect edge in CyclicLogic.
+					_LoadingIn			:= TRUE;
+					SequenceState		:= SequenceState + 10;
+				END_IF
+
+			30:	// Belt running, waiting for the pallet to arrive on the carriage.
+				// _Transferring has already been cleared by B_Detect in CyclicLogic.
+				IF B_Detect.Active THEN
+					M_Conveyor.RunBackward := FALSE;
+					SequenceState		:= SequenceState + 10;
+				ELSIF LoadTimer.Q THEN
+					M_Conveyor.RunBackward := FALSE;
+					_FaultCode			:= 2;
+					ChangeState(E_PMLCommand.ePMLCommand_Hold);
+				END_IF
+
+			40:	// Let the pallet settle before the carriage moves
+				IF SettleTimer.Q THEN
+					SequenceState := SequenceState + 10;
+				END_IF
+
+			50:	// Travel to the far level
+				IF _ReverseDirection THEN
+					Y_Lift.Retract();
+				ELSE
+					Y_Lift.Extend();
+				END_IF
+				IF AtFar THEN
+					SequenceState := SequenceState + 10;
+				ELSIF TravelTimer.Q THEN
+					_FaultCode := 3;
+					ChangeState(E_PMLCommand.ePMLCommand_Hold);
+				END_IF
+
+			60:	// The successor must be able to accept before anything is pushed
+				// at it
+				IF _NextCanAccept THEN
+// Commit HERE, once, on the transition. Setting it inside step 70
+					// would re-assert it on the scan CyclicLogic clears it, latching
+					// it TRUE for ever. Armed only if B_Exit is clear: a latch armed
+					// under an already-made sensor never sees its clearing edge.
+					_UnloadingOut	:= NOT B_Exit.Active;
+					SequenceState	:= SequenceState + 10;
+				END_IF
+
+			70:	// Push the pallet off. No announcement to the successor - it
+				// picks the pallet up on its own detect sensor. _Transferring is
+				// cleared by B_Exit in CyclicLogic.
+				M_Conveyor.RunForward  := TRUE;
+				IF B_Exit.Active THEN
+					SequenceState := SequenceState + 10;
+				ELSIF UnloadTimer.Q THEN
+					M_Conveyor.RunForward  := FALSE;
+					_FaultCode			:= 4;
+					ChangeState(E_PMLCommand.ePMLCommand_Hold);
+				END_IF
+
+			80:	// Stop the belt before returning home.
+				// DELIBERATE DIFFERENCE FROM SIL: SequenceTransferLift leaves the
+				// belt running through the return travel and only clears it when
+				// Idle re-runs. Carrying a driven belt through a level change can
+				// drag whatever is on it, and nothing in the context asks for it.
+				M_Conveyor.RunForward  := FALSE;
+				SequenceState		:= 0;
+		END_CASE
+
+	//======================= MAINTENANCE & MANUAL =============================
+	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
+		// Nothing to drive. Both devices honour their own HMI structs, and both belt
+		// directions are offered by hand. Nothing is assigned: the interface is derived
+		// from the sensors, so it keeps telling the truth while an operator works. A
+		// crossing created by jogging is invisible to this unit - Manual is supervised.
+		;
+END_CASE
+
+SUPER^.Execute();
+
+HomeTimer(	IN := (SequenceState = 10),							PT := _HomeTime);
+LoadTimer(	IN := (SequenceState = 30),							PT := _LoadTime);
+SettleTimer(IN := (SequenceState = 40),							PT := _SettleTime);
+TravelTimer(IN := (SequenceState = 50),							PT := _TravelTime);
+UnloadTimer(IN := (SequenceState = 70),							PT := _UnloadTime);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="FaultCode" Id="{77db3248-0d65-4a60-ba2a-2784e2036444}">
+      <Declaration><![CDATA[// 0 none  1 no home  2 pallet never arrived aboard  3 travel failed
+// 4 pallet never left
+// Raised by the recovery in Resetting:
+// 5 reset: pallet never finished loading      6 reset: pallet never left
+// 7 reset: travel to the delivery level failed
+// 8 reset: successor still occupied - the pallet cannot be handed over
+PROPERTY FaultCode : DINT]]></Declaration>
+      <Get Name="Get" Id="{1aad7a82-ef72-4745-ba4a-62767268d35b}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FaultCode := _FaultCode;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="HMICommunication" Id="{389bed3d-a5f4-41c9-8f15-8dbe56311049}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// The command half of the HMI bridge; PublishHMI is the status half.
+// The base calls this immediately before ModeControl() and StateControl(), which
+// is the only point at which an operator command can still reach this scan's
+// state machine. See FB_TransferIndex.HMICommunication for the full reasoning.
+PackMLBaseModule_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+// The base clears a latch by writing back the value it acted on.
+HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{75f8014f-1b43-4461-b71c-610033432bf4}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL;
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := FALSE;
+
+CASE DescendantSequenceState OF
+	0:
+		RegisterComponent(B_Detect);
+		RegisterComponent(B_Exit);
+		RegisterComponent(Y_Lift);
+
+		// The carriage belt is a component owned directly by this lift.
+		RegisterComponent(M_Conveyor);
+
+		_LogModeChanges		:= FALSE;
+		_LogStateChanges	:= FALSE;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	10:
+		// A level change is a long stroke - these are travel alarms, not pacing.
+		Y_Lift.ExtendTime	:= 10000.0;
+		Y_Lift.RetractTime	:= 10000.0;
+		DescendantSequenceState := DescendantSequenceState + 10;
+
+	20:
+		IF SUPER^.Initialize() THEN
+			DescendantSequenceState := DescendantSequenceState + 10;
+		END_IF
+
+	30:
+		Initialize := TRUE;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="NextCanAccept" Id="{351df210-5bef-4877-a72f-cb041e84bc6b}">
+      <Declaration><![CDATA[// The successor's CanAccept, wired in by the parent.
+//
+// One channel, used by both Execute and the recovery in Resetting. The separate
+// NextOccupied input that the recovery needed before is gone: CanAccept is derived
+// and therefore answers in every state, so there is nothing left for a second
+// channel to say.
+PROPERTY NextCanAccept : BOOL]]></Declaration>
+      <Set Name="Set" Id="{ad7697c5-e54d-47da-87ec-4758144ce5dd}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_NextCanAccept := NextCanAccept;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Occupied" Id="{814b7324-d35b-4af0-bb4a-dc299fe0a042}">
+      <Declaration><![CDATA[// This lift is physically carrying or handling a pallet.
+//
+// Derived, like CanAccept: the detect sensor, or a crossing that has been started
+// and not yet confirmed finished. The latch half is not redundant - a pallet drawn
+// half onto the carriage has not reached B_Detect, and that is precisely the state
+// in which nobody may send another one and the carriage may not change level.
+//
+// There is no remembered occupancy behind this, so there is nothing for a state
+// change or a program download to falsify.
+PROPERTY Occupied : BOOL]]></Declaration>
+      <Get Name="Get" Id="{79a91678-98cb-4caa-a058-7b28b005cde6}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Occupied := B_Detect.Active OR Transferring;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="PayloadIncoming" Id="{fa673069-08be-4f7f-bfd9-b7acc0fd2041}">
+      <Declaration><![CDATA[// The predecessor is releasing a pallet to us. On a lift this is not a courtesy
+// notice - it is the command that starts the belt drawing the pallet aboard.
+PROPERTY PayloadIncoming : BOOL]]></Declaration>
+      <Set Name="Set" Id="{8ebaaae5-8376-4471-ba60-e99e3a6bea39}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_PayloadIncoming := PayloadIncoming;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Action Name="PublishHMI" Id="{b48d7f02-15a6-4e93-8c7d-3f1029b6ea54}">
+      <Implementation>
+        <ST><![CDATA[// Everything an operator tile needs from this unit, in one struct.
+//
+// Called from CyclicLogic AFTER SUPER^.CyclicLogic(), so _CurrentState and the
+// base's HMIControlAvailable are this scan's values and not last scan's.
+//
+// The carriage belt publishes itself - M_Conveyor is an FB_AbstractBinaryDrive and
+// has its own HMI struct, which the tile binds to as a second parameter.
+
+// --- Inherited half ---------------------------------------------------------
+// Straight copies of the struct the SPT base maintains - Config carries Name and
+// the logging toggles, Status carries Busy, Error, ErrorID, Mode, State and
+// HMIControlAvailable. The last is the gate for the jog buttons on the tile,
+// granted in ePMLUnitMode_Manual only.
+HMI.Config		:= PackMLBaseModule_HMI.Config;
+HMI.Status		:= PackMLBaseModule_HMI.Status;
+
+HMI.StateName			:= F_PMLStateName(_CurrentState);
+HMI.Sequence.StepIndex	:= SequenceState;
+
+// --- Ring handshake ---------------------------------------------------------
+// A lift is a pulling station: no SendToNext, and PayloadIncoming is how the
+// predecessor announces a pallet.
+// The derived properties, not backing variables - the tile shows what the machine
+// physically is, which is the same thing the neighbouring stations act on. The
+// struct field names are unchanged so the existing panel bindings still resolve.
+HMI.Station.Ready					:= CanAccept;
+HMI.Station.Occupied				:= Occupied;
+HMI.Station.NextReady				:= _NextCanAccept;
+HMI.Station.PayloadIncoming		:= _PayloadIncoming;
+HMI.Station.ReverseDirection		:= _ReverseDirection;
+
+// --- Diagnostics ------------------------------------------------------------
+HMI.Station.FaultCode				:= _FaultCode;]]></ST>
+      </Implementation>
+    </Action>
+    <Method Name="Resetting" Id="{2ffb027d-3fcc-456f-bd06-7fd1e8693e87}">
+      <Declaration><![CDATA[METHOD PROTECTED Resetting
+VAR_INPUT
+END_VAR
+VAR_INST
+	ResetCrossTimer		: TON;
+	ResetHomeTimer		: TON;
+	AccumulateTimer		: TON;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// A RESET RE-ESTABLISHES WHERE THE PALLETS ARE. IT DOES NOT DELIVER ANYTHING.
+// The group runs the main conveyors throughout a reset, so loose pallets accumulate
+// against the blocking stoppers. This unit only has to reach a known safe position.
+//
+// DELIVERING HERE DEADLOCKED. It waited for the successor's CanAccept, but a
+// stopper never releases during a reset, so it could never become free. A reset
+// must not depend on another unit doing what the reset forbids it to do.
+//
+// TWO RULES DECIDE WHAT IS SAFE HERE:
+//   1. the belt may only run AT a level - enforced in CyclicLogic, not here;
+//   2. a crossing can only START at a level, so a set latch is proof the carriage
+//      is in position, and with no latch set nothing spans the gap.
+// Hence: latch set -> finish the crossing, leave the axis alone.
+//        no latch  -> move to the home level.
+
+CASE SequenceState OF
+	0:	// Route on the latches. They carry the direction, and by rule 2 a set latch
+		// also means the carriage is already at a level.
+		NoStateTasksToComplete	:= FALSE;
+
+		IF Transferring THEN
+			SequenceState := 10;
+		ELSE
+			SequenceState := 30;
+		END_IF
+
+	10:	// Finish the crossing in the direction it was already going. Waits on the
+		// SENSOR, not on the latch: the latch serves the interface and is cleared by
+		// the same edge, and keeping the chain independent of it means a latch that
+		// somehow failed to clear cannot strand the sequence as well.
+		
+		ResetCrossTimer(IN := TRUE, PT := SEL(_LoadingIn, _UnloadTime, _LoadTime));
+		
+		IF _LoadingIn THEN
+			M_Conveyor.RunBackward := TRUE;
+			IF B_Detect.Active THEN
+				M_Conveyor.RunBackward := FALSE;
+				SequenceState := 20;
+			ELSIF ResetCrossTimer.Q THEN
+				M_Conveyor.RunBackward := FALSE;
+				_FaultCode := 5;
+				ChangeState(E_PMLCommand.ePMLCommand_Hold);
+			END_IF
+		ELSE
+			M_Conveyor.RunForward := TRUE;
+			IF B_Exit.Active THEN
+				M_Conveyor.RunForward := FALSE;
+				SequenceState := 20;
+			ELSIF ResetCrossTimer.Q THEN
+				M_Conveyor.RunForward := FALSE;
+				_FaultCode := 6;
+				ChangeState(E_PMLCommand.ePMLCommand_Hold);
+			END_IF
+		END_IF	
+		
+
+	20:	// The crossing is over, however it ended. Clearing both latches here is the
+		// reset doing its job: it re-establishes the state rather than inheriting a
+		// latch whose sensor edge was missed while the machine was stopped.
+		ResetCrossTimer(IN := FALSE, PT := SEL(_LoadingIn, _UnloadTime, _LoadTime));
+		_LoadingIn		:= FALSE;
+		_UnloadingOut	:= FALSE;
+		SequenceState	:= 30;
+
+	30:	// Nothing spans the gap now, so the axis may move. Belt off first.
+		M_Conveyor.RunForward  := FALSE;
+		M_Conveyor.RunBackward := FALSE;
+		IF _ReverseDirection THEN
+			Y_Lift.Extend();
+		ELSE
+			Y_Lift.Retract();
+		END_IF
+		SequenceState := 40;
+
+	40:
+		IF AtHome THEN
+			SequenceState := 50;
+		ELSIF ResetHomeTimer.Q THEN
+			_FaultCode := 1;
+			ChangeState(E_PMLCommand.ePMLCommand_Hold);
+		END_IF
+
+	50:	// Let the line settle before declaring the reset done, so production starts
+		// from an accumulated, sensed state rather than a moving one. A fixed wait
+		// cannot deadlock; waiting on an event that may never arrive can, which is
+		// what went wrong before.
+		IF AccumulateTimer.Q THEN
+			SequenceState := 60;
+		END_IF
+
+	60:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Resetting();
+
+// SEL(G, IN0, IN1) yields IN0 when G is FALSE - so an inbound crossing is bounded
+// by the load time and an outbound one by the unload time.
+
+ResetHomeTimer(	IN := (SequenceState = 40),		PT := _HomeTime);
+AccumulateTimer(IN := (SequenceState = 50),		PT := _AccumulateTime);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ReverseDirection" Id="{ebe768a9-c1bd-41a1-be7c-474449935cd5}">
+      <Declaration><![CDATA[// FALSE: loads at the retracted (lower) end and delivers to the extended end.
+// TRUE: the mirror image. Set once by the parent in Initialize.
+PROPERTY ReverseDirection : BOOL]]></Declaration>
+      <Set Name="Set" Id="{abfc390d-ccb4-4252-a555-45685bba41ad}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_ReverseDirection := ReverseDirection;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Stopping" Id="{74e8166e-8f5e-4a18-b19e-a2a0f4ea0acc}">
+      <Declaration><![CDATA[METHOD PROTECTED Stopping
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE SequenceState OF
+	0:
+		NoStateTasksToComplete	:= FALSE;
+		// Nothing to clear - see Aborting.
+		M_Conveyor.RunForward  := FALSE;
+		M_Conveyor.RunBackward := FALSE;
+		SequenceState		:= SequenceState + 10;
+
+	10:
+		StateTasksComplete := TRUE;
+END_CASE
+
+SUPER^.Stopping();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Transferring" Id="{9e7b2954-ef53-45b8-9010-ccea2695fd0d}">
+      <Declaration><![CDATA[// A payload is crossing the carriage boundary in either direction, so the carriage
+// must not change level. The two directional latches read as one fact wherever the
+// direction does not matter.
+PROPERTY PRIVATE Transferring : BOOL]]></Declaration>
+      <Get Name="Get" Id="{bd3a89ca-8916-46ba-bd58-5a81da3b56e4}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Transferring := _LoadingIn OR _UnloadingOut;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

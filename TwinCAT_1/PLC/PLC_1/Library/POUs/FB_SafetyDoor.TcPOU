@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_SafetyDoor" Id="{ec0fb3b4-2b3a-4509-85fc-e0a737a58640}" SpecialFunc="None">
+    <Declaration><![CDATA[// ============================================================================
+// One interlocked enclosure door with a safety lock. Maps to the twin's FB_Lock:
+// bClosed and bLocked come back as two channels, bLock goes out as one coil.
+//
+// AN OPEN DOOR IS NOT A FAULT OF THIS COMPONENT - it is simply Closed = FALSE,
+// which the owning module folds into GuardsSecure. _Error is raised only by a
+// genuine device failure (a lock commanded and never confirmed), because the SPT
+// base waits on every component's Error in Clearing: raising it for a door somebody
+// deliberately opened would stall Clearing in Maintenance, where the whole point is
+// that safety is ignored.
+FUNCTION_BLOCK FB_SafetyDoor EXTENDS FB_ComponentBase
+VAR
+	ClosedSensor AT %I* : BOOL;
+	LockedSensor AT %I* : BOOL;
+	LockOutput AT %Q* : BOOL;
+
+	_RequestLock : BOOL;
+	_FaultCode : UDINT;
+	_LockTime : TIME := T#3S;
+	LockTimer : TON;
+
+	// Safety door - closed, locked, and the lock fault
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_SafetyDoor_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Closed" Id="{8257d024-7533-4780-9526-e79da582f538}">
+      <Declaration><![CDATA[// TRUE while the door leaf is shut. Says nothing about the lock.
+PROPERTY Closed : BOOL]]></Declaration>
+      <Get Name="Get" Id="{a0cd3955-63c7-4701-b7f7-2bc890147421}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Closed := ClosedSensor;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="CyclicLogic" Id="{5ced6732-c6bf-46e1-816f-762a8f056c7a}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// The coil follows the request unconditionally. A lock fault must never drop the
+// lock - that would open the cell in response to a failure to close it.
+LockOutput := _RequestLock;
+
+// Fault 1: lock commanded and never confirmed. Re-raises for as long as the
+// physical condition lasts, the same shape FB_AbstractBinaryDrive uses for its
+// drive-not-active fault.
+LockTimer(IN := LockOutput AND NOT LockedSensor, PT := _LockTime);
+IF LockTimer.Q THEN
+	_FaultCode := 1;
+END_IF
+
+_Busy		:= LockOutput AND NOT LockedSensor;
+_Error		:= _FaultCode <> 0;
+_ErrorID	:= _FaultCode;
+
+SUPER^.CyclicLogic();
+
+// Device config and status only; the inherited half is bridged in
+// HMICommunication. Publishing is not filling - without these the struct would be
+// a live ADS symbol reading zeros, and a panel would show six doors that are
+// neither closed nor locked whatever the cell is doing.
+HMI.DeviceConfig.LockTime		:= _LockTime;
+HMI.Device.Closed				:= ClosedSensor;
+HMI.Device.Locked				:= LockedSensor;
+HMI.Device.Secure				:= ClosedSensor AND LockedSensor;
+HMI.Device.LockRequested		:= _RequestLock;
+HMI.Device.FaultCode			:= _FaultCode;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HMICommunication" Id="{d37329cf-912b-47c2-bb07-f7ea10eb4294}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// HMI is a published mirror of the base's own ComponentBase_HMI - carry operator
+// intent in before the base looks, and its answers back out afterwards.
+//
+// The inherited Command.Reset is the one writable member that matters here: it is
+// how an operator clears fault 1 once a sticky lock has been dealt with.
+ComponentBase_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+HMI.Config	:= ComponentBase_HMI.Config;
+HMI.Status	:= ComponentBase_HMI.Status;
+HMI.Command	:= ComponentBase_HMI.Command;
+
+// A zero lock time would make the fault fire on the scan the lock is commanded,
+// before any real lock could answer, so it is refused rather than obeyed.
+IF HMI.DeviceConfig.LockTime > T#0S THEN
+	_LockTime := HMI.DeviceConfig.LockTime;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="FaultCode" Id="{99596fe6-bfdb-48b6-a222-c8d9e59852da}">
+      <Declaration><![CDATA[// 0 none, 1 lock commanded but never confirmed.
+PROPERTY FaultCode : UDINT]]></Declaration>
+      <Get Name="Get" Id="{0e35e155-37a5-4d57-8f7d-1bb91c2f6ef4}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[FaultCode := _FaultCode;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Initialize" Id="{e9e4c613-3e5c-4bbf-a4df-dc53daf7e4bd}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := SUPER^.Initialize();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="LockTime" Id="{a0aa784d-07ab-4358-862f-d30f924d0fab}">
+      <Declaration><![CDATA[// How long the lock has to confirm before fault 1 is raised.
+PROPERTY LockTime : TIME]]></Declaration>
+      <Get Name="Get" Id="{a4e963fc-15f8-43f7-8ad8-687a4740e6bb}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[LockTime := _LockTime;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{30431755-9fc2-4b71-9a49-4ab9fcc3386d}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_LockTime := LockTime;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Locked" Id="{bbd232c2-069b-4ccc-b00c-7488a7f4cfc5}">
+      <Declaration><![CDATA[// TRUE while the lock reports engaged.
+PROPERTY Locked : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9420d2a6-3aae-47ac-b471-321b01e594fa}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Locked := LockedSensor;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="RequestLock" Id="{09339947-48e6-46fd-8fcf-668d6376fb38}">
+      <Declaration><![CDATA[// Written every scan by the owning module from the machine's PackML mode.
+PROPERTY RequestLock : BOOL]]></Declaration>
+      <Get Name="Get" Id="{0eb5068a-4933-4d2e-81b7-64d37ce32672}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[RequestLock := _RequestLock;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{743ef7b9-7d3a-4379-94ba-0360cc9fa161}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_RequestLock := RequestLock;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Reset" Id="{a8c64793-7592-4885-adfa-760d6a4ce6ce}">
+      <Declaration><![CDATA[METHOD PUBLIC Reset : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Reset := SUPER^.Reset();
+IF Reset THEN
+	_FaultCode := 0;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Secure" Id="{1c33eaed-81ff-45e4-bee9-8dc163d49a96}">
+      <Declaration><![CDATA[// The whole safety contribution of this door: shut AND locked. Derived on every
+// read, never stored - a remembered readiness flag is what put two pallets on one
+// lift carriage, see transport-behaviour.md.
+PROPERTY Secure : BOOL]]></Declaration>
+      <Get Name="Get" Id="{f3f3221c-97fc-4a0f-a677-b1cd9cf58361}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Secure := ClosedSensor AND LockedSensor;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

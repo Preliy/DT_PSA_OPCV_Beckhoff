@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_TransferStopper_Status" Id="{66d317b3-79e9-4940-bac2-1fad3b68fa82}">
+    <Declaration><![CDATA[// What a stopper unit publishes BEYOND what the SPT base already gives it.
+// State, StateName, SequenceState and HMIControlAvailable are inherited through
+// ST_TransferStopper_HMI EXTENDS ST_BaseModule_HMI and are no longer duplicated.
+TYPE ST_TransferStopper_Status :
+STRUCT
+	// --- Ring handshake -----------------------------------------------------
+	Ready				: BOOL;
+	Occupied			: BOOL;
+	NextReady			: BOOL;
+	SendToNext			: BOOL;
+
+	// --- Diagnostics --------------------------------------------------------
+	// 0 none  1 no block  2 no release  3 pallet never reached the exit sensor
+	FaultCode			: DINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractBunker_Status" Id="{51fec5a5-605a-46b6-b868-c00415a9bf58}">
+    <Declaration><![CDATA[// THE BUNKER REPORTS NOTHING BACK. Its status byte is unused in the twin, so
+// every field here is the commanded state read off the control byte, not a
+// measurement. A tile bound to this shows what the PLC is asking for; it cannot
+// show whether the table is actually turning, because nothing on this device
+// says so.
+TYPE ST_AbstractBunker_Status :
+STRUCT
+	TableRunning	: BOOL;
+	ConveyorRunning	: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

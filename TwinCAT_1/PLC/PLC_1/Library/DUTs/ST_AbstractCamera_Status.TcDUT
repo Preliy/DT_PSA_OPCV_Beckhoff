@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_AbstractCamera_Status" Id="{443815a3-0bd5-45ee-b7c8-20820ed9b522}">
+    <Declaration><![CDATA[// What the camera reports back - four real signals off the status byte, none of
+// them inferred from the control side. Ready is permission to trigger, Busy is the
+// shot in progress, ResultValid says a verdict is on the wire now.
+//
+// READ ResultOK ONLY WHILE ResultValid. Outside that window it is FALSE because
+// there is no verdict, not because the part was bad.
+TYPE ST_AbstractCamera_Status :
+STRUCT
+	Ready		: BOOL;
+	Busy		: BOOL;
+	ResultValid	: BOOL;
+	ResultOK	: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

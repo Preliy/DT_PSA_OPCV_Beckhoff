@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_SignalTower_Status" Id="{0a50ecb5-bcef-4e18-bc2a-7ec98b11f365}">
+    <Declaration><![CDATA[TYPE ST_SignalTower_Status :
+STRUCT
+	// The four lamps exactly as the coils are being driven this scan - already
+	// blended, so a flashing lamp reads TRUE/FALSE at the flash rate and a panel
+	// bound to these mirrors the real tower without re-deriving anything.
+	Red		: BOOL;
+	Yellow	: BOOL;
+	Blue	: BOOL;
+	Green	: BOOL;
+
+	// The shared flash phase, for a panel that wants to blink something in step
+	// with the tower rather than run its own clock.
+	Flash	: BOOL;
+
+	// The conditions behind the lamps, so a panel can say WHY a lamp is lit
+	// instead of leaving the operator to infer it from a colour. Amber and blue
+	// have no source in this machine yet and stay FALSE - see
+	// _workflow/reference/state-lamp.md.
+	StarvedUpstream		: BOOL;
+	BlockedDownstream	: BOOL;
+	LowMaterial			: BOOL;
+	MaterialExhausted	: BOOL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

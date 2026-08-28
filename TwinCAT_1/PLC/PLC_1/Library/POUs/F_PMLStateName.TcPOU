@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="F_PMLStateName" Id="{7c5e1a94-3d68-4b02-9f11-6a8e2c40d573}" SpecialFunc="None">
+    <Declaration><![CDATA[// The PackML state as text, for an HMI to display directly.
+// IN THE PLC, NOT THE PANEL: tchmiconfig.json sets binding.symbolError to
+// "Ignore", so a client-side enum conversion that fails to resolve renders an
+// empty control and reports nothing, anywhere.
+// Names are the Tc3_PackML_V2 members with the ePMLState_ prefix dropped.
+FUNCTION F_PMLStateName : STRING(20)
+VAR_INPUT
+	State	: E_PMLState;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE State OF
+	E_PMLState.ePMLState_Clearing:		F_PMLStateName := 'Clearing';
+	E_PMLState.ePMLState_Stopped:		F_PMLStateName := 'Stopped';
+	E_PMLState.ePMLState_Starting:		F_PMLStateName := 'Starting';
+	E_PMLState.ePMLState_Idle:			F_PMLStateName := 'Idle';
+	E_PMLState.ePMLState_Suspended:		F_PMLStateName := 'Suspended';
+	E_PMLState.ePMLState_Execute:		F_PMLStateName := 'Execute';
+	E_PMLState.ePMLState_Stopping:		F_PMLStateName := 'Stopping';
+	E_PMLState.ePMLState_Aborting:		F_PMLStateName := 'Aborting';
+	E_PMLState.ePMLState_Aborted:		F_PMLStateName := 'Aborted';
+	E_PMLState.ePMLState_Holding:		F_PMLStateName := 'Holding';
+	E_PMLState.ePMLState_Held:			F_PMLStateName := 'Held';
+	E_PMLState.ePMLState_Unholding:		F_PMLStateName := 'Unholding';
+	E_PMLState.ePMLState_Suspending:	F_PMLStateName := 'Suspending';
+	E_PMLState.ePMLState_Unsuspending:	F_PMLStateName := 'Unsuspending';
+	E_PMLState.ePMLState_Resetting:		F_PMLStateName := 'Resetting';
+	E_PMLState.ePMLState_Completing:	F_PMLStateName := 'Completing';
+	E_PMLState.ePMLState_Complete:		F_PMLStateName := 'Complete';
+ELSE
+	// ePMLState_Undefined, and anything a future library version adds.
+	F_PMLStateName := 'Undefined';
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

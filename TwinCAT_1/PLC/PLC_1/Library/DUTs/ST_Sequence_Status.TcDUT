@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_Sequence_Status" Id="{8eaba2cd-a10e-4a40-83fe-5c8c4128d9d6}">
+    <Declaration><![CDATA[TYPE ST_Sequence_Status :
+STRUCT
+	StepIndex 			: UDINT;
+	StepName 			: STRING(20);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

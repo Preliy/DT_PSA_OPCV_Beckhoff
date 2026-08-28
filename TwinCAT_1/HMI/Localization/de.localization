@@ -1,0 +1,30 @@
+{
+  "$schema": "./../../Packages/Beckhoff.TwinCAT.HMI.Framework.14.5.1/runtimes/native1.12-tchmi/Schema/LocalizationDescription.Schema.json",
+  "locale": "de",
+  "localizedText": {
+    "L_EtherCAT": "EtherCAT",
+    "L_Events": "Meldungen",
+    "L_FGT_Drive": "Förderantriebe",
+    "L_FGT_Index": "Index-Einheiten",
+    "L_FGT_Lift": "Hubeinheiten",
+    "L_FGT_Overview": "Übersicht",
+    "L_FGT_Stopper": "Stopper-Einheiten",
+    "L_FG_Stations": "Stationen",
+    "L_FG_01": "FG_01 Identifizieren und Markieren",
+    "L_FG_02": "FG_02 Optische Prüfung",
+    "L_FG_03": "FG_03 Umsetzen und Wenden",
+    "L_FG_04": "FG_04 Pressen und Sitzkontrolle",
+    "L_FG_05": "FG_05 Verschließen",
+    "L_FG_Transport": "Transport",
+    "L_FunctionalGroups": "Funktionsgruppen",
+    "L_Localization": "Lokalisierung",
+    "L_Settings": "Einstellungen",
+    "L_StartPage": "Startseite",
+    "L_Theme": "Farbschema",
+    "EStop_Released": "Entriegelt",
+    "EStop_Latched": "AUSGELOEST",
+    "EStop_Inverted": "Invertiert",
+    "Door_ClosedShort": "Z",
+    "Door_LockedShort": "V"
+  }
+}

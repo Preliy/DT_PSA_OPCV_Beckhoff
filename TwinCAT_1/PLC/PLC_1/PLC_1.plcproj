@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FileVersion>1.0.0.0</FileVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{cbf23307-111e-4593-b4b7-f9568ab4cdec}</ProjectGuid>
+    <SubObjectsSortedByName>True</SubObjectsSortedByName>
+    <DownloadApplicationInfo>true</DownloadApplicationInfo>
+    <WriteProductVersion>true</WriteProductVersion>
+    <GenerateTpy>false</GenerateTpy>
+    <Name>PLC_1</Name>
+    <ProgramVersion>3.1.4026.25</ProgramVersion>
+    <Application>{4969b687-d86c-4a1a-910f-35390b3d5871}</Application>
+    <TypeSystem>{0f883364-bd00-4448-bc4d-c36811105715}</TypeSystem>
+    <Implicit_Task_Info>{6991244a-0e86-470a-b20d-bd55aabe1860}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{9a9516b8-0527-4016-9872-c98bb9124394}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{81d084dd-7fde-4991-9422-7957c2a079b7}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{2f233097-d4b3-4569-b4ef-46982d2f93d4}</LibraryReferences>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Library\DUTs\ST_AbstractLightSource_Command.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractLightSource_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractLightSource_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractBinaryDrive_Command.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractBinaryDrive_Config.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractBinaryDrive_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractBinaryDrive_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_BaseModule_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_Sequence_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_FG_System_Safety.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_IlluminatedButton_Config.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_IlluminatedButton_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_IlluminatedButton_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_SafetyDoor_Config.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_SafetyDoor_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_SafetyDoor_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_SignalTower_Config.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_SignalTower_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_SignalTower_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_HMI_FG_System.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractCamera_Command.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractCamera_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractCamera_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractBunker_Command.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractBunker_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\DUTs\ST_AbstractBunker_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_AbstractLightSource.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_AbstractCamera.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_AbstractBunker.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_ControlSource_HMI.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_ControlSource_Panel.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_IlluminatedButton.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_SafetyDoor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_SignalTower.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\FB_AbstractBinaryDrive.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\POUs\F_PMLStateName.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\00 Machine\Machine.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\11 FG_01\ST_FG_01_Identify_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\11 FG_01\ST_HMI_FG_01.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\11 FG_01\FG_01.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\12 FG_02\ST_FG_02_Inspection_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\12 FG_02\ST_HMI_FG_02.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\12 FG_02\FG_02.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\13 FG_03\ST_FG_03_Transfer_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\13 FG_03\ST_HMI_FG_03.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\13 FG_03\FG_03.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\14 FG_04\ST_FG_04_Press_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\14 FG_04\ST_HMI_FG_04.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\14 FG_04\FG_04.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\15 FG_05\ST_FG_05_Capping_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\15 FG_05\ST_HMI_FG_05.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\15 FG_05\FG_05.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\01 FG_System\FG_System.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\ST_TransferIndex_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\ST_TransferIndex_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\ST_TransferLift_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\ST_TransferLift_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\ST_TransferStopper_HMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\ST_TransferStopper_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\FG_Transport.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\FB_TransferIndex.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\FB_TransferStopper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Modules\10 FG_Transport\FB_TransferLift.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Library" />
+    <Folder Include="Library\DUTs" />
+    <Folder Include="Library\POUs" />
+    <Folder Include="Modules\12 FG_02" />
+    <Folder Include="Modules\13 FG_03" />
+    <Folder Include="Modules\14 FG_04" />
+    <Folder Include="Modules\15 FG_05" />
+    <Folder Include="VISUs" />
+    <Folder Include="POUs" />
+    <Folder Include="Modules" />
+    <Folder Include="Modules\00 Machine" />
+    <Folder Include="Modules\11 FG_01" />
+    <Folder Include="Modules\12 FG_02" />
+    <Folder Include="Modules\13 FG_03" />
+    <Folder Include="Modules\14 FG_04" />
+    <Folder Include="Modules\15 FG_05" />
+    <Folder Include="Modules\01 FG_System" />
+    <Folder Include="Modules\10 FG_Transport" />
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="SPT Base Types">
+      <DefaultResolution>SPT Base Types, * (Beckhoff Automation LLC)</DefaultResolution>
+      <Namespace>SPT_PackMLBase</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="SPT Components">
+      <DefaultResolution>SPT Components, * (Beckhoff Automation LLC)</DefaultResolution>
+      <Namespace>SPT_Components</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="SPT Event Logger">
+      <DefaultResolution>SPT Event Logger, * (Beckhoff Automation LLC)</DefaultResolution>
+      <Namespace>SPT_EventLogger</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_PackML_V2">
+      <DefaultResolution>Tc3_PackML_V2, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_PackML_V2</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_EventLogger">
+      <DefaultResolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_EventLogger</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Standard">
+      <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Standard</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_System">
+      <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Module">
+      <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Module</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+    </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderResolution Include="SPT Base Types">
+      <Resolution>SPT Base Types, 3.9.0 (Beckhoff Automation LLC)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SPT Components">
+      <Resolution>SPT Components, 3.9.1 (Beckhoff Automation LLC)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SPT Event Logger">
+      <Resolution>SPT Event Logger, 3.9.0 (Beckhoff Automation LLC)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SPT Motion Control">
+      <Resolution>SPT Motion Control, 3.9.0 (Beckhoff Automation LLC)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="SPT Utilities">
+      <Resolution>SPT Utilities, 3.9.0 (Beckhoff Automation LLC)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_Drive">
+      <Resolution>Tc2_Drive, 3.3.14.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_EtherCAT">
+      <Resolution>Tc2_EtherCAT, 3.7.2.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_IoFunctions">
+      <Resolution>Tc2_IoFunctions, 3.4.7.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_Math">
+      <Resolution>Tc2_Math, 3.5.3.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_MC2">
+      <Resolution>Tc2_MC2, 3.3.72.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_MC2_Drive">
+      <Resolution>Tc2_MC2_Drive, 3.3.54.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_ModbusRTU">
+      <Resolution>Tc2_ModbusRTU, 3.6.3.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_SerialCom">
+      <Resolution>Tc2_SerialCom, 3.4.8.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_Standard">
+      <Resolution>Tc2_Standard, 3.4.7.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_System">
+      <Resolution>Tc2_System, 3.10.2.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc2_Utilities">
+      <Resolution>Tc2_Utilities, 3.10.6.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_EventLogger">
+      <Resolution>Tc3_EventLogger, 3.3.15.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_JsonXml">
+      <Resolution>Tc3_JsonXml, 3.4.9.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_Module">
+      <Resolution>Tc3_Module, 3.4.7.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_PackML_V2">
+      <Resolution>Tc3_PackML_V2, 3.4.6.0 (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OC_PLC.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PLC.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PLC_1.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
+        <o>
+          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{246001F4-279D-43AC-B241-948EB31120E1}</v>
+        <o>
+          <v n="Name">"{246001F4-279D-43AC-B241-948EB31120E1}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
+        <o>
+          <v n="Name">"{29BD8D0C-3586-4548-BB48-497B9A01693F}"</v>
+          <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+            <v>NamingConventions</v>
+            <o>
+              <v n="Name">"NamingConventions"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+            <v>Rules</v>
+            <o>
+              <v n="Name">"Rules"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+          </d>
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
+        <o>
+          <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="String">
+            <v>ActiveVisuProfile</v>
+            <v>IR0whWr8bwfyBwAAMxnWswAAAABVAgAADu3eawAAAAABAAAAAAAAAAEaUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwACTHsAZgA5ADUAYgBiADQAMgA2AC0ANQA1ADIANAAtADQAYgA0ADUALQA5ADQAMAAwAC0AZgBiADAAZgAyAGUANwA3AGUANQAxAGIAfQADCE4AYQBtAGUABDJUAHcAaQBuAEMAQQBUACAAMwAuADEAIABCAHUAaQBsAGQAIAA0ADAAMgA2AC4AMQA4AAUWUAByAG8AZgBpAGwAZQBEAGEAdABhAAZMewAxADYAZQA1ADUAYgA2ADAALQA3ADAANAAzAC0ANABhADYAMwAtAGIANgA1AGIALQA2ADEANAA3ADEAMwA4ADcAOABkADQAMgB9AAcSTABpAGIAcgBhAHIAaQBlAHMACEx7ADMAYgBmAGQANQA0ADUAOQAtAGIAMAA3AGYALQA0AGQANgBlAC0AYQBlADEAYQAtAGEAOAAzADMANQA2AGEANQA1ADEANAAyAH0ACUx7ADkAYwA5ADUAOAA5ADYAOAAtADIAYwA4ADUALQA0ADEAYgBiAC0AOAA4ADcAMQAtADgAOQA1AGYAZgAxAGYAZQBkAGUAMQBhAH0ACg5WAGUAcgBzAGkAbwBuAAsGaQBuAHQADApVAHMAYQBnAGUADQpUAGkAdABsAGUADhpWAGkAcwB1AEUAbABlAG0ATQBlAHQAZQByAA8OQwBvAG0AcABhAG4AeQAQDFMAeQBzAHQAZQBtABESVgBpAHMAdQBFAGwAZQBtAHMAEjBWAGkAcwB1AEUAbABlAG0AcwBTAHAAZQBjAGkAYQBsAEMAbwBuAHQAcgBvAGwAcwATKFYAaQBzAHUARQBsAGUAbQBzAFcAaQBuAEMAbwBuAHQAcgBvAGwAcwAUJFYAaQBzAHUARQBsAGUAbQBUAGUAeAB0AEUAZABpAHQAbwByABUiVgBpAHMAdQBOAGEAdABpAHYAZQBDAG8AbgB0AHIAbwBsABYUVgBpAHMAdQBJAG4AcAB1AHQAcwAXGFYAaQBzAHUARQBsAGUAbQBCAGEAcwBlABgmRABlAHYAUABsAGEAYwBlAGgAbwBsAGQAZQByAHMAVQBzAGUAZAAZCGIAbwBvAGwAGiJQAGwAdQBnAGkAbgBDAG8AbgBzAHQAcgBhAGkAbgB0AHMAG0x7ADQAMwBkADUAMgBiAGMAZQAtADkANAAyAGMALQA0ADQAZAA3AC0AOQBlADkANAAtADEAYgBmAGQAZgAzADEAMABlADYAMwBjAH0AHBxBAHQATABlAGEAcwB0AFYAZQByAHMAaQBvAG4AHRRQAGwAdQBnAGkAbgBHAHUAaQBkAB4WUwB5AHMAdABlAG0ALgBHAHUAaQBkAB9IYQBmAGMAZAA1ADQANAA2AC0ANAA5ADEANAAtADQAZgBlADcALQBiAGIANwA4AC0AOQBiAGYAZgBlAGIANwAwAGYAZAAxADcAIBRVAHAAZABhAHQAZQBJAG4AZgBvACFMewBiADAAMwAzADYANgBhADgALQBiADUAYwAwAC0ANABiADkAYQAtAGEAMAAwAGUALQBlAGIAOAA2ADAAMQAxADEAMAA0AGMAMwB9ACIOVQBwAGQAYQB0AGUAcwAjTHsAMQA4ADYAOABmAGYAYwA5AC0AZQA0AGYAYwAtADQANQAzADIALQBhAGMAMAA2AC0AMQBlADMAOQBiAGIANQA1ADcAYgA2ADkAfQAkTHsAYQA1AGIAZAA0ADgAYwAzAC0AMABkADEANwAtADQAMQBiADUALQBiADEANgA0AC0ANQBmAGMANgBhAGQAMgBiADkANgBiADcAfQAlFk8AYgBqAGUAYwB0AHMAVAB5AHAAZQAmVFUAcABkAGEAdABlAEwAYQBuAGcAdQBhAGcAZQBNAG8AZABlAGwARgBvAHIAQwBvAG4AdgBlAHIAdABpAGIAbABlAEwAaQBiAHIAYQByAGkAZQBzACcQTABpAGIAVABpAHQAbABlACgUTABpAGIAQwBvAG0AcABhAG4AeQApHlUAcABkAGEAdABlAFAAcgBvAHYAaQBkAGUAcgBzACo4UwB5AHMAdABlAG0ALgBDAG8AbABsAGUAYwB0AGkAbwBuAHMALgBIAGEAcwBoAHQAYQBiAGwAZQArEnYAaQBzAHUAZQBsAGUAbQBzACwMcwB5AHMAdABlAG0ALUg2AGMAYgAxAGMAZABlADEALQBkADUAZABjAC0ANABhADMAYgAtADkAMAA1ADQALQAyADEAZgBhADcANQA2AGEAMwBmAGEANAAuKEkAbgB0AGUAcgBmAGEAYwBlAFYAZQByAHMAaQBvAG4ASQBuAGYAbwAvTHsAYwA2ADEAMQBlADQAMAAwAC0ANwBmAGIAOQAtADQAYwAzADUALQBiADkAYQBjAC0ANABlADMAMQA0AGIANQA5ADkANgA0ADMAfQAwGE0AYQBqAG8AcgBWAGUAcgBzAGkAbwBuADEYTQBpAG4AbwByAFYAZQByAHMAaQBvAG4AMgxMAGUAZwBhAGMAeQAzMEwAYQBuAGcAdQBhAGcAZQBNAG8AZABlAGwAVgBlAHIAcwBpAG8AbgBJAG4AZgBvADQwTABvAGEAZABMAGkAYgByAGEAcgBpAGUAcwBJAG4AdABvAFAAcgBvAGoAZQBjAHQANRpDAG8AbQBwAGEAdABpAGIAaQBsAGkAdAB5ANAAAhoD0AMBLQTQBQYaB9AHCBoBRQcJCNAACRoERQoLBAQAAAAHAAAAAAAAAAAAAADQDAutAgAAANANAS0O0A8BLRDQAAkaBEUKCwQEAAAACAAAAAAAAAAAAAAA0AwLrQEAAADQDQEtEdAPAS0Q0AAJGgRFCgsEBAAAAAcAAAAAAAAAAAAAANAMC60CAAAA0A0BLRLQDwEtENAACRoERQoLBAQAAAAIAAAAAAAAAAAAAADQDAutAgAAANANAS0T0A8BLRDQAAkaBEUKCwQEAAAACAAAAAAAAAAAAAAA0AwLrQIAAADQDQEtFNAPAS0Q0AAJGgRFCgsEBAAAAAgAAAAAAAAAAAAAANAMC60CAAAA0A0BLRXQDwEtENAACRoERQoLBAQAAAAHAAAAAAAAAAAAAADQDAutAgAAANANAS0W0A8BLRDQAAkaBEUKCwQEAAAACAAAAAAAAAAAAAAA0AwLrQQAAADQDQEtF9APAS0Q0BgZrQFFGhsB0AAbGgJFHAsEBAAAAAIAAAAAAAAAAAAAANAdHi0f0CAhGgJFIiMC0AAkGgVFCgsEAwAAAAMAAAAAAAAACgAAANAlC60AAAAA0AMBLSbQJwEtEdAoAS0Q0AAkGgVFCgsEAwAAAAMAAAAAAAAACgAAANAlC60BAAAA0AMBLSbQJwEtEdAoAS0QmikqAUUAAQLQAAEtK9AAAS0s0AAeLS3QLi8aA9AwC60BAAAA0DELrSQAAADQMhmtANAzLxoD0DALrQIAAADQMQutBgAAANAyGa0A0DQZrQDQNRmtAA==</v>
+          </d>
+        </o>
+        <v>{8A0FB252-96EB-4DCC-A5B4-B4804D05E2D6}</v>
+        <o>
+          <v n="Name">"{8A0FB252-96EB-4DCC-A5B4-B4804D05E2D6}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="Boolean">
+            <v>WriteLineIDs</v>
+            <v>True</v>
+          </d>
+        </o>
+        <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
+        <o>
+          <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="String">
+            <v>DisabledWarningIds</v>
+            <v>410,5410</v>
+          </d>
+        </o>
+        <v>{eeeeeeee-3909-4298-8022-501ac3238667}</v>
+        <o>
+          <v n="Name">"{eeeeeeee-3909-4298-8022-501ac3238667}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{F66C7017-BDD8-4114-926C-81D6D687E35F}</v>
+        <o>
+          <v n="Name">"{F66C7017-BDD8-4114-926C-81D6D687E35F}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="Boolean">
+            <v>CalcActiveTransOnly</v>
+            <v>True</v>
+          </d>
+        </o>
+      </d>
+      <d n="Values" t="Hashtable" />
+    </o>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+</Project>

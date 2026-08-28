@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <DUT Name="ST_HMI_FG_04" Id="{1cf35c74-fd0c-48f2-a167-d35218f7f6bd}">
+    <Declaration><![CDATA[// FG_04 HMI interface - ONE struct for the group tile.
+//
+// Extends ST_BaseModule_HMI, so it inherits the whole SPT module interface:
+//   Config.Name / LogStateChanges / LogModeChanges / ModeNames
+//   Command.Mode / State / Activate*Log / Deactivat*Log      (writable)
+//   Status.Busy / Error / ErrorID / Mode / State / HMIControlAvailable
+//   Sequence.StepIndex / StepName
+//   StateName
+//
+// The one added member CANNOT be called Config, Command, Status or Sequence -
+// those are inherited and redeclaring them is a compile error. Hence Press.
+//
+// FG_04 is the only one of the five station groups that needs an extension at
+// all. The other four publish ST_BaseModule_HMI unchanged, because every device
+// they own publishes itself and there is no group-level fact left over. Here
+// there is one: B_NIO's verdict outlives the sensor reading that produced it.
+TYPE ST_HMI_FG_04 EXTENDS ST_BaseModule_HMI :
+STRUCT
+	Press	: ST_FG_04_Press_Status;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

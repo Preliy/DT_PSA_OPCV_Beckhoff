@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="MAIN" Id="{dfb94da9-f8ba-499a-bbb3-6a2011ad516e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	Machine			: Machine := (Name := 'OC Demo 1', LogStateChanges := TRUE);
+
+	//Local TwinCAT HMI
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	ControlSource_HMI_Web	: FB_ControlSource_HMI;
+
+	// The physical operator panel, H_ControlPanel. A second control source rather
+	// than a device: FB_ControlSource already owns the START/STOP/RESET ladder,
+	// and MAX_NO_OF_EXTERNAL_CONTROLLERS is an array, so the two coexist.
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	ControlSource_Panel		: FB_ControlSource_Panel;
+
+	InitComplete	: BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CyclicLogic();]]></ST>
+    </Implementation>
+    <Method Name="CyclicLogic" Id="{6f9fd632-ea3e-4ade-acb8-b91620007b28}">
+      <Declaration><![CDATA[METHOD CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT InitComplete THEN
+	InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// The panel's two inputs from the machine, before it runs on them. SafetyOk
+// vetoes its Start and Reset permissives, so a button whose press would be
+// refused stays dark instead of inviting it; Flash is the signal tower's clock,
+// shared so every flashing lamp on the machine blinks in phase.
+ControlSource_Panel.SafetyOk	:= Machine.SafetyOk;
+ControlSource_Panel.Flash		:= Machine.IndicationFlash;
+
+// Control sources first, so this scan's requests become PackML commands before
+// the state machine runs on them.
+ControlSource_HMI_Web.CyclicLogic();
+ControlSource_Panel.CyclicLogic();
+
+Machine.CyclicLogic();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{64280bad-00bb-48bc-afde-51cc89a3523f}">
+      <Declaration><![CDATA[METHOD Initialize : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Top level machine initialization. Every deeper layer of modules is named inside
+// its own parent's Initialize; only the machine itself is named here.
+_AppInfo.KeepOutputsOnBP := TRUE;
+
+// Registration hands the control source an interface to the machine, which is
+// what its inherited Registered property reports on.
+IF NOT ControlSource_HMI_Web.Registered THEN
+	Machine.RegisterExternalController(ControlSource_HMI_Web);
+END_IF
+
+IF NOT ControlSource_Panel.Registered THEN
+	Machine.RegisterExternalController(ControlSource_Panel);
+END_IF
+
+ControlSource_HMI_Web.CyclicLogic();
+ControlSource_Panel.CyclicLogic();
+
+Initialize := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FG_03" Id="{c1dfb1cc-e4d0-450c-b656-8fff2eca6dfa}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FG_03
+
+{region generated code}
+VAR_INPUT
+	B_Detect1 : FB_SensorBinary;
+	B_Detect2 : FB_SensorBinary;
+	Y_AxisR1 : FB_Cylinder;
+	Y_AxisX1 : FB_Cylinder;
+	Y_AxisX2 : FB_Cylinder;
+	Y_AxisY1 : FB_Cylinder;
+	Y_AxisY2 : FB_Cylinder;
+	Y_Gripper1 : FB_Cylinder;
+	Y_Gripper2 : FB_Cylinder;
+END_VAR
+{endregion}]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[{region generated code}
+	InitRun();
+	B_Detect1();
+	B_Detect2();
+	Y_AxisR1();
+	Y_AxisX1();
+	Y_AxisX2();
+	Y_AxisY1();
+	Y_AxisY2();
+	Y_Gripper1();
+	Y_Gripper2();
+{endregion}
+
+Mapping();
+
+]]></ST>
+    </Implementation>
+    <Method Name="InitRun" Id="{fa2d2588-056f-46ac-a38d-8cfe8e8090d7}">
+      <Declaration><![CDATA[METHOD InitRun
+{region generated code}
+VAR_INST
+	bInitRun : BOOL := TRUE;
+END_VAR
+{endregion}]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[{region generated code}
+	IF NOT bInitRun THEN RETURN; END_IF
+	bInitRun := FALSE;
+{endregion}
+]]></ST>
+      </Implementation>
+    </Method>
+    <Action Name="Mapping" Id="{2ce11f03-d5c5-409c-b06c-e8521210c0b5}">
+      <Implementation>
+        <ST><![CDATA[// ============================================================================
+// FG_03 twin <-> EtherCAT simulation process image.
+//
+// Seven double solenoids and two grip sensors. Every solenoid gets two limit
+// switches on FG_03_EL1809_1 and two coils on FG_03_EL2809_1, paired on matching
+// channel numbers so a cylinder's DI n/n+1 and DO n/n+1 line up - which is what
+// makes a wiring fault visible by inspection rather than by symptom.
+//
+// Channel order follows the process image, so EXTENDED IS THE LOW CHANNEL of each
+// pair here. FG_01 has retracted first; neither is a convention, both are just
+// what the allocator read off the declaration order.
+//
+// THE TWO SENSORS TAKE 15 AND 16, WHICH FILLS THE TERMINAL. B_Detect1 and B_Detect2
+// are beam sensors inside the two grippers' jaws; they are inputs only, so they need
+// no output channel and none is reserved for them. FG_03_EL1809_1 has no free input
+// left after these two - the next input this group grows needs another card.
+// ============================================================================
+
+// --- Y_AxisR1 - double solenoid, both coils and both limits ----------------
+// DI FG_03_EL1809_1 5/6, DO FG_03_EL2809_1 5/6.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn5	:= Y_AxisR1.bExtended;
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn6	:= Y_AxisR1.bRetracted;
+Y_AxisR1.bExtend	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut5;
+Y_AxisR1.bRetract	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut6;
+
+// --- Y_AxisX1 - double solenoid, both coils and both limits ----------------
+// DI FG_03_EL1809_1 1/2, DO FG_03_EL2809_1 1/2.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn1	:= Y_AxisX1.bExtended;
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn2	:= Y_AxisX1.bRetracted;
+Y_AxisX1.bExtend	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut1;
+Y_AxisX1.bRetract	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut2;
+
+// --- Y_AxisX2 - double solenoid, both coils and both limits ----------------
+// DI FG_03_EL1809_1 9/10, DO FG_03_EL2809_1 9/10.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn9	:= Y_AxisX2.bExtended;
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn10	:= Y_AxisX2.bRetracted;
+Y_AxisX2.bExtend	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut9;
+Y_AxisX2.bRetract	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut10;
+
+// --- Y_AxisY1 - double solenoid, both coils and both limits ----------------
+// DI FG_03_EL1809_1 3/4, DO FG_03_EL2809_1 3/4.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn3	:= Y_AxisY1.bExtended;
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn4	:= Y_AxisY1.bRetracted;
+Y_AxisY1.bExtend	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut3;
+Y_AxisY1.bRetract	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut4;
+
+// --- Y_AxisY2 - double solenoid, both coils and both limits ----------------
+// DI FG_03_EL1809_1 11/12, DO FG_03_EL2809_1 11/12.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn11	:= Y_AxisY2.bExtended;
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn12	:= Y_AxisY2.bRetracted;
+Y_AxisY2.bExtend	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut11;
+Y_AxisY2.bRetract	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut12;
+
+// --- Y_Gripper1 - double solenoid, both coils and both limits --------------
+// DI FG_03_EL1809_1 7/8, DO FG_03_EL2809_1 7/8.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn7	:= Y_Gripper1.bExtended;
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn8	:= Y_Gripper1.bRetracted;
+Y_Gripper1.bExtend	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut7;
+Y_Gripper1.bRetract	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut8;
+
+// --- Y_Gripper2 - double solenoid, both coils and both limits --------------
+// DI FG_03_EL1809_1 13/14, DO FG_03_EL2809_1 13/14.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn13	:= Y_Gripper2.bExtended;
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn14	:= Y_Gripper2.bRetracted;
+Y_Gripper2.bExtend	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut13;
+Y_Gripper2.bRetract	:= GVL_EtherCAT_1_SIM.FG_03_EL2809_1.bOut14;
+
+// --- B_Detect1 - part in the jaws of gripper 1, input only -----------------
+// DI FG_03_EL1809_1 15. It follows its gripper's channel pair (7/8) in meaning but
+// not in number: the pairs were allocated before these sensors existed, so the two
+// of them take what was left at the end of the terminal.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn15	:= B_Detect1.bValue;
+
+// --- B_Detect2 - part in the jaws of gripper 2, input only -----------------
+// DI FG_03_EL1809_1 16. The terminal is full after this one.
+GVL_EtherCAT_1_SIM.FG_03_EL1809_1.bIn16	:= B_Detect2.bValue;]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

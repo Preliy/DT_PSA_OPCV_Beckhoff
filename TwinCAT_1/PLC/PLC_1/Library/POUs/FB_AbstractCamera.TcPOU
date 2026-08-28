@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_AbstractCamera" Id="{bd54e58e-be38-497a-a703-8d0fa608b922}" SpecialFunc="None">
+    <Declaration><![CDATA[// ============================================================================
+// Inspection camera - the CONTROL side of a vision sensor. Three instances, all
+// named P_Camera: FG_01, FG_02, FG_05. One device, one bit layout; the stations
+// differ only in which payload key their twin reads and what value it must be.
+//
+//   Output  bit 0  Enable          Input  bit 0  Ready
+//           bit 1  Trigger                bit 1  Busy
+//                                         bit 2  ResultValid
+//                                         bit 3  ResultOK
+//
+// Ready is permission to trigger; ResultValid says a verdict is on the wire and
+// holds it there until the trigger is released.
+// The twin side is FB_Camera in OC_SIM - both halves must agree on the layout,
+// and nothing checks it for you.
+// READ ResultOK ONLY WHILE ResultValid. This block does not mask it for you: it
+// reports both bits honestly and leaves the pairing to the caller.
+FUNCTION_BLOCK FB_AbstractCamera EXTENDS FB_ComponentBase
+VAR
+	InputData  AT %I* : BYTE;
+	OutputData AT %Q* : BYTE;
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	HMI : ST_AbstractCamera_HMI;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="CyclicLogic" Id="{4a6ab106-0175-445a-973c-88f479ef46bc}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT _InitComplete THEN
+	_InitComplete := Initialize();
+	RETURN;
+END_IF
+
+// Straight off the device, not inferred. There is no error bit in this layout, so
+// _Error is left alone - inventing a fault condition out of a handshake would be
+// inventing the why.
+_Busy := InputData.1;
+
+SUPER^.CyclicLogic();
+
+// Device status only. The inherited Config / Command / Status half of HMI is a
+// mirror of ComponentBase_HMI and is bridged in HMICommunication.
+HMI.Device.Ready		:= InputData.0;
+HMI.Device.Busy			:= InputData.1;
+HMI.Device.ResultValid	:= InputData.2;
+HMI.Device.ResultOK		:= InputData.3;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ClearTrigger" Id="{50ab085f-d873-4336-8982-f1c6860e5c77}">
+      <Declaration><![CDATA[// Release the trigger, which is also what tells the camera its verdict has been
+// read - ResultValid drops in response and the camera re-arms.
+METHOD PUBLIC ClearTrigger
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[OutputData.1 := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Disable" Id="{15d039e3-eb63-4cb4-9568-a3d4f71aa4ba}">
+      <Declaration><![CDATA[// Everything off, in one call: the trigger first, so a shot is never left armed on
+// a camera that is losing power on the next line.
+METHOD PUBLIC Disable
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[OutputData.1 := FALSE;
+OutputData.0 := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enable" Id="{7c0aa378-4716-47d0-8d1b-0c8ba1cfd77a}">
+      <Declaration><![CDATA[METHOD PUBLIC Enable
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[OutputData.0 := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Trigger" Id="{5c0471ab-38d9-49d3-8213-4a3d5cbd71ae}">
+      <Declaration><![CDATA[// Ask for a shot. The camera accepts this only from Ready, so a caller that has
+// not waited for Ready gets nothing rather than a queued exposure.
+METHOD PUBLIC Trigger
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[OutputData.1 := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Enabled" Id="{6764e2fb-8a5a-4a01-940b-8108f50cd4ee}">
+      <Declaration><![CDATA[// The commanded state, read back off the control byte. The camera does not report
+// "enabled" separately - Ready is its answer to having been enabled.
+PROPERTY Enabled : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b7ded1ab-fe21-448f-8d9a-2c6e632e6f91}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Enabled := OutputData.0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Triggered" Id="{8e701629-3025-4db3-bc7b-70610ba52b84}">
+      <Declaration><![CDATA[// The commanded state, read back off the control byte.
+PROPERTY Triggered : BOOL]]></Declaration>
+      <Get Name="Get" Id="{3d861771-c326-4c66-9a93-6dc7f3e4c783}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Triggered := OutputData.1;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Ready" Id="{46255364-7a72-4efc-86e9-b94ef767cbe6}">
+      <Declaration><![CDATA[// Permission to trigger: the camera is enabled, idle, and holding no unread
+// verdict.
+PROPERTY Ready : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4e01cdd2-ed79-42bf-bbcc-2254555def27}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Ready := InputData.0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="DeviceBusy" Id="{bf13af4f-1c9a-4ef7-ba8a-36ec793261c6}">
+      <Declaration><![CDATA[// The shot is in progress.
+// NOT called Busy: FB_BaseFB already publishes a Busy property, and redeclaring it
+// in a descendant is a compile error. Hence DeviceBusy.
+PROPERTY DeviceBusy : BOOL]]></Declaration>
+      <Get Name="Get" Id="{a492c1cf-01f5-4e87-97fa-4d004292e2d1}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[DeviceBusy := InputData.1;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ResultValid" Id="{ff8dcf18-9205-4181-a2db-c72744625c7a}">
+      <Declaration><![CDATA[// A verdict is on the wire. It stands until the trigger is released, so a caller
+// cannot miss it by being a scan late.
+PROPERTY ResultValid : BOOL]]></Declaration>
+      <Get Name="Get" Id="{f81fc315-fa33-4d0c-89bc-177fab4305a8}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ResultValid := InputData.2;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ResultOK" Id="{f028dc0e-0c46-4306-86c3-905be327869b}">
+      <Declaration><![CDATA[// The verdict. MEANINGLESS UNLESS ResultValid IS TRUE - outside that window it
+// reads FALSE because there is no result, not because the part failed.
+PROPERTY ResultOK : BOOL]]></Declaration>
+      <Get Name="Get" Id="{729f8376-5094-491f-bdd2-498fa8837c39}">
+        <Declaration><![CDATA[VAR END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ResultOK := InputData.3;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="HMICommunication" Id="{31c48967-2ce8-4240-a223-280a764914d1}">
+      <Declaration><![CDATA[METHOD PROTECTED HMICommunication
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// HMI is a published mirror of the base's own ComponentBase_HMI - carry operator
+// intent in before the base looks, and its answers back out afterwards.
+ComponentBase_HMI.Command := HMI.Command;
+
+SUPER^.HMICommunication();
+
+HMI.Config	:= ComponentBase_HMI.Config;
+HMI.Status	:= ComponentBase_HMI.Status;
+HMI.Command	:= ComponentBase_HMI.Command;
+
+// The permissive is HMIPermissions' decision, never re-derived here or on the
+// panel. With control unavailable the command struct is fed the actual output
+// state, so the tile shows what the machine is doing, not what was last asked.
+IF ComponentBase_HMI.Status.HMIControlAvailable THEN
+	OutputData.0 := HMI.DeviceCommand.Enable;
+	OutputData.1 := HMI.DeviceCommand.Trigger;
+ELSE
+	HMI.DeviceCommand.Enable	:= OutputData.0;
+	HMI.DeviceCommand.Trigger	:= OutputData.1;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialize" Id="{b119190b-3cd9-4857-b81a-615aa66620f7}">
+      <Declaration><![CDATA[METHOD PROTECTED Initialize : BOOL
+VAR_INPUT END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Initialize := SUPER^.Initialize();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
