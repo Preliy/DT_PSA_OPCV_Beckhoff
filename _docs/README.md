@@ -9,7 +9,7 @@ open already.
 
 | Page | Answers |
 |---|---|
-| [01 · Setup](01-setup.md) | Installing TwinCAT, building the solution, and connecting it to the twin |
+| [01 · Setup](01-setup.md) | What the PC needs, installing TwinCAT, isolated cores, the two network adapters and the loop cable, the PLC libraries, building and connecting to the twin |
 | [02 · Usage](02-usage.md) | Running the machine: startup order, the operator panel, the web HMI |
 | [03 · Architecture](03-architecture.md) | How `PLC_1` and `SIM_1` are organised, and why there are two |
 
