@@ -30,6 +30,17 @@ That indirection is the entire point. The control program cannot tell it is runn
 so nothing about it has to change when it runs against steel. A test rig that the program is aware
 of proves much less.
 
+**The `⇄` between the two EtherCAT devices is a physical cable, not a software coupling.**
+`EtherCAT_1` is a real master and `EtherCAT_1_SIM` is a TE1111 EtherCAT Simulation Device; each is
+bound to its own network adapter, and the master's frames go out of one port and into the other over
+a patch cable looped between them. Both adapters must be ones the TwinCAT real-time driver supports,
+and the `tsproj` records the ones the project was saved on — so a fresh clone has to repoint them
+before Activate Configuration. See [01 · Setup §4](01-setup.md#4-two-network-adapters-and-the-loop-cable).
+
+The simulation device runs **unsynchronised** with the master, which is why `SIM_1` is on a 1 ms task
+against the control program's 10 ms: the emulation has to be sampled faster than the thing it is
+answering.
+
 ## 2. What is generated and what is not
 
 | Path | Written by |

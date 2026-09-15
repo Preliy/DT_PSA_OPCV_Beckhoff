@@ -19,6 +19,11 @@ created; the two are coupled and run in full emulation.
 Unity ⇄ SIM_1 ⇄ EtherCAT_1_SIM ⇄ EtherCAT_1 ⇄ PLC_1
 ```
 
+**The middle link is a real cable.** `EtherCAT_1` and `EtherCAT_1_SIM` each sit on their own network
+adapter, and the master's frames leave one port and arrive at the other over a patch cable looped
+between them — so the PC needs **two** Ethernet ports the TwinCAT real-time driver supports.
+[01 · Setup](_docs/01-setup.md) covers that, and the isolated core the timing depends on.
+
 **`PLC_1` never talks to Unity.** It talks to EtherCAT terminals, exactly as it would on the real
 machine — which is the whole point: the control program cannot tell it is running against a twin, so
 nothing about it has to change when it runs against steel.
@@ -89,7 +94,7 @@ disagrees with the shipped binary, the binary wins.**
 
 | | |
 |---|---|
-| [**Setup**](_docs/01-setup.md) | Installing TwinCAT, building the solution, connecting the twin |
+| [**Setup**](_docs/01-setup.md) | Host requirements, installing TwinCAT, isolated cores, the two network adapters, the PLC libraries |
 | [**Usage**](_docs/02-usage.md) | Running the machine: startup order, the operator panel, the web HMI |
 | [**Architecture**](_docs/03-architecture.md) | Why `PLC_1` and `SIM_1` are separate, and where the boundary runs |
 | [**The machine in TwinCAT**](_docs/context/machine.md) | Generated: verified PLC paths, terminal mapping, process image |
@@ -115,10 +120,10 @@ work — but what they state is the contract, not TwinCAT's version of it.
 **Contributions are genuinely welcome.** A missing setup step, a bug you hit, a correction to
 something we got wrong, an HMI page, a better recovery path — all of it.
 
-The most useful thing right now is the setup procedure. [01 · Setup](_docs/01-setup.md) carries seven
-`TODO(setup)` markers — steps that have not been captured from a working installation and were left
-blank rather than guessed at. Filling one in is a small pull request with a large effect on everyone
-who tries this next.
+[01 · Setup](_docs/01-setup.md) is now written up end to end. The part of it that has **not** been
+run here is Unity on a separate host from TwinCAT — the ADS route and the client's `NetId` are
+documented and marked as unverified. Confirming or correcting that is a small pull request with a
+large effect on everyone who tries it next.
 
 Two things to know before you start:
 
