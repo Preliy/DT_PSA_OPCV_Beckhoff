@@ -108,8 +108,11 @@ jobs:
             url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf \
             "https://github.com/"
           # src_ref() reads origin/HEAD to decide the branch a published link should name;
-          # actions/checkout leaves it unset.
-          git remote set-head origin --auto
+          # actions/checkout leaves it unset. Written directly rather than with
+          # `git remote set-head --auto`: a tag checkout (the release path) fetches no
+          # branch, and set-head refuses a ref it cannot see. src_ref() only reads the name.
+          git symbolic-ref refs/remotes/origin/HEAD \
+            "refs/remotes/origin/${{ github.event.repository.default_branch }}"
 
       - name: Publish the wiki
         run: |
