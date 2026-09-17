@@ -1,7 +1,7 @@
 {
   "name": "DT_PSA_OPCV_Beckhoff",
   "vendor": "Beckhoff",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "platform": "Beckhoff TwinCAT 3",
   "repository": "https://github.com/Preliy/DT_PSA_OPCV_Beckhoff",
   "main": "https://github.com/Preliy/DT_PSA_OPCV",
