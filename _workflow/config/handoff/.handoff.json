@@ -1,13 +1,13 @@
 {
-  "syncedAtUtc": "2026-08-28T11:33:47Z",
-  "mainVersion": null,
+  "syncedAtUtc": "2026-10-14T20:08:50Z",
+  "mainVersion": "1.0.0",
   "sourceRepo": "DT_PSA_OPCV",
   "upstreamUrl": "https://github.com/Preliy/DT_PSA_OPCV",
   "upstreamRef": "master",
-  "sourceCommit": "50600ae",
-  "sourceUncommitted": false,
-  "machineSha256": "24ab538565c9d327ebf0c47098b23c9c19f9235b4604d2693a000e50e07931aa",
+  "sourceCommit": "893fffb",
+  "sourceUncommitted": true,
+  "machineSha256": "65c99e6b29b0771f637e3c54c8d9c181aeb8ead9f46d854f005c4881ee82331f",
   "schema": 2,
   "exportCommit": "f310945 2026-08-28",
-  "exportedAtUtc": "2026-08-23T17:09:36.0996372Z"
+  "exportedAtUtc": "2026-10-14T20:03:08.0167801Z"
 }
