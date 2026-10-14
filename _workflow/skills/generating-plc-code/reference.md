@@ -324,12 +324,13 @@ determines the signals, which determines the SPT component on the control side.
 
 | `oc.deviceType` | OC_Core FB | Twin members | SPT component | Count |
 |---|---|---|---|---|
-| `Cylinder` | `FB_Cylinder` | `bRetract`, `bExtend` in; `bRetracted`, `bExtended` out | `FB_SingleSolenoidFeedback` / `FB_DoubleSolenoidFeedback` | 35 |
-| `SensorBinary`, `SignalBinary` | `FB_SensorBinary` | `bValue` out | `FB_DigitalSensor` | 28 |
+| `Cylinder` | `FB_Cylinder` | `bRetract`, `bExtend` in; `bRetracted`, `bExtended` out | `FB_SingleSolenoidFeedback` / `FB_DoubleSolenoidFeedback` | 33 |
+| `SensorBinary`, `SignalBinary` | `FB_SensorBinary` | `bValue` out | `FB_DigitalSensor` | 32 |
 | `Button` | `FB_Button` | `bEnable` in; `bValue` out | `FB_ControlSource` input | 8 |
 | `Lock` | `FB_Lock` | `bLock` in; `bClosed`, `bLocked` out | self-contained component | 6 |
 | `Lamp` | `FB_Lamp` | `bEnable` in | direct output | 4 |
-| `DriveSimple`, `DriveSpeed`, `DrivePosition` | `FB_Drive` | `nControl`, `fTargetValue` in; `nStatus`, `fActualValue` out | self-contained — **not** an NC axis, do not use `FB_Component_BasicAxis` | 4 |
+| `DriveSimple`, `DriveSpeed` | `FB_Drive` | `nControl`, `fTargetValue` in; `nStatus`, `fActualValue` out | self-contained — **not** an NC axis, do not use `FB_Component_BasicAxis` | 4 |
+| `DrivePosition` with link type `FB_Sercos_VC` | `FB_Sercos_VC` (local copy in `SIM_1/Library/`) | drive process image through `pControl` / `pStatus`, wired in the group's `InitRun`; `ControlData` = position to Unity | **an NC axis**: `FB_Component_BasicAxis`, `AXIS_REF` linked to the NC; sensor homing with `FB_HomeRoutine_RefSensor`. See `_docs/03-architecture.md` > Lift axes | 2 |
 | `TagReader` | `FB_Reader` | `nControl`, `nCommand` in; `nStatus`, `nResult` out | self-contained | 2 |
 | `LinkByte` | `FB_DeviceByte` | `nControl`, `nControlData` in; `nStatus`, `nStatusData` out | direct output | 2 |
 | `PanelSampler` | `FB_Panel` | `nControlData`, `nStatusData` DWORD | `FB_ControlSource` | 2 |

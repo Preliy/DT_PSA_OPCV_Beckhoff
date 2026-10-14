@@ -11,7 +11,7 @@ The control side only. What FG_Transport *is* - its scene hierarchy, its devices
 | Control PLC path | `MAIN.Machine.FG_Transport` |
 | Module | `FG_Transport EXTENDS FB_PackML_BaseModule` |
 | Served by | — |
-| Devices | 42 |
+| Devices | 46 |
 | Behaviour | [`transport-behaviour.md`](https://github.com/Preliy/DT_PSA_OPCV/blob/master/_docs/reference/transport-behaviour.md) |
 
 ## Components
@@ -38,14 +38,18 @@ The control side only. What FG_Transport *is* - its scene hierarchy, its devices
 | `B_Exit` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Index05.B_Exit` | 1 | 1 |
 | `Y_Lift` | Cylinder | `FB_Cylinder` | `MAIN.Machine.FG_Transport.Index05.Y_Lift` | 4 | 4 |
 | `Y_Stopper` | Cylinder | `FB_Cylinder` | `MAIN.Machine.FG_Transport.Index05.Y_Stopper` | 3 | 3 |
+| `B_AxisMax` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Lift01.B_AxisMax` | 1 | 1 |
+| `B_AxisMin` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Lift01.B_AxisMin` | 1 | 1 |
 | `B_Detect` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Lift01.B_Detect` | 1 | 1 |
 | `B_Exit` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Lift01.B_Exit` | 1 | 1 |
 | `M_Conveyor` | DriveSimple | `FB_Drive` | `MAIN.Machine.FG_Transport.Lift01.M_Conveyor` | 3 | 3 |
-| `Y_Lift` | Cylinder | `FB_Cylinder` | `MAIN.Machine.FG_Transport.Lift01.Y_Lift` | 4 | 4 |
+| `Y_Lift` | DrivePosition | `FB_Sercos_VC` | `MAIN.Machine.FG_Transport.Lift01.Y_Lift` | 2 | 2 |
+| `B_AxisMax` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Lift02.B_AxisMax` | 1 | 1 |
+| `B_AxisMin` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Lift02.B_AxisMin` | 1 | 1 |
 | `B_Detect` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Lift02.B_Detect` | 1 | 1 |
 | `B_Exit` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Lift02.B_Exit` | 1 | 1 |
 | `M_Conveyor` | DriveSimple | `FB_Drive` | `MAIN.Machine.FG_Transport.Lift02.M_Conveyor` | 3 | 3 |
-| `Y_Lift` | Cylinder | `FB_Cylinder` | `MAIN.Machine.FG_Transport.Lift02.Y_Lift` | 4 | 4 |
+| `Y_Lift` | DrivePosition | `FB_Sercos_VC` | `MAIN.Machine.FG_Transport.Lift02.Y_Lift` | 2 | 2 |
 | `B_Detect` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Stopper01.B_Detect` | 1 | 1 |
 | `B_Exit` | SensorBinary | `FB_SensorBinary` | `MAIN.Machine.FG_Transport.Stopper01.B_Exit` | 1 | 1 |
 | `Y_Stopper` | Cylinder | `FB_Cylinder` | `MAIN.Machine.FG_Transport.Stopper01.Y_Stopper` | 3 | 3 |
@@ -72,7 +76,7 @@ The control side only. What FG_Transport *is* - its scene hierarchy, its devices
 | POU | `TwinCAT_1/PLC/SIM_1/FG_Transport/FG_Transport.TcPOU` |
 | In `.plcproj` | yes |
 | `Mapping` targets | GVL_EtherCAT_1_SIM |
-| `Mapping` lines | 89 |
+| `Mapping` lines | 85 |
 
 Only the `Mapping` action is ours. The `{region generated code}` block belongs to OC Assistant and is overwritten on the next twin regeneration.
 
@@ -85,7 +89,7 @@ Only the `Mapping` action is ours. The `{region generated code}` block belongs t
 | PackML states | `Execute`, `Aborting`, `Clearing`, `Stopping`, `Resetting` |
 | Fault codes | — |
 | HMI struct | `ST_BaseModule_HMI` |
-| Other POUs | `FB_TransferIndex.TcPOU`, `FB_TransferLift.TcPOU`, `FB_TransferStopper.TcPOU` |
+| Other POUs | `FB_HomeRoutine_RefSensor.TcPOU`, `FB_TransferIndex.TcPOU`, `FB_TransferLift.TcPOU`, `FB_TransferStopper.TcPOU` |
 
 Fault codes are read from `_FaultCode :=` in the ST. What each one *means* is behaviour and lives in the reference page named in the header.
 
@@ -138,24 +142,24 @@ Fault codes are read from `_FaultCode :=` in the ST. What each one *means* is be
 | `Index05.Y_Stopper.ExtendedSensor` | IN | FG_Transport_Index_EL1809_2 channel 14 | Mapping_PLC.xml |
 | `Index05.Y_Stopper.RetractedSensor` | IN | FG_Transport_Index_EL1809_2 channel 13 | Mapping_PLC.xml |
 | `Index05.Y_Stopper._ExtendOutput` | OUT | FG_Transport_Index_EL2809_1 channel 15 | Mapping_PLC.xml |
+| `Lift01.B_AxisMax.HardwareInput` | IN | FG_Transport_Lift_EL1809_1 channel 4 | Mapping_PLC.xml |
+| `Lift01.B_AxisMin.HardwareInput` | IN | FG_Transport_Lift_EL1809_1 channel 3 | Mapping_PLC.xml |
 | `Lift01.B_Detect.HardwareInput` | IN | FG_Transport_Lift_EL1809_1 channel 1 | Mapping_PLC.xml |
 | `Lift01.B_Exit.HardwareInput` | IN | FG_Transport_Lift_EL1809_1 channel 2 | Mapping_PLC.xml |
 | `Lift01.M_Conveyor._Backward` | OUT | FG_Transport_Lift_EL2008_1 channel 3 | Mapping_PLC.xml |
 | `Lift01.M_Conveyor._DriveActive` | IN | FG_Transport_Lift_EL1809_1 channel 5 | Mapping_PLC.xml |
 | `Lift01.M_Conveyor._Forward` | OUT | FG_Transport_Lift_EL2008_1 channel 4 | Mapping_PLC.xml |
-| `Lift01.Y_Lift.ExtendedSensor` | IN | FG_Transport_Lift_EL1809_1 channel 4 | Mapping_PLC.xml |
-| `Lift01.Y_Lift.RetractedSensor` | IN | FG_Transport_Lift_EL1809_1 channel 3 | Mapping_PLC.xml |
-| `Lift01.Y_Lift._ExtendOutput` | OUT | FG_Transport_Lift_EL2008_1 channel 2 | Mapping_PLC.xml |
-| `Lift01.Y_Lift._RetractOutput` | OUT | FG_Transport_Lift_EL2008_1 channel 1 | Mapping_PLC.xml |
+| `Lift01.Y_Lift.BasicAxis._Axis.NcToPlc` | IN | **unlinked** | Mapping_PLC.xml |
+| `Lift01.Y_Lift.BasicAxis._Axis.PlcToNc` | OUT | **unlinked** | Mapping_PLC.xml |
+| `Lift02.B_AxisMax.HardwareInput` | IN | FG_Transport_Lift_EL1809_1 channel 9 | Mapping_PLC.xml |
+| `Lift02.B_AxisMin.HardwareInput` | IN | FG_Transport_Lift_EL1809_1 channel 8 | Mapping_PLC.xml |
 | `Lift02.B_Detect.HardwareInput` | IN | FG_Transport_Lift_EL1809_1 channel 6 | Mapping_PLC.xml |
 | `Lift02.B_Exit.HardwareInput` | IN | FG_Transport_Lift_EL1809_1 channel 7 | Mapping_PLC.xml |
 | `Lift02.M_Conveyor._Backward` | OUT | FG_Transport_Lift_EL2008_1 channel 7 | Mapping_PLC.xml |
 | `Lift02.M_Conveyor._DriveActive` | IN | FG_Transport_Lift_EL1809_1 channel 10 | Mapping_PLC.xml |
 | `Lift02.M_Conveyor._Forward` | OUT | FG_Transport_Lift_EL2008_1 channel 8 | Mapping_PLC.xml |
-| `Lift02.Y_Lift.ExtendedSensor` | IN | FG_Transport_Lift_EL1809_1 channel 9 | Mapping_PLC.xml |
-| `Lift02.Y_Lift.RetractedSensor` | IN | FG_Transport_Lift_EL1809_1 channel 8 | Mapping_PLC.xml |
-| `Lift02.Y_Lift._ExtendOutput` | OUT | FG_Transport_Lift_EL2008_1 channel 6 | Mapping_PLC.xml |
-| `Lift02.Y_Lift._RetractOutput` | OUT | FG_Transport_Lift_EL2008_1 channel 5 | Mapping_PLC.xml |
+| `Lift02.Y_Lift.BasicAxis._Axis.NcToPlc` | IN | **unlinked** | Mapping_PLC.xml |
+| `Lift02.Y_Lift.BasicAxis._Axis.PlcToNc` | OUT | **unlinked** | Mapping_PLC.xml |
 | `Stopper01.B_Detect.HardwareInput` | IN | FG_Transport_Stopper_EL1809_1 channel 1 | Mapping_PLC.xml |
 | `Stopper01.B_Exit.HardwareInput` | IN | FG_Transport_Stopper_EL1809_1 channel 2 | Mapping_PLC.xml |
 | `Stopper01.Y_Stopper.ExtendedSensor` | IN | FG_Transport_Stopper_EL1809_1 channel 4 | Mapping_PLC.xml |

@@ -3,13 +3,13 @@
 
 # Cylinder in TwinCAT
 
-**35 instances.** What this device type *is* - its authored description, its bit layout, the full instance list with twin paths - is in the main repo: [`Cylinder`](https://github.com/Preliy/DT_PSA_OPCV/blob/master/_docs/context/devices/cylinder.md). This page states only what TwinCAT makes of it.
+**33 instances.** What this device type *is* - its authored description, its bit layout, the full instance list with twin paths - is in the main repo: [`Cylinder`](https://github.com/Preliy/DT_PSA_OPCV/blob/master/_docs/context/devices/cylinder.md). This page states only what TwinCAT makes of it.
 
 ## Control function blocks
 
 | Control FB | Instances |
 |---|---:|
-| `FB_DoubleSolenoidFeedback` | 24 |
+| `FB_DoubleSolenoidFeedback` | 22 |
 | `FB_SingleSolenoidFeedback` | 11 |
 
 **The twin device type does not determine the control FB.** Read the instance table below before assuming which one a given device is.
@@ -64,8 +64,6 @@
 | `Y_Stopper` | FG_Transport | `MAIN.Machine.FG_Transport.Index04.Y_Stopper` | `FB_SingleSolenoidFeedback` |
 | `Y_Lift` | FG_Transport | `MAIN.Machine.FG_Transport.Index05.Y_Lift` | `FB_DoubleSolenoidFeedback` |
 | `Y_Stopper` | FG_Transport | `MAIN.Machine.FG_Transport.Index05.Y_Stopper` | `FB_SingleSolenoidFeedback` |
-| `Y_Lift` | FG_Transport | `MAIN.Machine.FG_Transport.Lift01.Y_Lift` | `FB_DoubleSolenoidFeedback` |
-| `Y_Lift` | FG_Transport | `MAIN.Machine.FG_Transport.Lift02.Y_Lift` | `FB_DoubleSolenoidFeedback` |
 | `Y_Stopper` | FG_Transport | `MAIN.Machine.FG_Transport.Stopper01.Y_Stopper` | `FB_SingleSolenoidFeedback` |
 | `Y_Stopper` | FG_Transport | `MAIN.Machine.FG_Transport.Stopper02.Y_Stopper` | `FB_SingleSolenoidFeedback` |
 | `Y_Stopper` | FG_Transport | `MAIN.Machine.FG_Transport.Stopper03.Y_Stopper` | `FB_SingleSolenoidFeedback` |

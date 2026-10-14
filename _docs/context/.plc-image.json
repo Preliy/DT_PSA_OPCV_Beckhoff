@@ -4,7 +4,7 @@
    "boxes": [
     {
      "channels": [],
-     "id": "44",
+     "id": "33",
      "name": "FG_System_EK1100",
      "path": [
       "FG_System_EK1100"
@@ -94,7 +94,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "45",
+     "id": "34",
      "name": "FG_System_Panel_EL1809_1",
      "path": [
       "FG_System_Panel_EL1809_1"
@@ -184,7 +184,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "46",
+     "id": "35",
      "name": "FG_System_Panel_EL2809_1",
      "path": [
       "FG_System_Panel_EL2809_1"
@@ -274,7 +274,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "59",
+     "id": "36",
      "name": "FG_System_Door_EL1809_1",
      "path": [
       "FG_System_Door_EL1809_1"
@@ -324,7 +324,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "60",
+     "id": "37",
      "name": "FG_System_Door_EL2008_1",
      "path": [
       "FG_System_Door_EL2008_1"
@@ -333,7 +333,7 @@
     },
     {
      "channels": [],
-     "id": "61",
+     "id": "38",
      "name": "FG_Transport_EK1100",
      "path": [
       "FG_Transport_EK1100"
@@ -423,7 +423,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "62",
+     "id": "39",
      "name": "FG_Transport_Index_EL1809_1",
      "path": [
       "FG_Transport_Index_EL1809_1"
@@ -513,7 +513,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "63",
+     "id": "47",
      "name": "FG_Transport_Index_EL1809_2",
      "path": [
       "FG_Transport_Index_EL1809_2"
@@ -603,7 +603,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "64",
+     "id": "48",
      "name": "FG_Transport_Stopper_EL1809_1",
      "path": [
       "FG_Transport_Stopper_EL1809_1"
@@ -693,7 +693,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "65",
+     "id": "49",
      "name": "FG_Transport_Lift_EL1809_1",
      "path": [
       "FG_Transport_Lift_EL1809_1"
@@ -743,7 +743,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "66",
+     "id": "50",
      "name": "FG_Transport_Drive_EL1008_1",
      "path": [
       "FG_Transport_Drive_EL1008_1"
@@ -833,7 +833,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "67",
+     "id": "51",
      "name": "FG_Transport_Index_EL2809_1",
      "path": [
       "FG_Transport_Index_EL2809_1"
@@ -883,7 +883,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "68",
+     "id": "52",
      "name": "FG_Transport_Stopper_EL2008_1",
      "path": [
       "FG_Transport_Stopper_EL2008_1"
@@ -933,7 +933,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "69",
+     "id": "53",
      "name": "FG_Transport_Lift_EL2008_1",
      "path": [
       "FG_Transport_Lift_EL2008_1"
@@ -983,7 +983,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "70",
+     "id": "54",
      "name": "FG_Transport_Drive_EL2008_1",
      "path": [
       "FG_Transport_Drive_EL2008_1"
@@ -992,7 +992,7 @@
     },
     {
      "channels": [],
-     "id": "71",
+     "id": "55",
      "name": "FG_01_EK1100",
      "path": [
       "FG_01_EK1100"
@@ -1042,7 +1042,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "72",
+     "id": "56",
      "name": "FG_01_EL1008_1",
      "path": [
       "FG_01_EL1008_1"
@@ -1092,7 +1092,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "73",
+     "id": "57",
      "name": "FG_01_EL1008_2",
      "path": [
       "FG_01_EL1008_2"
@@ -1142,7 +1142,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "74",
+     "id": "58",
      "name": "FG_01_EL2008_1",
      "path": [
       "FG_01_EL2008_1"
@@ -1232,7 +1232,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "75",
+     "id": "90",
      "name": "FG_01_EL1859_1",
      "path": [
       "FG_01_EL1859_1"
@@ -1322,7 +1322,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "76",
+     "id": "91",
      "name": "FG_01_EL1859_2",
      "path": [
       "FG_01_EL1859_2"
@@ -1331,7 +1331,7 @@
     },
     {
      "channels": [],
-     "id": "77",
+     "id": "92",
      "name": "FG_02_EK1100",
      "path": [
       "FG_02_EK1100"
@@ -1421,7 +1421,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "78",
+     "id": "93",
      "name": "FG_02_EL1859_1",
      "path": [
       "FG_02_EL1859_1"
@@ -1430,7 +1430,7 @@
     },
     {
      "channels": [],
-     "id": "79",
+     "id": "94",
      "name": "FG_03_EK1100",
      "path": [
       "FG_03_EK1100"
@@ -1520,7 +1520,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "80",
+     "id": "95",
      "name": "FG_03_EL1809_1",
      "path": [
       "FG_03_EL1809_1"
@@ -1610,7 +1610,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "81",
+     "id": "96",
      "name": "FG_03_EL2809_1",
      "path": [
       "FG_03_EL2809_1"
@@ -1619,7 +1619,7 @@
     },
     {
      "channels": [],
-     "id": "82",
+     "id": "97",
      "name": "FG_04_EK1100",
      "path": [
       "FG_04_EK1100"
@@ -1669,7 +1669,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "83",
+     "id": "98",
      "name": "FG_04_EL1008_1",
      "path": [
       "FG_04_EL1008_1"
@@ -1719,7 +1719,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "84",
+     "id": "99",
      "name": "FG_04_EL2008_1",
      "path": [
       "FG_04_EL2008_1"
@@ -1728,7 +1728,7 @@
     },
     {
      "channels": [],
-     "id": "85",
+     "id": "100",
      "name": "FG_05_EK1100",
      "path": [
       "FG_05_EK1100"
@@ -1818,7 +1818,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "86",
+     "id": "101",
      "name": "FG_05_EL1809_1",
      "path": [
       "FG_05_EL1809_1"
@@ -1908,7 +1908,7 @@
        "pdo": "Channel 16"
       }
      ],
-     "id": "87",
+     "id": "102",
      "name": "FG_05_EL2809_1",
      "path": [
       "FG_05_EL2809_1"
@@ -1998,7 +1998,7 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "88",
+     "id": "103",
      "name": "FG_05_EL1859_1",
      "path": [
       "FG_05_EL1859_1"
@@ -2088,12 +2088,30 @@
        "pdo": "Channel 8"
       }
      ],
-     "id": "89",
+     "id": "104",
      "name": "FG_05_EL1859_2",
      "path": [
       "FG_05_EL1859_2"
      ],
      "terminal": "EL1859"
+    },
+    {
+     "channels": [],
+     "id": "105",
+     "name": "FG_Transport_Lift01_Y_Lift",
+     "path": [
+      "FG_Transport_Lift01_Y_Lift"
+     ],
+     "terminal": "AX5125-0000-0011"
+    },
+    {
+     "channels": [],
+     "id": "106",
+     "name": "FG_Transport_Lift02_Y_Lift",
+     "path": [
+      "FG_Transport_Lift02_Y_Lift"
+     ],
+     "terminal": "AX5125-0000-0011"
     }
    ],
    "id": "2286744",
@@ -4220,6 +4238,24 @@
       "FG_05_EL1859_2"
      ],
      "terminal": "EL1859"
+    },
+    {
+     "channels": [],
+     "id": "31",
+     "name": "FG_Transport_Lift01_Y_Lift",
+     "path": [
+      "FG_Transport_Lift01_Y_Lift"
+     ],
+     "terminal": "AX5125-0000-0011"
+    },
+    {
+     "channels": [],
+     "id": "32",
+     "name": "FG_Transport_Lift02_Y_Lift",
+     "path": [
+      "FG_Transport_Lift02_Y_Lift"
+     ],
+     "terminal": "AX5125-0000-0011"
     }
    ],
    "id": "1",
@@ -6108,6 +6144,20 @@
     "area": "PlcTask Inputs",
     "entry": "Input",
     "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
+    "path": "MAIN.Machine.FG_Transport.Lift01.B_AxisMax.HardwareInput",
+    "pdo": "Channel 4"
+   },
+   {
+    "area": "PlcTask Inputs",
+    "entry": "Input",
+    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
+    "path": "MAIN.Machine.FG_Transport.Lift01.B_AxisMin.HardwareInput",
+    "pdo": "Channel 3"
+   },
+   {
+    "area": "PlcTask Inputs",
+    "entry": "Input",
+    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
     "path": "MAIN.Machine.FG_Transport.Lift01.B_Detect.HardwareInput",
     "pdo": "Channel 1"
    },
@@ -6141,31 +6191,31 @@
    },
    {
     "area": "PlcTask Inputs",
-    "entry": "Input",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
-    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor",
-    "pdo": "Channel 4"
+    "entry": "ToPlc",
+    "ownerB": "TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift",
+    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.NcToPlc",
+    "pdo": "Outputs"
+   },
+   {
+    "area": "PlcTask Outputs",
+    "entry": "FromPlc",
+    "ownerB": "TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift",
+    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.PlcToNc",
+    "pdo": "Inputs"
    },
    {
     "area": "PlcTask Inputs",
     "entry": "Input",
     "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
-    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor",
-    "pdo": "Channel 3"
+    "path": "MAIN.Machine.FG_Transport.Lift02.B_AxisMax.HardwareInput",
+    "pdo": "Channel 9"
    },
    {
-    "area": "PlcTask Outputs",
-    "entry": "Output",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1",
-    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput",
-    "pdo": "Channel 2"
-   },
-   {
-    "area": "PlcTask Outputs",
-    "entry": "Output",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1",
-    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput",
-    "pdo": "Channel 1"
+    "area": "PlcTask Inputs",
+    "entry": "Input",
+    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
+    "path": "MAIN.Machine.FG_Transport.Lift02.B_AxisMin.HardwareInput",
+    "pdo": "Channel 8"
    },
    {
     "area": "PlcTask Inputs",
@@ -6204,31 +6254,17 @@
    },
    {
     "area": "PlcTask Inputs",
-    "entry": "Input",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
-    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor",
-    "pdo": "Channel 9"
-   },
-   {
-    "area": "PlcTask Inputs",
-    "entry": "Input",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
-    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor",
-    "pdo": "Channel 8"
+    "entry": "ToPlc",
+    "ownerB": "TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift",
+    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.NcToPlc",
+    "pdo": "Outputs"
    },
    {
     "area": "PlcTask Outputs",
-    "entry": "Output",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1",
-    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput",
-    "pdo": "Channel 6"
-   },
-   {
-    "area": "PlcTask Outputs",
-    "entry": "Output",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1",
-    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput",
-    "pdo": "Channel 5"
+    "entry": "FromPlc",
+    "ownerB": "TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift",
+    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.PlcToNc",
+    "pdo": "Inputs"
    },
    {
     "area": "PlcTask Inputs",
@@ -8543,6 +8579,22 @@
     "auto": false,
     "entry": "Input",
     "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
+    "path": "MAIN.Machine.FG_Transport.Lift01.B_AxisMax.HardwareInput",
+    "pdo": "Channel 4"
+   },
+   {
+    "area": "PlcTask Inputs",
+    "auto": false,
+    "entry": "Input",
+    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
+    "path": "MAIN.Machine.FG_Transport.Lift01.B_AxisMin.HardwareInput",
+    "pdo": "Channel 3"
+   },
+   {
+    "area": "PlcTask Inputs",
+    "auto": false,
+    "entry": "Input",
+    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
     "path": "MAIN.Machine.FG_Transport.Lift01.B_Detect.HardwareInput",
     "pdo": "Channel 1"
    },
@@ -8581,34 +8633,34 @@
    {
     "area": "PlcTask Inputs",
     "auto": false,
-    "entry": "Input",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
-    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor",
-    "pdo": "Channel 4"
+    "entry": "ToPlc",
+    "ownerB": "TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift",
+    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.NcToPlc",
+    "pdo": "Outputs"
+   },
+   {
+    "area": "PlcTask Outputs",
+    "auto": false,
+    "entry": "FromPlc",
+    "ownerB": "TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift",
+    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.PlcToNc",
+    "pdo": "Inputs"
    },
    {
     "area": "PlcTask Inputs",
     "auto": false,
     "entry": "Input",
     "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
-    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor",
-    "pdo": "Channel 3"
+    "path": "MAIN.Machine.FG_Transport.Lift02.B_AxisMax.HardwareInput",
+    "pdo": "Channel 9"
    },
    {
-    "area": "PlcTask Outputs",
+    "area": "PlcTask Inputs",
     "auto": false,
-    "entry": "Output",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1",
-    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput",
-    "pdo": "Channel 2"
-   },
-   {
-    "area": "PlcTask Outputs",
-    "auto": false,
-    "entry": "Output",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1",
-    "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput",
-    "pdo": "Channel 1"
+    "entry": "Input",
+    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
+    "path": "MAIN.Machine.FG_Transport.Lift02.B_AxisMin.HardwareInput",
+    "pdo": "Channel 8"
    },
    {
     "area": "PlcTask Inputs",
@@ -8653,34 +8705,18 @@
    {
     "area": "PlcTask Inputs",
     "auto": false,
-    "entry": "Input",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
-    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor",
-    "pdo": "Channel 9"
-   },
-   {
-    "area": "PlcTask Inputs",
-    "auto": false,
-    "entry": "Input",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1",
-    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor",
-    "pdo": "Channel 8"
+    "entry": "ToPlc",
+    "ownerB": "TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift",
+    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.NcToPlc",
+    "pdo": "Outputs"
    },
    {
     "area": "PlcTask Outputs",
     "auto": false,
-    "entry": "Output",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1",
-    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput",
-    "pdo": "Channel 6"
-   },
-   {
-    "area": "PlcTask Outputs",
-    "auto": false,
-    "entry": "Output",
-    "ownerB": "TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1",
-    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput",
-    "pdo": "Channel 5"
+    "entry": "FromPlc",
+    "ownerB": "TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift",
+    "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.PlcToNc",
+    "pdo": "Inputs"
    },
    {
     "area": "PlcTask Inputs",
@@ -9739,6 +9775,22 @@
    "bitSize": 8,
    "comment": "Hardware input bit from the physical sensor",
    "dir": "IN",
+   "path": "MAIN.Machine.FG_Transport.Lift01.B_AxisMax.HardwareInput"
+  },
+  {
+   "area": "PlcTask Inputs",
+   "baseType": "BOOL",
+   "bitSize": 8,
+   "comment": "Hardware input bit from the physical sensor",
+   "dir": "IN",
+   "path": "MAIN.Machine.FG_Transport.Lift01.B_AxisMin.HardwareInput"
+  },
+  {
+   "area": "PlcTask Inputs",
+   "baseType": "BOOL",
+   "bitSize": 8,
+   "comment": "Hardware input bit from the physical sensor",
+   "dir": "IN",
    "path": "MAIN.Machine.FG_Transport.Lift01.B_Detect.HardwareInput"
   },
   {
@@ -9759,19 +9811,27 @@
   },
   {
    "area": "PlcTask Inputs",
-   "baseType": "BOOL",
-   "bitSize": 8,
+   "baseType": "NCTOPLC_AXIS_REF",
+   "bitSize": 2048,
    "comment": "",
    "dir": "IN",
-   "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor"
+   "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.NcToPlc"
   },
   {
    "area": "PlcTask Inputs",
    "baseType": "BOOL",
    "bitSize": 8,
-   "comment": "",
+   "comment": "Hardware input bit from the physical sensor",
    "dir": "IN",
-   "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor"
+   "path": "MAIN.Machine.FG_Transport.Lift02.B_AxisMax.HardwareInput"
+  },
+  {
+   "area": "PlcTask Inputs",
+   "baseType": "BOOL",
+   "bitSize": 8,
+   "comment": "Hardware input bit from the physical sensor",
+   "dir": "IN",
+   "path": "MAIN.Machine.FG_Transport.Lift02.B_AxisMin.HardwareInput"
   },
   {
    "area": "PlcTask Inputs",
@@ -9799,19 +9859,11 @@
   },
   {
    "area": "PlcTask Inputs",
-   "baseType": "BOOL",
-   "bitSize": 8,
+   "baseType": "NCTOPLC_AXIS_REF",
+   "bitSize": 2048,
    "comment": "",
    "dir": "IN",
-   "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor"
-  },
-  {
-   "area": "PlcTask Inputs",
-   "baseType": "BOOL",
-   "bitSize": 8,
-   "comment": "",
-   "dir": "IN",
-   "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor"
+   "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.NcToPlc"
   },
   {
    "area": "PlcTask Inputs",
@@ -10583,19 +10635,11 @@
   },
   {
    "area": "PlcTask Outputs",
-   "baseType": "BOOL",
-   "bitSize": 8,
-   "comment": "Output",
-   "dir": "OUT",
-   "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput"
-  },
-  {
-   "area": "PlcTask Outputs",
-   "baseType": "BOOL",
-   "bitSize": 8,
+   "baseType": "PLCTONC_AXIS_REF",
+   "bitSize": 1024,
    "comment": "",
    "dir": "OUT",
-   "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput"
+   "path": "MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.PlcToNc"
   },
   {
    "area": "PlcTask Outputs",
@@ -10615,19 +10659,11 @@
   },
   {
    "area": "PlcTask Outputs",
-   "baseType": "BOOL",
-   "bitSize": 8,
-   "comment": "Output",
-   "dir": "OUT",
-   "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput"
-  },
-  {
-   "area": "PlcTask Outputs",
-   "baseType": "BOOL",
-   "bitSize": 8,
+   "baseType": "PLCTONC_AXIS_REF",
+   "bitSize": 1024,
    "comment": "",
    "dir": "OUT",
-   "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput"
+   "path": "MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.PlcToNc"
   },
   {
    "area": "PlcTask Outputs",
@@ -10695,32 +10731,849 @@
   }
  ],
  "provenance": {
-  "codeDigest": "9d7c5c5888f94f292e2658aca851a8145ca136144dd960a6bc5f443f905449e6",
-  "newestSource": "Beckhoff/TwinCAT_1/PLC/PLC_1/Library/DUTs/ST_IlluminatedButton_Config.TcDUT",
+  "codeDigest": "1750d477d50d0bdeaf476b7de6c4bbbc083b9d6b85aab91fad27c72f8d3ebdc9",
+  "newestSource": "Beckhoff/TwinCAT_1/PLC/PLC_1/Modules/10 FG_Transport/FB_TransferLift.TcPOU",
   "reason": "",
   "source": "tmc",
   "stale": false,
-  "tmcMtime": "2026-08-26T21:13:49Z",
-  "tmcSha256": "787544d22103f45cb0ffb43b8913454a6eeaab9ec24b9cdcafc7498f98da0094"
+  "tmcMtime": "2026-10-14T23:05:52Z",
+  "tmcSha256": "6c8fdcda7915a773e20667ed5bcc28b82d3528d391c2e0689f05f255be7fbd96"
  },
  "types": {
-  "SPT_Components.SPT_Motion_Control|Parameters_MotionControl": {
+  "MC|ITcReadWriteAccess": {
+   "extends": null,
+   "members": []
+  },
+  "MC|NCTOPLC_AXIS_REF": {
    "extends": null,
    "members": [
     {
-     "name": "ALLOW_UNLINKED_NC_AXES",
-     "type": "|BOOL"
+     "name": "StateDWord",
+     "type": "MC|NCTOPLC_AXIS_REF_STATE"
     },
     {
-     "name": "ALWAYS_CALL_IPRESETMETHOD_ON_RESET",
-     "type": "|BOOL"
-    },
-    {
-     "name": "CAM_SLAVE_AXIS_TABLES",
+     "name": "ErrorCode",
      "type": "|UDINT"
     },
     {
-     "name": "CAM_SLAVE_AXIS_MAX_CAM_POINTS",
+     "name": "AxisState",
+     "type": "|UDINT"
+    },
+    {
+     "name": "AxisModeConfirmation",
+     "type": "|UDINT"
+    },
+    {
+     "name": "HomingState",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CoupleState",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SvbEntries",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SafEntries",
+     "type": "|UDINT"
+    },
+    {
+     "name": "AxisId",
+     "type": "|UDINT"
+    },
+    {
+     "name": "OpModeDWord",
+     "type": "MC|NCTOPLC_AXIS_REF_OPMODE"
+    },
+    {
+     "name": "ActPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ModuloActPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActiveControlLoopIndex",
+     "type": "|UINT"
+    },
+    {
+     "name": "ControlLoopIndex",
+     "type": "|UINT"
+    },
+    {
+     "name": "ModuloActTurns",
+     "type": "|DINT"
+    },
+    {
+     "name": "ActVelo",
+     "type": "|LREAL"
+    },
+    {
+     "name": "PosDiff",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SetPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SetVelo",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SetAcc",
+     "type": "|LREAL"
+    },
+    {
+     "name": "TargetPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ModuloSetPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ModuloSetTurns",
+     "type": "|DINT"
+    },
+    {
+     "name": "CmdNo",
+     "type": "|UINT"
+    },
+    {
+     "name": "CmdState",
+     "type": "|UINT"
+    },
+    {
+     "name": "SetJerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SetTorque",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActTorque",
+     "type": "|LREAL"
+    },
+    {
+     "name": "StateDWord2",
+     "type": "MC|NCTOPLC_AXIS_REF_STATE2"
+    },
+    {
+     "name": "StateDWord3",
+     "type": "MC|NCTOPLC_AXIS_REF_STATE3"
+    },
+    {
+     "name": "TouchProbeState",
+     "type": "|DWORD"
+    },
+    {
+     "name": "TouchProbeCounter",
+     "type": "|DWORD"
+    },
+    {
+     "name": "CamCouplingState",
+     "type": "MC|NCTOPLC_AXIS_REF_CAMCOUPLINGSTATE"
+    },
+    {
+     "name": "CamCouplingTableID",
+     "type": "|UINTARR8"
+    },
+    {
+     "name": "ActTorqueDerivative",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SetTorqueDerivative",
+     "type": "|LREAL"
+    },
+    {
+     "name": "AbsPhasingPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "TorqueOffset",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActPosWithoutPosCorrection",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActAcc",
+     "type": "|LREAL"
+    },
+    {
+     "name": "DcTimeStamp",
+     "type": "|UDINT"
+    },
+    {
+     "name": "UserData",
+     "type": "|LREAL"
+    }
+   ]
+  },
+  "MC|NCTOPLC_AXIS_REF_CAMCOUPLINGSTATE": {
+   "extends": null,
+   "members": [
+    {
+     "name": "CamActivationPending",
+     "type": "|BIT"
+    },
+    {
+     "name": "CamDeactivationPending",
+     "type": "|BIT"
+    },
+    {
+     "name": "CamActive",
+     "type": "|BIT"
+    },
+    {
+     "name": "CamDataQueued",
+     "type": "|BIT"
+    },
+    {
+     "name": "CamScalingPending",
+     "type": "|BIT"
+    }
+   ]
+  },
+  "MC|NCTOPLC_AXIS_REF_OPMODE": {
+   "extends": null,
+   "members": [
+    {
+     "name": "OpModePosAreaMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeTargetPosMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeLoop",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeMotionMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModePEHTimeMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeBacklashCompensation",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeDelayedErrorReaction",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeModulo",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeSimulationAxis",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeStopMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeOutputSmoothingFilter",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModePosLagMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeVeloLagMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeSoftLimitMinMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeSoftLimitMaxMonitoring",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModePosCorrection",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeAllowSlaveCommands",
+     "type": "|BIT"
+    },
+    {
+     "name": "OpModeAllowExtSetAxisCommands",
+     "type": "|BIT"
+    },
+    {
+     "name": "ApplicationRequest",
+     "type": "|BIT"
+    }
+   ]
+  },
+  "MC|NCTOPLC_AXIS_REF_STATE": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Operational",
+     "type": "|BIT"
+    },
+    {
+     "name": "Homed",
+     "type": "|BIT"
+    },
+    {
+     "name": "NotMoving",
+     "type": "|BIT"
+    },
+    {
+     "name": "InPositionArea",
+     "type": "|BIT"
+    },
+    {
+     "name": "InTargetPosition",
+     "type": "|BIT"
+    },
+    {
+     "name": "Protected",
+     "type": "|BIT"
+    },
+    {
+     "name": "ErrorPropagationDelayed",
+     "type": "|BIT"
+    },
+    {
+     "name": "HasBeenStopped",
+     "type": "|BIT"
+    },
+    {
+     "name": "HasJob",
+     "type": "|BIT"
+    },
+    {
+     "name": "PositiveDirection",
+     "type": "|BIT"
+    },
+    {
+     "name": "NegativeDirection",
+     "type": "|BIT"
+    },
+    {
+     "name": "HomingBusy",
+     "type": "|BIT"
+    },
+    {
+     "name": "ConstantVelocity",
+     "type": "|BIT"
+    },
+    {
+     "name": "Compensating",
+     "type": "|BIT"
+    },
+    {
+     "name": "ExtSetPointGenEnabled",
+     "type": "|BIT"
+    },
+    {
+     "name": "PhasingActive",
+     "type": "|BIT"
+    },
+    {
+     "name": "ExternalLatchValid",
+     "type": "|BIT"
+    },
+    {
+     "name": "NewTargetPos",
+     "type": "|BIT"
+    },
+    {
+     "name": "IsDriveLimitActive",
+     "type": "|BIT"
+    },
+    {
+     "name": "ContinuousMotion",
+     "type": "|BIT"
+    },
+    {
+     "name": "ControlLoopClosed",
+     "type": "|BIT"
+    },
+    {
+     "name": "CamTableQueued",
+     "type": "|BIT"
+    },
+    {
+     "name": "CamDataQueued",
+     "type": "|BIT"
+    },
+    {
+     "name": "CamScalingPending",
+     "type": "|BIT"
+    },
+    {
+     "name": "CmdBuffered",
+     "type": "|BIT"
+    },
+    {
+     "name": "PTPmode",
+     "type": "|BIT"
+    },
+    {
+     "name": "SoftLimitMinExceeded",
+     "type": "|BIT"
+    },
+    {
+     "name": "SoftLimitMaxExceeded",
+     "type": "|BIT"
+    },
+    {
+     "name": "DriveDeviceError",
+     "type": "|BIT"
+    },
+    {
+     "name": "MotionCommandsLocked",
+     "type": "|BIT"
+    },
+    {
+     "name": "IoDataInvalid",
+     "type": "|BIT"
+    },
+    {
+     "name": "Error",
+     "type": "|BIT"
+    }
+   ]
+  },
+  "MC|NCTOPLC_AXIS_REF_STATE2": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Value",
+     "type": "|DWORD"
+    },
+    {
+     "name": "Flags",
+     "type": "MC|NCTOPLC_AXIS_REF_STATE2_FLAGS"
+    }
+   ]
+  },
+  "MC|NCTOPLC_AXIS_REF_STATE2_FLAGS": {
+   "extends": null,
+   "members": [
+    {
+     "name": "AvoidingCollision",
+     "type": "|BIT"
+    }
+   ]
+  },
+  "MC|NCTOPLC_AXIS_REF_STATE3": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Value",
+     "type": "|DWORD"
+    },
+    {
+     "name": "Flags",
+     "type": "MC|NCTOPLC_AXIS_REF_STATE3_FLAGS"
+    }
+   ]
+  },
+  "MC|NCTOPLC_AXIS_REF_STATE3_FLAGS": {
+   "extends": null,
+   "members": [
+    {
+     "name": "TouchProbe1InputState",
+     "type": "|BIT"
+    },
+    {
+     "name": "TouchProbe2InputState",
+     "type": "|BIT"
+    }
+   ]
+  },
+  "MC|PLCTONC_AXIS_REF": {
+   "extends": null,
+   "members": [
+    {
+     "name": "ControlDWord",
+     "type": "MC|PLCTONC_AXIS_REF_CTRL"
+    },
+    {
+     "name": "Override",
+     "type": "|UDINT"
+    },
+    {
+     "name": "AxisModeRequest",
+     "type": "|UDINT"
+    },
+    {
+     "name": "AxisModeDWord",
+     "type": "|UDINT"
+    },
+    {
+     "name": "AxisModeLReal",
+     "type": "|LREAL"
+    },
+    {
+     "name": "PositionCorrection",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ExtSetPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ExtSetVelo",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ExtSetAcc",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ExtSetDirection",
+     "type": "|DINT"
+    },
+    {
+     "name": "ExtControllerOutput",
+     "type": "|LREAL"
+    },
+    {
+     "name": "GearRatio1",
+     "type": "|LREAL"
+    },
+    {
+     "name": "GearRatio2",
+     "type": "|LREAL"
+    },
+    {
+     "name": "GearRatio3",
+     "type": "|LREAL"
+    },
+    {
+     "name": "GearRatio4",
+     "type": "|LREAL"
+    },
+    {
+     "name": "MapState",
+     "type": "|BOOL"
+    },
+    {
+     "name": "PlcCycleControl",
+     "type": "|BYTE"
+    },
+    {
+     "name": "PlcCycleCount",
+     "type": "|BYTE"
+    },
+    {
+     "name": "ExtTorque",
+     "type": "|LREAL"
+    }
+   ]
+  },
+  "MC|PLCTONC_AXIS_REF_CTRL": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Enable",
+     "type": "|BIT"
+    },
+    {
+     "name": "FeedEnablePlus",
+     "type": "|BIT"
+    },
+    {
+     "name": "FeedEnableMinus",
+     "type": "|BIT"
+    },
+    {
+     "name": "HomingSensor",
+     "type": "|BIT"
+    },
+    {
+     "name": "AcceptBlockedDrive",
+     "type": "|BIT"
+    },
+    {
+     "name": "PlcDebugFlag",
+     "type": "|BIT"
+    },
+    {
+     "name": "NcDebugFlag",
+     "type": "|BIT"
+    }
+   ]
+  },
+  "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive.Tc2_Drive|E_SoE_CmdControl": {
+   "extends": null,
+   "members": []
+  },
+  "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive.Tc2_Drive|FB_SoEExecuteCommand_ByDriveRef": {
+   "extends": null,
+   "members": [
+    {
+     "name": "stDriveRef",
+     "type": "SPT_PackMLBase.Tc2_EtherCAT|ST_DriveRef"
+    },
+    {
+     "name": "nIdn",
+     "type": "|WORD"
+    },
+    {
+     "name": "bExecute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "tTimeout",
+     "type": "|TIME"
+    },
+    {
+     "name": "bBusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "bError",
+     "type": "|BOOL"
+    },
+    {
+     "name": "iAdsErrId",
+     "type": "|UINT"
+    },
+    {
+     "name": "iSercosErrId",
+     "type": "|UINT"
+    },
+    {
+     "name": "fbEcSoEWrite",
+     "type": "SPT_PackMLBase.Tc2_EtherCAT|FB_EcSoEWrite"
+    },
+    {
+     "name": "iErrId",
+     "type": "|UDINT"
+    },
+    {
+     "name": "iState",
+     "type": "|INT"
+    },
+    {
+     "name": "bExecute_I",
+     "type": "|BOOL"
+    },
+    {
+     "name": "eExecuteCmd",
+     "type": "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive.Tc2_Drive|E_SoE_CmdControl"
+    },
+    {
+     "name": "eCancelCmd",
+     "type": "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive.Tc2_Drive|E_SoE_CmdControl"
+    }
+   ]
+  },
+  "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive.Tc2_Drive|FB_SoEReset_ByDriveRef": {
+   "extends": null,
+   "members": [
+    {
+     "name": "stDriveRef",
+     "type": "SPT_PackMLBase.Tc2_EtherCAT|ST_DriveRef"
+    },
+    {
+     "name": "bExecute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "tTimeout",
+     "type": "|TIME"
+    },
+    {
+     "name": "bBusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "bError",
+     "type": "|BOOL"
+    },
+    {
+     "name": "iAdsErrId",
+     "type": "|UINT"
+    },
+    {
+     "name": "iSercosErrId",
+     "type": "|UINT"
+    },
+    {
+     "name": "fbEcExecuteCmd",
+     "type": "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive.Tc2_Drive|FB_SoEExecuteCommand_ByDriveRef"
+    },
+    {
+     "name": "iState",
+     "type": "|INT"
+    },
+    {
+     "name": "bExecute_I",
+     "type": "|BOOL"
+    },
+    {
+     "name": "iReset",
+     "type": "|UINT"
+    }
+   ]
+  },
+  "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive.Tc2_Drive|Global_Variables": {
+   "extends": null,
+   "members": [
+    {
+     "name": "S_0_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "S_1_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "S_2_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "S_3_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "S_4_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "S_5_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "S_6_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "S_7_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "P_0_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "P_1_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "P_2_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "P_3_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "P_4_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "P_5_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "P_6_IDN",
+     "type": "|WORD"
+    },
+    {
+     "name": "P_7_IDN",
+     "type": "|WORD"
+    }
+   ]
+  },
+  "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive|FB_SoEReset": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "NetId",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Timeout",
+     "type": "|TIME"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "AdsErrId",
+     "type": "|UINT"
+    },
+    {
+     "name": "SercosErrId",
+     "type": "|UINT"
+    },
+    {
+     "name": "fbEcSoEReset",
+     "type": "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive.Tc2_Drive|FB_SoEReset_ByDriveRef"
+    },
+    {
+     "name": "iState",
+     "type": "|INT"
+    },
+    {
+     "name": "bExecute_I",
+     "type": "|BOOL"
+    },
+    {
+     "name": "nAxisId_I",
+     "type": "|DWORD"
+    },
+    {
+     "name": "fbAdsRead",
+     "type": "Tc2_System|ADSREAD"
+    },
+    {
+     "name": "readBuffer",
+     "type": "|BYTE"
+    },
+    {
+     "name": "nIds",
+     "type": "Tc2_System|T_AmsNetIdArr"
+    },
+    {
+     "name": "stDriveRef",
+     "type": "SPT_PackMLBase.Tc2_EtherCAT|ST_DriveRef"
+    },
+    {
+     "name": "NCIDXG_AXPARMS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "NCIDXO_AXP_HWAMSADDR",
      "type": "|UDINT"
     }
    ]
@@ -10758,6 +11611,39 @@
   "SPT_Components|E_SensorSimulationMode": {
    "extends": null,
    "members": []
+  },
+  "SPT_Components|FB_Component_BasicAxis": {
+   "extends": "SPT_PackMLBase|FB_ComponentBase",
+   "members": [
+    {
+     "name": "BasicAxis",
+     "type": "SPT_MotionControl|FB_BasicAxis"
+    },
+    {
+     "name": "AxisBase_HMI",
+     "type": "SPT_Components|ST_AxisBase_HMI"
+    },
+    {
+     "name": "BasicAxisAlarms",
+     "type": "Tc3_EventLogger|FB_TcAlarm"
+    },
+    {
+     "name": "HMICommand_BasicAxis_RT",
+     "type": "Tc2_Standard|R_TRIG"
+    },
+    {
+     "name": "ResetPreviouslyErrored",
+     "type": "|BOOL"
+    },
+    {
+     "name": "HomePreviouslyErrored",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ExternalSequencePreviouslyErrored",
+     "type": "|BOOL"
+    }
+   ]
   },
   "SPT_Components|FB_DigitalSensor": {
    "extends": "SPT_PackMLBase|FB_ComponentBase",
@@ -10989,6 +11875,109 @@
     }
    ]
   },
+  "SPT_Components|ST_AxisBase_Command": {
+   "extends": null,
+   "members": [
+    {
+     "name": "JogFast_Forward",
+     "type": "|BOOL"
+    },
+    {
+     "name": "JogFast_Backward",
+     "type": "|BOOL"
+    },
+    {
+     "name": "JogSlow_Forward",
+     "type": "|BOOL"
+    },
+    {
+     "name": "JogSlow_Backward",
+     "type": "|BOOL"
+    }
+   ]
+  },
+  "SPT_Components|ST_AxisBase_Config": {
+   "extends": null,
+   "members": []
+  },
+  "SPT_Components|ST_AxisBase_HMI": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Config",
+     "type": "SPT_Components|ST_AxisBase_Config"
+    },
+    {
+     "name": "Command",
+     "type": "SPT_Components|ST_AxisBase_Command"
+    },
+    {
+     "name": "Status",
+     "type": "SPT_Components|ST_AxisBase_Status"
+    }
+   ]
+  },
+  "SPT_Components|ST_AxisBase_Status": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Enabled",
+     "type": "|BOOL"
+    },
+    {
+     "name": "InPosition",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Stopped",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Coupled",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SetPosition",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SetPositionModulo",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SetVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SetAcceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActualPosition",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActualPositionModulo",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActualVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActualAcceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ActualTorque",
+     "type": "|LREAL"
+    },
+    {
+     "name": "PositionLag",
+     "type": "|LREAL"
+    }
+   ]
+  },
   "SPT_Components|ST_Cylinder_Command": {
    "extends": null,
    "members": [
@@ -11124,6 +12113,335 @@
     }
    ]
   },
+  "SPT_MotionControl|FB_BasicAxis": {
+   "extends": "SPT_PackMLBase|FB_CyclicFB",
+   "members": [
+    {
+     "name": "_Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "_Velocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_Acceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_Deceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_Jerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ipHomeMethod",
+     "type": "SPT_MotionControl|I_MotionSequence"
+    },
+    {
+     "name": "ipResetMethod",
+     "type": "SPT_MotionControl|I_MotionSequence"
+    },
+    {
+     "name": "ipExternalSequence",
+     "type": "SPT_MotionControl|I_MotionSequence"
+    },
+    {
+     "name": "_AxisParameters",
+     "type": "Tc2_MC2|ST_AxisParameterSet"
+    },
+    {
+     "name": "_InhibitFeedNegative",
+     "type": "|BOOL"
+    },
+    {
+     "name": "_InhibitFeedPositive",
+     "type": "|BOOL"
+    },
+    {
+     "name": "_ActualSuperPosVeloDiff",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_ActualSuperPosDistance",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_ActualSuperPosLength",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_ActualSuperPosAccel",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_ActualSuperPosDecel",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_SuperPosBusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "_SuperPosDone",
+     "type": "|BOOL"
+    },
+    {
+     "name": "_SuperPosAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "_Warning",
+     "type": "|BOOL"
+    },
+    {
+     "name": "_WarningID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MCPower",
+     "type": "Tc2_MC2|MC_Power"
+    },
+    {
+     "name": "RingBuffer_MCMoveAbsolute",
+     "type": "SPT_MotionControl|FB_RingBuffer_MCMoveAbsolute"
+    },
+    {
+     "name": "RingBuffer_MCMoveRelative",
+     "type": "SPT_MotionControl|FB_RingBuffer_MCMoveRelative"
+    },
+    {
+     "name": "RingBuffer_MCMoveVelocity",
+     "type": "SPT_MotionControl|FB_RingBuffer_MCMoveVelocity"
+    },
+    {
+     "name": "RingBuffer_MCMoveModulo",
+     "type": "SPT_MotionControl|FB_RingBuffer_MCMoveModulo"
+    },
+    {
+     "name": "MCMoveAbsolute",
+     "type": "Tc2_MC2|MC_MoveAbsolute"
+    },
+    {
+     "name": "MCMoveRelative",
+     "type": "Tc2_MC2|MC_MoveRelative"
+    },
+    {
+     "name": "MCMoveVelocity",
+     "type": "Tc2_MC2|MC_MoveVelocity"
+    },
+    {
+     "name": "MCMoveModulo",
+     "type": "Tc2_MC2|MC_MoveModulo"
+    },
+    {
+     "name": "MCJog",
+     "type": "Tc2_MC2|MC_Jog"
+    },
+    {
+     "name": "MCHalt",
+     "type": "Tc2_MC2|MC_Halt"
+    },
+    {
+     "name": "DefaultHome",
+     "type": "SPT_MotionControl|FB_HomeRoutine_SetZeroHere"
+    },
+    {
+     "name": "DefaultReset",
+     "type": "SPT_MotionControl|FB_ResetRoutine_CoEDrive"
+    },
+    {
+     "name": "MCReadParameterSet",
+     "type": "Tc2_MC2|MC_ReadParameterSet"
+    },
+    {
+     "name": "MCWriteParameter",
+     "type": "Tc2_MC2|MC_WriteParameterPersistent"
+    },
+    {
+     "name": "MCWriteBoolParameter",
+     "type": "Tc2_MC2|MC_WriteBoolParameterPersistent"
+    },
+    {
+     "name": "HomePreviouslyErrored",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ResetPreviouslyErrored",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ExternalSequencePreviouslyErrored",
+     "type": "|BOOL"
+    },
+    {
+     "name": "__FB_BASICAXIS__INITIALIZE__LINKMISSING",
+     "type": "|BOOL"
+    }
+   ]
+  },
+  "SPT_MotionControl|FB_HomeRoutine_SetZeroHere": {
+   "extends": "SPT_PackMLBase|FB_CyclicFB",
+   "members": [
+    {
+     "name": "_Axis",
+     "type": "SPT_MotionControl|I_BasicAxis"
+    },
+    {
+     "name": "MCSetPosition",
+     "type": "Tc2_MC2|MC_SetPosition"
+    }
+   ]
+  },
+  "SPT_MotionControl|FB_ResetRoutine_CoEDrive": {
+   "extends": "SPT_PackMLBase|FB_CyclicFB",
+   "members": [
+    {
+     "name": "_Axis",
+     "type": "SPT_MotionControl|I_BasicAxis"
+    },
+    {
+     "name": "MCReset",
+     "type": "Tc2_MC2|MC_Reset"
+    }
+   ]
+  },
+  "SPT_MotionControl|FB_ResetRoutine_SoEDrive": {
+   "extends": "SPT_PackMLBase|FB_CyclicFB",
+   "members": [
+    {
+     "name": "_Axis",
+     "type": "SPT_MotionControl|I_BasicAxis"
+    },
+    {
+     "name": "MCReset",
+     "type": "Tc2_MC2|MC_Reset"
+    },
+    {
+     "name": "SoEReset",
+     "type": "SPT_Components.SPT_Motion_Control.Tc2_MC2_Drive|FB_SoEReset"
+    },
+    {
+     "name": "SequenceStep",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "SPT_MotionControl|FB_RingBuffer_MCMoveAbsolute": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "MCMoveAbsolute",
+     "type": "Tc2_MC2|MC_MoveAbsolute"
+    },
+    {
+     "name": "_CurrentFB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "i",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "SPT_MotionControl|FB_RingBuffer_MCMoveModulo": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "MCMoveModulo",
+     "type": "Tc2_MC2|MC_MoveModulo"
+    },
+    {
+     "name": "_CurrentFB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "i",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "SPT_MotionControl|FB_RingBuffer_MCMoveRelative": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "MCMoveRelative",
+     "type": "Tc2_MC2|MC_MoveRelative"
+    },
+    {
+     "name": "_CurrentFB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "i",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "SPT_MotionControl|FB_RingBuffer_MCMoveVelocity": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "MCMoveVelocity",
+     "type": "Tc2_MC2|MC_MoveVelocity"
+    },
+    {
+     "name": "_CurrentFB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "i",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "SPT_MotionControl|I_BasicAxis": {
+   "extends": "SPT_PackMLBase|I_CyclicFB",
+   "members": []
+  },
+  "SPT_MotionControl|I_MotionSequence": {
+   "extends": "SPT_PackMLBase|I_CyclicFB",
+   "members": []
+  },
+  "SPT_MotionControl|Parameters_MotionControl": {
+   "extends": null,
+   "members": [
+    {
+     "name": "ALLOW_UNLINKED_NC_AXES",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ALWAYS_CALL_IPRESETMETHOD_ON_RESET",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CAM_SLAVE_AXIS_TABLES",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CAM_SLAVE_AXIS_MAX_CAM_POINTS",
+     "type": "|UDINT"
+    }
+   ]
+  },
   "SPT_PackMLBase.Tc2_EtherCAT|DCTIMESTRUCT": {
    "extends": null,
    "members": [
@@ -11166,6 +12484,63 @@
     {
      "name": "wNanoseconds",
      "type": "|WORD"
+    }
+   ]
+  },
+  "SPT_PackMLBase.Tc2_EtherCAT|FB_EcSoEWrite": {
+   "extends": null,
+   "members": [
+    {
+     "name": "sNetId",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "nSlaveAddr",
+     "type": "|UINT"
+    },
+    {
+     "name": "nIdn",
+     "type": "|WORD"
+    },
+    {
+     "name": "nElement",
+     "type": "|BYTE"
+    },
+    {
+     "name": "nDriveNo",
+     "type": "|BYTE"
+    },
+    {
+     "name": "bCommand",
+     "type": "|BOOL"
+    },
+    {
+     "name": "pSrcBuf",
+     "type": "|PVOID"
+    },
+    {
+     "name": "cbBufLen",
+     "type": "|UDINT"
+    },
+    {
+     "name": "bExecute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "tTimeout",
+     "type": "|TIME"
+    },
+    {
+     "name": "bBusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "bError",
+     "type": "|BOOL"
+    },
+    {
+     "name": "nErrId",
+     "type": "|UDINT"
     }
    ]
   },
@@ -11655,6 +13030,27 @@
     {
      "name": "EC_DCTIME_TICKSPERDAY64",
      "type": "|ULINT"
+    }
+   ]
+  },
+  "SPT_PackMLBase.Tc2_EtherCAT|ST_DriveRef": {
+   "extends": null,
+   "members": [
+    {
+     "name": "sNetId",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "nSlaveAddr",
+     "type": "|UINT"
+    },
+    {
+     "name": "nDriveNo",
+     "type": "|BYTE"
+    },
+    {
+     "name": "nDriveType",
+     "type": "|BYTE"
     }
    ]
   },
@@ -13102,6 +14498,3633 @@
     }
    ]
   },
+  "Tc2_MC2|AXIS_REF": {
+   "extends": null,
+   "members": [
+    {
+     "area": "Output",
+     "name": "PlcToNc",
+     "type": "MC|PLCTONC_AXIS_REF"
+    },
+    {
+     "area": "Input",
+     "name": "NcToPlc",
+     "type": "MC|NCTOPLC_AXIS_REF"
+    },
+    {
+     "name": "ADS",
+     "type": "Tc2_MC2|ST_AdsAddress"
+    },
+    {
+     "name": "Status",
+     "type": "Tc2_MC2|ST_AxisStatus"
+    },
+    {
+     "name": "DriveAddress",
+     "type": "Tc2_MC2|ST_DriveAddress"
+    },
+    {
+     "name": "_internal",
+     "type": "Tc2_MC2|_InternalAxisRefData"
+    },
+    {
+     "name": "Storage",
+     "type": "|DWORD"
+    }
+   ]
+  },
+  "Tc2_MC2|E_EncoderReferenceMode": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|E_JogMode": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|E_NcAxisType": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|E_NcDriveType": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|E_NcEncoderType": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|Global_Variables": {
+   "extends": null,
+   "members": [
+    {
+     "name": "TcMcGlobal",
+     "type": "Tc2_MC2|_TCMCGLOBAL"
+    },
+    {
+     "name": "DEFAULT_HOME_POSITION",
+     "type": "|LREAL"
+    },
+    {
+     "name": "DEFAULT_BACKLASHVALUE",
+     "type": "|LREAL"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_AxisParameter": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|MC_AxisStates": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|MC_BufferMode": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|MC_Direction": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|MC_Halt": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Deceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Jerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "BufferMode",
+     "type": "Tc2_MC2|MC_BufferMode"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_MoveOptions"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MoveGeneric",
+     "type": "Tc2_MC2|_FB_MoveUniversalGeneric"
+    },
+    {
+     "name": "CmdNo",
+     "type": "|UINT"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_Home": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Position",
+     "type": "|LREAL"
+    },
+    {
+     "name": "HomingMode",
+     "type": "Tc2_MC2|MC_HomingMode"
+    },
+    {
+     "name": "BufferMode",
+     "type": "Tc2_MC2|MC_BufferMode"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_HomingOptions"
+    },
+    {
+     "name": "bCalibrationCam",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "iState",
+     "type": "Tc2_MC2|_E_TcMC_STATES"
+    },
+    {
+     "name": "iSubState",
+     "type": "|INT"
+    },
+    {
+     "name": "fbAdsWriteCmd",
+     "type": "Tc2_System|ADSWRITE"
+    },
+    {
+     "name": "fbAdsWriteParameter",
+     "type": "Tc2_System|ADSWRITE"
+    },
+    {
+     "name": "fbAdsReadRefPos",
+     "type": "Tc2_System|ADSREAD"
+    },
+    {
+     "name": "ReferenceFlagValue",
+     "type": "|UDINT"
+    },
+    {
+     "name": "fbSetPosition",
+     "type": "Tc2_MC2|MC_SetPosition"
+    },
+    {
+     "name": "CalibrationValue",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SearchDirection",
+     "type": "|UINT"
+    },
+    {
+     "name": "SearchVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SyncDirection",
+     "type": "|UINT"
+    },
+    {
+     "name": "SyncVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ReferenceMode",
+     "type": "Tc2_MC2|E_EncoderReferenceMode"
+    },
+    {
+     "name": "fbTrigger",
+     "type": "Tc2_Standard|R_TRIG"
+    },
+    {
+     "name": "fbTimeOut",
+     "type": "Tc2_Standard|TON"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_HomingMode": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|MC_Jog": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "JogForward",
+     "type": "|BOOL"
+    },
+    {
+     "name": "JogBackwards",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Mode",
+     "type": "Tc2_MC2|E_JogMode"
+    },
+    {
+     "name": "Position",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Velocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Acceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Deceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Jerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "state",
+     "type": "|INT"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "StateDWord",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ExecuteMoveVelocity",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MoveVelocity",
+     "type": "Tc2_MC2|MC_MoveVelocity"
+    },
+    {
+     "name": "MoveVelocityOut",
+     "type": "Tc2_MC2|ST_McOutputs"
+    },
+    {
+     "name": "Direction",
+     "type": "Tc2_MC2|MC_Direction"
+    },
+    {
+     "name": "ExecuteHalt",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Halt",
+     "type": "Tc2_MC2|MC_Halt"
+    },
+    {
+     "name": "HaltOut",
+     "type": "Tc2_MC2|ST_McOutputs"
+    },
+    {
+     "name": "ExecuteMoveAbsolute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MoveAbsolute",
+     "type": "Tc2_MC2|MC_MoveAbsolute"
+    },
+    {
+     "name": "MoveAbsoluteOut",
+     "type": "Tc2_MC2|ST_McOutputs"
+    },
+    {
+     "name": "ExecuteMoveRelative",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MoveRelative",
+     "type": "Tc2_MC2|MC_MoveRelative"
+    },
+    {
+     "name": "MoveRelativeOut",
+     "type": "Tc2_MC2|ST_McOutputs"
+    },
+    {
+     "name": "JogMove",
+     "type": "Tc2_MC2|_FB_MoveUniversalGeneric"
+    },
+    {
+     "name": "LastJogMoveResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "ExecuteJogMove",
+     "type": "|BOOL"
+    },
+    {
+     "name": "StartType",
+     "type": "Tc2_MC2|_E_TcNC_StartPosType"
+    },
+    {
+     "name": "JogMoveOut",
+     "type": "Tc2_MC2|ST_McOutputs"
+    },
+    {
+     "name": "JogEnd",
+     "type": "|BOOL"
+    },
+    {
+     "name": "TargetPosition",
+     "type": "|LREAL"
+    },
+    {
+     "name": "modulo",
+     "type": "|LREAL"
+    },
+    {
+     "name": "moduloremainder",
+     "type": "|LREAL"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_MoveAbsolute": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Position",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Velocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Acceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Deceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Jerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "BufferMode",
+     "type": "Tc2_MC2|MC_BufferMode"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_MoveOptions"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MoveGeneric",
+     "type": "Tc2_MC2|_FB_MoveUniversalGeneric"
+    },
+    {
+     "name": "CmdNo",
+     "type": "|UINT"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_MoveModulo": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Position",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Velocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Acceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Deceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Jerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Direction",
+     "type": "Tc2_MC2|MC_Direction"
+    },
+    {
+     "name": "BufferMode",
+     "type": "Tc2_MC2|MC_BufferMode"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_MoveOptions"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MoveGeneric",
+     "type": "Tc2_MC2|_FB_MoveUniversalGeneric"
+    },
+    {
+     "name": "StartType",
+     "type": "Tc2_MC2|_E_TcNC_StartPosType"
+    },
+    {
+     "name": "CmdNo",
+     "type": "|UINT"
+    },
+    {
+     "name": "TriggerExecute",
+     "type": "Tc2_Standard|R_TRIG"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_MoveRelative": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Distance",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Velocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Acceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Deceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Jerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "BufferMode",
+     "type": "Tc2_MC2|MC_BufferMode"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_MoveOptions"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MoveGeneric",
+     "type": "Tc2_MC2|_FB_MoveUniversalGeneric"
+    },
+    {
+     "name": "CmdNo",
+     "type": "|UINT"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_MoveVelocity": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Velocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Acceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Deceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Jerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Direction",
+     "type": "Tc2_MC2|MC_Direction"
+    },
+    {
+     "name": "BufferMode",
+     "type": "Tc2_MC2|MC_BufferMode"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_MoveOptions"
+    },
+    {
+     "name": "InVelocity",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MoveGeneric",
+     "type": "Tc2_MC2|_FB_MoveUniversalGeneric"
+    },
+    {
+     "name": "CmdNo",
+     "type": "|UINT"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_Power": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Enable",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Enable_Positive",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Enable_Negative",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Override",
+     "type": "|LREAL"
+    },
+    {
+     "name": "BufferMode",
+     "type": "Tc2_MC2|MC_BufferMode"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_PowerOptions"
+    },
+    {
+     "name": "Status",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "EnableTimeout",
+     "type": "Tc2_Standard|TON"
+    },
+    {
+     "name": "EnableOffOnDelay",
+     "type": "Tc2_Standard|TP"
+    },
+    {
+     "name": "iOverride",
+     "type": "|DWORD"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_ReadParameterSet": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Parameter",
+     "type": "Tc2_MC2|ST_AxisParameterSet"
+    },
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TriggerExecute",
+     "type": "Tc2_Standard|R_TRIG"
+    },
+    {
+     "name": "state",
+     "type": "Tc2_MC2|_E_TcMC_STATES"
+    },
+    {
+     "name": "fbAdsRead",
+     "type": "Tc2_System|ADSREAD"
+    },
+    {
+     "name": "SizeofPayloadData",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SizeofPayloadData64",
+     "type": "|ULINT"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_Reset": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "iState",
+     "type": "Tc2_MC2|_E_TcMC_STATES"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "fbOnTrigger",
+     "type": "Tc2_Standard|R_TRIG"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_SetPosition": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Position",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Mode",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_SetPositionOptions"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "stSetPos",
+     "type": "Tc2_MC2|_ST_TcNC_SetPosOnTheFly"
+    },
+    {
+     "name": "iState",
+     "type": "Tc2_MC2|_E_TcMC_STATES"
+    },
+    {
+     "name": "fbAdsWrite",
+     "type": "Tc2_System|ADSWRITE"
+    },
+    {
+     "name": "fbOnTrigger",
+     "type": "Tc2_Standard|R_TRIG"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_WriteBoolParameter": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ParameterNumber",
+     "type": "Tc2_MC2|MC_AxisParameter"
+    },
+    {
+     "name": "Value",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "fbReadWriteParameter",
+     "type": "Tc2_MC2|_FB_ReadWriteParameter"
+    },
+    {
+     "name": "dwValue",
+     "type": "|DWORD"
+    },
+    {
+     "name": "lrValue",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fbTrigger",
+     "type": "Tc2_Standard|R_TRIG"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_WriteBoolParameterPersistent": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ParameterNumber",
+     "type": "Tc2_MC2|MC_AxisParameter"
+    },
+    {
+     "name": "Value",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "fbWriteParameterPersistent",
+     "type": "Tc2_MC2|_FB_WriteParameterPersistent"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_WriteParameter": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ParameterNumber",
+     "type": "Tc2_MC2|MC_AxisParameter"
+    },
+    {
+     "name": "Value",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "fbReadWriteParameter",
+     "type": "Tc2_MC2|_FB_ReadWriteParameter"
+    },
+    {
+     "name": "dwValue",
+     "type": "|DWORD"
+    },
+    {
+     "name": "bValue",
+     "type": "|BOOL"
+    },
+    {
+     "name": "fbTrigger",
+     "type": "Tc2_Standard|R_TRIG"
+    }
+   ]
+  },
+  "Tc2_MC2|MC_WriteParameterPersistent": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ParameterNumber",
+     "type": "Tc2_MC2|MC_AxisParameter"
+    },
+    {
+     "name": "Value",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "fbWriteParameterPersistent",
+     "type": "Tc2_MC2|_FB_WriteParameterPersistent"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_AdsAddress": {
+   "extends": null,
+   "members": [
+    {
+     "name": "NetId",
+     "type": "|STRING(23)"
+    },
+    {
+     "name": "Port",
+     "type": "|UINT"
+    },
+    {
+     "name": "Channel",
+     "type": "|UINT"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_AxisOpModes": {
+   "extends": null,
+   "members": [
+    {
+     "name": "PositionAreaMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "TargetPositionMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "LoopMode",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MotionMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "PEHTimeMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "BacklashCompensation",
+     "type": "|BOOL"
+    },
+    {
+     "name": "DelayedErrorReaction",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Modulo",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SimulationAxis",
+     "type": "|BOOL"
+    },
+    {
+     "name": "StopMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "PositionLagMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "VelocityLagMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SoftLimitMinMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SoftLimitMaxMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "PositionCorrection",
+     "type": "|BOOL"
+    },
+    {
+     "name": "AllowSlaveCommands",
+     "type": "|BOOL"
+    },
+    {
+     "name": "AllowExtSetAxisCommands",
+     "type": "|BOOL"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_AxisParameterSet": {
+   "extends": null,
+   "members": [
+    {
+     "name": "AxisId",
+     "type": "|DWORD"
+    },
+    {
+     "name": "nAxisType",
+     "type": "Tc2_MC2|E_NcAxisType"
+    },
+    {
+     "name": "sAxisName",
+     "type": "|STRING(31)"
+    },
+    {
+     "name": "fAxisCycleTime",
+     "type": "|LREAL"
+    },
+    {
+     "name": "bEnablePositionAreaControl",
+     "type": "|WORD"
+    },
+    {
+     "name": "fPositionAreaControlRange",
+     "type": "|LREAL"
+    },
+    {
+     "name": "bEnableMotionControl",
+     "type": "|WORD"
+    },
+    {
+     "name": "fMotionControlTime",
+     "type": "|LREAL"
+    },
+    {
+     "name": "bEnableLoop",
+     "type": "|WORD"
+    },
+    {
+     "name": "fLoopDistance",
+     "type": "|LREAL"
+    },
+    {
+     "name": "bEnableTargetPosControl",
+     "type": "|WORD"
+    },
+    {
+     "name": "fTargetPosControlRange",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fTargetPosControlTime",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fVeloMaximum",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fRefVeloSearch",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fRefVeloSync",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fVeloSlowManual",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fVeloFastManual",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fMotionControlRange",
+     "type": "|LREAL"
+    },
+    {
+     "name": "bEnablePEHTimeControl",
+     "type": "|WORD"
+    },
+    {
+     "name": "fPEHControlTime",
+     "type": "|LREAL"
+    },
+    {
+     "name": "bEnableBacklashCompensation",
+     "type": "|WORD"
+    },
+    {
+     "name": "fBacklash",
+     "type": "|LREAL"
+    },
+    {
+     "name": "sAmsNetId",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "nPort",
+     "type": "|WORD"
+    },
+    {
+     "name": "nChnNo",
+     "type": "|WORD"
+    },
+    {
+     "name": "fAcceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDeceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fJerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "nEncId",
+     "type": "|DWORD"
+    },
+    {
+     "name": "nEncType",
+     "type": "Tc2_MC2|E_NcEncoderType"
+    },
+    {
+     "name": "sEncName",
+     "type": "|STRING(31)"
+    },
+    {
+     "name": "fEncScaleFactorNumerator",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fEncScaleFactorDenominator",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fEncScaleFactorInternal",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fEncOffset",
+     "type": "|LREAL"
+    },
+    {
+     "name": "bEncIsInverse",
+     "type": "|WORD"
+    },
+    {
+     "name": "fEncModuloFactor",
+     "type": "|LREAL"
+    },
+    {
+     "name": "nEncMode",
+     "type": "|DWORD"
+    },
+    {
+     "name": "bEncEnableSoftEndMinControl",
+     "type": "|WORD"
+    },
+    {
+     "name": "bEncEnableSoftEndMaxControl",
+     "type": "|WORD"
+    },
+    {
+     "name": "fEncSoftEndMin",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fEncSoftEndMax",
+     "type": "|LREAL"
+    },
+    {
+     "name": "nEncMaxIncrement",
+     "type": "|DWORD"
+    },
+    {
+     "name": "nEncRefSoftSyncMask",
+     "type": "|DWORD"
+    },
+    {
+     "name": "bEncEnablePosCorrection",
+     "type": "|WORD"
+    },
+    {
+     "name": "nEncReferenceSystem",
+     "type": "|DWORD"
+    },
+    {
+     "name": "fEncPosCorrectionFilterTime",
+     "type": "|LREAL"
+    },
+    {
+     "name": "bEncRefSearchInverse",
+     "type": "|UINT"
+    },
+    {
+     "name": "bEncRefSyncInverse",
+     "type": "|UINT"
+    },
+    {
+     "name": "nEncRefMode",
+     "type": "|UDINT"
+    },
+    {
+     "name": "fEncRefPosition",
+     "type": "|LREAL"
+    },
+    {
+     "name": "nCtrlId",
+     "type": "|DWORD"
+    },
+    {
+     "name": "nCtrlType",
+     "type": "|DWORD"
+    },
+    {
+     "name": "sCtrlName",
+     "type": "|STRING(31)"
+    },
+    {
+     "name": "bCtrlEnablePosDiffControl",
+     "type": "|WORD"
+    },
+    {
+     "name": "bCtrlEnableVeloDiffControl",
+     "type": "|WORD"
+    },
+    {
+     "name": "fCtrlPosDiffMax",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fCtrlPosDiffMaxTime",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fCtrlPosKp",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fCtrlPosTn",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fCtrlPosTv",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fCtrlPosTd",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fCtrlPosExtKp",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fCtrlPosExtVelo",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fCtrlAccKa",
+     "type": "|LREAL"
+    },
+    {
+     "name": "nDriveId",
+     "type": "|DWORD"
+    },
+    {
+     "name": "nDriveType",
+     "type": "Tc2_MC2|E_NcDriveType"
+    },
+    {
+     "name": "sDriveName",
+     "type": "|STRING(31)"
+    },
+    {
+     "name": "bDriveIsInverse",
+     "type": "|WORD"
+    },
+    {
+     "name": "nDriveControlDWord",
+     "type": "|DWORD"
+    },
+    {
+     "name": "fDriveVeloReferenz",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDriveOutputReferenz",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDriveOutputScalingAcc",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDriveOutputScalingTorque",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDriveInputScalingTorque",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDriveInputFiltertimeTorque",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDriveInputFiltertimeTorqueDerivative",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fAccelerationMax",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDecelerationMax",
+     "type": "|LREAL"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_AxisStatus": {
+   "extends": null,
+   "members": [
+    {
+     "name": "UpdateTaskIndex",
+     "type": "|BYTE"
+    },
+    {
+     "name": "UpdateCycleTime",
+     "type": "|LREAL"
+    },
+    {
+     "name": "CycleCounter",
+     "type": "|UDINT"
+    },
+    {
+     "name": "NcCycleCounter",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MotionState",
+     "type": "Tc2_MC2|MC_AxisStates"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ErrorStop",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Disabled",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Stopping",
+     "type": "|BOOL"
+    },
+    {
+     "name": "StandStill",
+     "type": "|BOOL"
+    },
+    {
+     "name": "DiscreteMotion",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ContinuousMotion",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SynchronizedMotion",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Homing",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ConstantVelocity",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Accelerating",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Decelerating",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Operational",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ControlLoopClosed",
+     "type": "|BOOL"
+    },
+    {
+     "name": "HasJob",
+     "type": "|BOOL"
+    },
+    {
+     "name": "HasBeenStopped",
+     "type": "|BOOL"
+    },
+    {
+     "name": "NewTargetPosition",
+     "type": "|BOOL"
+    },
+    {
+     "name": "InPositionArea",
+     "type": "|BOOL"
+    },
+    {
+     "name": "InTargetPosition",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ProtectedMode",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Homed",
+     "type": "|BOOL"
+    },
+    {
+     "name": "HomingBusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "MotionCommandsLocked",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SoftLimitMinExceeded",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SoftLimitMaxExceeded",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Moving",
+     "type": "|BOOL"
+    },
+    {
+     "name": "PositiveDirection",
+     "type": "|BOOL"
+    },
+    {
+     "name": "NegativeDirection",
+     "type": "|BOOL"
+    },
+    {
+     "name": "NotMoving",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Compensating",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ExtSetPointGenEnabled",
+     "type": "|BOOL"
+    },
+    {
+     "name": "PhasingActive",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ExternalLatchValid",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CamDataQueued",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CamTableQueued",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CamScalingPending",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CmdBuffered",
+     "type": "|BOOL"
+    },
+    {
+     "name": "PTPmode",
+     "type": "|BOOL"
+    },
+    {
+     "name": "DriveDeviceError",
+     "type": "|BOOL"
+    },
+    {
+     "name": "IoDataInvalid",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorPropagationDelayed",
+     "type": "|BOOL"
+    },
+    {
+     "name": "DriveLimitActive",
+     "type": "|BOOL"
+    },
+    {
+     "name": "TargetTorqueReached",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Coupled",
+     "type": "|BOOL"
+    },
+    {
+     "name": "OpMode",
+     "type": "Tc2_MC2|ST_AxisOpModes"
+    },
+    {
+     "name": "NcApplicationRequest",
+     "type": "|BOOL"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_DriveAddress": {
+   "extends": null,
+   "members": [
+    {
+     "name": "NetID",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "NetIdBytes",
+     "type": "Tc2_System|T_AmsNetIdArr"
+    },
+    {
+     "name": "SlaveAddress",
+     "type": "Tc2_System|T_AmsPort"
+    },
+    {
+     "name": "Channel",
+     "type": "|BYTE"
+    },
+    {
+     "name": "NcDriveId",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcDriveIndex",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcDriveType",
+     "type": "Tc2_MC2|E_NcDriveType"
+    },
+    {
+     "name": "NcEncoderId",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcEncoderIndex",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcEncoderType",
+     "type": "Tc2_MC2|E_NcEncoderType"
+    },
+    {
+     "name": "NcAxisId",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcAxisType",
+     "type": "Tc2_MC2|E_NcAxisType"
+    },
+    {
+     "name": "TcSoftDriveObjectId",
+     "type": "|OTCID"
+    },
+    {
+     "name": "TcDriveObjectId",
+     "type": "|OTCID"
+    },
+    {
+     "name": "TcEncoderObjectId",
+     "type": "|OTCID"
+    },
+    {
+     "name": "TcAxisObjectId",
+     "type": "|OTCID"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_HomingOptions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "ClearPositionLag",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SearchDirection",
+     "type": "Tc2_MC2|MC_Direction"
+    },
+    {
+     "name": "SearchVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SyncDirection",
+     "type": "Tc2_MC2|MC_Direction"
+    },
+    {
+     "name": "SyncVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ReferenceMode",
+     "type": "Tc2_MC2|E_EncoderReferenceMode"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_McOutputs": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_MoveOptions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "EnableBlendingPosition",
+     "type": "|BOOL"
+    },
+    {
+     "name": "BlendingPosition",
+     "type": "|LREAL"
+    },
+    {
+     "name": "StartVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "EndVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "IgnorePositionMonitoring",
+     "type": "|BOOL"
+    },
+    {
+     "name": "EnableStopPositionMonitoring",
+     "type": "|BOOL"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_PowerOptions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "reserved",
+     "type": "|BOOL"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_SetPositionOptions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "ClearPositionLag",
+     "type": "|BOOL"
+    },
+    {
+     "name": "DirectHoming",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ClearPositionOffset",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SelectEncoderIndex",
+     "type": "|BOOL"
+    },
+    {
+     "name": "EncoderIndex",
+     "type": "|UINT"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_TorqueControlOptions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "SynchronousAccess",
+     "type": "|BOOL"
+    },
+    {
+     "name": "EnableManualTorqueStartValue",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ManualTorqueStartValue",
+     "type": "|LREAL"
+    }
+   ]
+  },
+  "Tc2_MC2|ST_VelocityControlOptions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "SynchronousAccess",
+     "type": "|BOOL"
+    }
+   ]
+  },
+  "Tc2_MC2|_E_ParameterType": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|_E_TcMC_STATES": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|_E_TcNC_StartPosType": {
+   "extends": null,
+   "members": []
+  },
+  "Tc2_MC2|_FB_MoveUniversalGeneric": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "LastExecutionResult",
+     "type": "Tc2_MC2|_ST_FunctionBlockResults"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "StartType",
+     "type": "Tc2_MC2|_E_TcNC_StartPosType"
+    },
+    {
+     "name": "Position",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Torque",
+     "type": "|LREAL"
+    },
+    {
+     "name": "TorqueRamp",
+     "type": "|LREAL"
+    },
+    {
+     "name": "TorqueOffset",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Velocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "VelocityLimitHigh",
+     "type": "|LREAL"
+    },
+    {
+     "name": "VelocityLimitLow",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Acceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Deceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "Jerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "BufferMode",
+     "type": "Tc2_MC2|MC_BufferMode"
+    },
+    {
+     "name": "Options",
+     "type": "Tc2_MC2|ST_MoveOptions"
+    },
+    {
+     "name": "OptionsTorque",
+     "type": "Tc2_MC2|ST_TorqueControlOptions"
+    },
+    {
+     "name": "OptionsVelocity",
+     "type": "Tc2_MC2|ST_VelocityControlOptions"
+    },
+    {
+     "name": "Reset",
+     "type": "|BOOL"
+    },
+    {
+     "name": "GotoRunState",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ContinuousUpdate",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Active",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CmdNo",
+     "type": "|UINT"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "InTorque",
+     "type": "|BOOL"
+    },
+    {
+     "name": "iState",
+     "type": "Tc2_MC2|_E_TcMC_STATES"
+    },
+    {
+     "name": "sStartRequest",
+     "type": "Tc2_MC2|_ST_TcNC_UnversalAxisStartRequest"
+    },
+    {
+     "name": "sTorqueStartRequest",
+     "type": "Tc2_MC2|_ST_TcNC_UniversalAxisTorqueStartRequest"
+    },
+    {
+     "name": "sStartResponse",
+     "type": "Tc2_MC2|_ST_TcNC_UnversalAxisStartResponse"
+    },
+    {
+     "name": "fbAdsReadWrite",
+     "type": "Tc2_System|ADSRDWRTEX"
+    },
+    {
+     "name": "ContinousMode",
+     "type": "|BOOL"
+    },
+    {
+     "name": "InVelocity",
+     "type": "|BOOL"
+    },
+    {
+     "name": "DiffCycleCounter",
+     "type": "|UDINT"
+    },
+    {
+     "name": "EmptyStartResponse",
+     "type": "Tc2_MC2|_ST_TcNC_UnversalAxisStartResponse"
+    },
+    {
+     "name": "COUNT_R",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CounterCmdNoZero",
+     "type": "|BYTE"
+    },
+    {
+     "name": "CounterCmdNotStarted",
+     "type": "|BYTE"
+    },
+    {
+     "name": "DiffCmdNo",
+     "type": "|INT"
+    },
+    {
+     "name": "InitialNcToPlcCmdNo",
+     "type": "|UINT"
+    },
+    {
+     "name": "NcCycleCounter",
+     "type": "|BYTE"
+    },
+    {
+     "name": "LastNcCycleCounter",
+     "type": "|BYTE"
+    },
+    {
+     "name": "NcMappingCounter",
+     "type": "|BYTE"
+    },
+    {
+     "name": "NcCycleCounterAvailable",
+     "type": "|BOOL"
+    },
+    {
+     "name": "NcCycleCounterNotAvailable",
+     "type": "|BOOL"
+    },
+    {
+     "name": "NcCyclicFeedbackExpected",
+     "type": "|BOOL"
+    },
+    {
+     "name": "PlcDebugCode",
+     "type": "|DWORD"
+    },
+    {
+     "name": "AxisIsSlave",
+     "type": "|BOOL"
+    },
+    {
+     "name": "GetTaskIndex",
+     "type": "Tc2_System|GETCURTASKINDEX"
+    },
+    {
+     "name": "CycleCounter",
+     "type": "|UDINT"
+    },
+    {
+     "name": "BusyCounter",
+     "type": "|UDINT"
+    },
+    {
+     "name": "fbTimeOut",
+     "type": "Tc2_Standard|TON"
+    },
+    {
+     "name": "fbStopMonitoringTimeOut",
+     "type": "Tc2_Standard|TON"
+    },
+    {
+     "name": "fbTimeOutMappingCounter",
+     "type": "Tc2_Standard|TON"
+    },
+    {
+     "name": "fbOnTrigger",
+     "type": "Tc2_Standard|R_TRIG"
+    },
+    {
+     "name": "sTempMsg",
+     "type": "|STRING(255)"
+    },
+    {
+     "name": "AccDecreasing",
+     "type": "|BOOL"
+    },
+    {
+     "name": "AccOld",
+     "type": "|LREAL"
+    },
+    {
+     "name": "iContinuousUpdate",
+     "type": "|BOOL"
+    },
+    {
+     "name": "iTorqueSynchronousAccess",
+     "type": "|BOOL"
+    },
+    {
+     "name": "StateDWord3",
+     "type": "|DWORD"
+    },
+    {
+     "name": "_SrcAdr",
+     "type": "|PVOID"
+    },
+    {
+     "name": "_SrcSize",
+     "type": "|UDINT"
+    },
+    {
+     "name": "_DestAdr",
+     "type": "|PVOID"
+    },
+    {
+     "name": "_DestSize",
+     "type": "|UDINT"
+    },
+    {
+     "name": "_RefDestAdr",
+     "type": "|PVOID"
+    },
+    {
+     "name": "_RefDestSize",
+     "type": "|UDINT"
+    },
+    {
+     "name": "hr",
+     "type": "|HRESULT"
+    },
+    {
+     "name": "ipReadWrite",
+     "type": "MC|ITcReadWriteAccess"
+    },
+    {
+     "name": "OpMode",
+     "type": "Tc2_MC2|_ST_TcNc_OperationModes"
+    }
+   ]
+  },
+  "Tc2_MC2|_FB_ReadWriteParameter": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Enable",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ParameterNumber",
+     "type": "Tc2_MC2|MC_AxisParameter"
+    },
+    {
+     "name": "Mode",
+     "type": "|INT"
+    },
+    {
+     "name": "ParameterPointer",
+     "type": "|PVOID"
+    },
+    {
+     "name": "ParameterSize",
+     "type": "|USINT"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ValueLreal",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ValueDword",
+     "type": "|DWORD"
+    },
+    {
+     "name": "ValueBool",
+     "type": "|BOOL"
+    },
+    {
+     "name": "iState",
+     "type": "Tc2_MC2|_E_TcMC_STATES"
+    },
+    {
+     "name": "fbAdsRead",
+     "type": "Tc2_System|ADSREAD"
+    },
+    {
+     "name": "fbAdsWrite",
+     "type": "Tc2_System|ADSWRITE"
+    },
+    {
+     "name": "dwValue",
+     "type": "|DWORD"
+    },
+    {
+     "name": "lrValue",
+     "type": "|LREAL"
+    },
+    {
+     "name": "NcBoolValue",
+     "type": "|UINT"
+    },
+    {
+     "name": "bStarted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "stParaStruct",
+     "type": "Tc2_MC2|_ST_ParaStruct"
+    },
+    {
+     "name": "n",
+     "type": "|INT"
+    },
+    {
+     "name": "i",
+     "type": "|INT"
+    },
+    {
+     "name": "ParaLREAL",
+     "type": "|INT"
+    }
+   ]
+  },
+  "Tc2_MC2|_FB_WriteParameterPersistent": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|AXIS_REF"
+    },
+    {
+     "name": "Execute",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ParameterNumber",
+     "type": "Tc2_MC2|MC_AxisParameter"
+    },
+    {
+     "name": "Value",
+     "type": "|LREAL"
+    },
+    {
+     "name": "ParameterPointer",
+     "type": "|PVOID"
+    },
+    {
+     "name": "ParameterSize",
+     "type": "|USINT"
+    },
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Busy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ADSbusy",
+     "type": "|BOOL"
+    },
+    {
+     "name": "fbReadWriteParameter",
+     "type": "Tc2_MC2|_FB_ReadWriteParameter"
+    },
+    {
+     "name": "state",
+     "type": "|INT"
+    },
+    {
+     "name": "stParaStruct",
+     "type": "Tc2_MC2|_ST_ParaStruct"
+    },
+    {
+     "name": "iParameterNumber",
+     "type": "Tc2_MC2|MC_AxisParameter"
+    },
+    {
+     "name": "lrValue",
+     "type": "|LREAL"
+    },
+    {
+     "name": "dwValue",
+     "type": "|DWORD"
+    },
+    {
+     "name": "bValue",
+     "type": "|BOOL"
+    },
+    {
+     "name": "bValueWord",
+     "type": "|UINT"
+    },
+    {
+     "name": "fbTrigger",
+     "type": "Tc2_Standard|R_TRIG"
+    },
+    {
+     "name": "fbAdsWriteSystemService",
+     "type": "Tc2_System|ADSWRITE"
+    },
+    {
+     "name": "aCmdBuffer",
+     "type": "|BYTE"
+    },
+    {
+     "name": "pCmd",
+     "type": "|AdsAddInitCommand"
+    },
+    {
+     "name": "pByte",
+     "type": "|BYTE"
+    },
+    {
+     "name": "sKey",
+     "type": "|STRING(80)"
+    },
+    {
+     "name": "sMsg",
+     "type": "|STRING(80)"
+    },
+    {
+     "name": "sTmp",
+     "type": "|STRING(80)"
+    },
+    {
+     "name": "IG",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IO",
+     "type": "|UDINT"
+    },
+    {
+     "name": "size",
+     "type": "|UINT"
+    },
+    {
+     "name": "valuesize",
+     "type": "|UINT"
+    }
+   ]
+  },
+  "Tc2_MC2|_InternalAxisRefData": {
+   "extends": null,
+   "members": [
+    {
+     "name": "NcCycleCounterAvailable",
+     "type": "|BOOL"
+    },
+    {
+     "name": "NcCycleCounter_AtReadStatusCall",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LastTaskIndex_AtReadStatusCall",
+     "type": "|BYTE"
+    },
+    {
+     "name": "CounterSameTaskIndex_AtReadStatusCall",
+     "type": "|UINT"
+    },
+    {
+     "name": "PhasingCmdNo",
+     "type": "|UDINT"
+    },
+    {
+     "name": "PhasingCmdTriggered",
+     "type": "|BOOL"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_FunctionBlockResults": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Done",
+     "type": "|BOOL"
+    },
+    {
+     "name": "CommandAborted",
+     "type": "|BOOL"
+    },
+    {
+     "name": "Error",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ErrorID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "BusyCounter",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_Axis": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Parameter",
+     "type": "Tc2_MC2|_ST_NCADS_AxisParameter"
+    },
+    {
+     "name": "State",
+     "type": "Tc2_MC2|_ST_NCADS_AxisState"
+    },
+    {
+     "name": "Functions",
+     "type": "Tc2_MC2|_ST_NCADS_AxisFunctions"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_AxisFunctions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "IDXGRP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IDXOFFS",
+     "type": "Tc2_MC2|_ST_NCADS_IDXOFFS_AxisFunctions"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_AxisParameter": {
+   "extends": null,
+   "members": [
+    {
+     "name": "IDXGRP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IDXOFFS",
+     "type": "Tc2_MC2|_ST_NCADS_IDXOFFS_AxisParameter"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_AxisState": {
+   "extends": null,
+   "members": [
+    {
+     "name": "IDXGRP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IDXOFFS",
+     "type": "Tc2_MC2|_ST_NCADS_IDXOFFS_AxisState"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_IDXOFFS_AxisFunctions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "RESET",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STOP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CLEAR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "EMERGENCYSTOP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "PARAMETRIZEDSTOP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "INITIALIZE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ORIENTEDSTOP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CALIBR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "NEWTARGPOS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "NEWTARGPOSANDVELO",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CHANGEDYNAMICPARAM",
+     "type": "|UDINT"
+    },
+    {
+     "name": "UNIVERSALSTART",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SLAVEUNIVERSALSTART",
+     "type": "|UDINT"
+    },
+    {
+     "name": "RELEASEAXISLOCK",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETEXTERNALERROR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETPOS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETCALFLAG",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETACTPOS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETDRIVEPOS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETENCODERSCALING",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETPOSONTHEFLY",
+     "type": "|UDINT"
+    },
+    {
+     "name": "START",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STARTEXT",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STARTVELOCHANGE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ENABLEEXTGEN",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DISABLEEXTGEN",
+     "type": "|UDINT"
+    },
+    {
+     "name": "REVERSINGSEQUENCE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STARTDRVOUT",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STOPDRVOUT",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CHANGEDRVOUT",
+     "type": "|UDINT"
+    },
+    {
+     "name": "JUMPTOOVERRIDE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "EXTSETGENUNIVERSALSTART",
+     "type": "|UDINT"
+    },
+    {
+     "name": "UNIVERSALTORQUESTART",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STARTSCOM",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STOPSCOM",
+     "type": "|UDINT"
+    },
+    {
+     "name": "PHASINGREQEUST",
+     "type": "|UDINT"
+    },
+    {
+     "name": "REINITIALIZEENCODER",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CPL",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DECPL",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CPLCHANGE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TABCPLCHANGE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STOPSLAVE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CPLTAB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TABSLVACTIVCOR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TABSLVLEAVECYC",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TABSLVCOROFFSET",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TABSLVSCALING",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CPLSOLOTAB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CPLSYNCHRONIZING",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CAMSCALING",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DISABLE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ENABLE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CHANGEAXISCTRLLOOP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DRIVEDISABLE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DRIVEENABLE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "RELEASEBRAKE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "RECONFIGURATE",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_IDXOFFS_AxisParameter": {
+   "extends": null,
+   "members": [
+    {
+     "name": "PARAMSTRUCT",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "NAME",
+     "type": "|UDINT"
+    },
+    {
+     "name": "AXISTYPE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CYCLETIME",
+     "type": "|UDINT"
+    },
+    {
+     "name": "UNITNAME",
+     "type": "|UDINT"
+    },
+    {
+     "name": "VELOREFSEARCH",
+     "type": "|UDINT"
+    },
+    {
+     "name": "VELOSYNCSEARCH",
+     "type": "|UDINT"
+    },
+    {
+     "name": "VELOSLOWMANUAL",
+     "type": "|UDINT"
+    },
+    {
+     "name": "VELOFASTMANUAL",
+     "type": "|UDINT"
+    },
+    {
+     "name": "VELOFAST",
+     "type": "|UDINT"
+    },
+    {
+     "name": "POSAREAENABLE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "POSAREARANGE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MOTCNTRLENABLE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MOTCNTRLTIME",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LOOPENABLE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LOOPDISTANCE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TARGETPOSENA",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TARGETPOSRANGE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TARGETPOSTIME",
+     "type": "|UDINT"
+    },
+    {
+     "name": "PULSDISTPOS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "PULSDISTNEG",
+     "type": "|UDINT"
+    },
+    {
+     "name": "FADINGACCELERATION",
+     "type": "|UDINT"
+    },
+    {
+     "name": "FASTAXISSTOPSIGNALTYPE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "UNITFLAGS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "VELOMAXIMUM",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MOTCNTRLRANGE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "PEHCONTROLENA",
+     "type": "|UDINT"
+    },
+    {
+     "name": "PEHCONTROLTIME",
+     "type": "|UDINT"
+    },
+    {
+     "name": "BACKLASHCOMPENA",
+     "type": "|UDINT"
+    },
+    {
+     "name": "BACKLASH",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DATAPERSISTENCE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "HWAMSADDR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "HWCHNNO",
+     "type": "|UDINT"
+    },
+    {
+     "name": "APPLICATIONREQUEST",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ACC",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DEC",
+     "type": "|UDINT"
+    },
+    {
+     "name": "JERK",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DELAY",
+     "type": "|UDINT"
+    },
+    {
+     "name": "OVERRIDETYPE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "VELOJUMPFACTOR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "REDUCTIONFEEDBACK",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TOLERANCEBALLAUXAXIS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MAXPOSDEVIATIONAUXAXIS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "FASTACC",
+     "type": "|UDINT"
+    },
+    {
+     "name": "FASTDEC",
+     "type": "|UDINT"
+    },
+    {
+     "name": "FASTJERK",
+     "type": "|UDINT"
+    },
+    {
+     "name": "REF_POS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ENCSEARCHDIR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ENCSYNCDIR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ENCREFMODE",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_IDXOFFS_AxisState": {
+   "extends": null,
+   "members": [
+    {
+     "name": "ONLINESTRUCT",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ERROR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETTASKCYCLE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETPOS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETVELO",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETACC",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MODULOSETPOS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MODULOSETTURNS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETDIR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "TARGETPOSITION",
+     "type": "|UDINT"
+    },
+    {
+     "name": "REMAININGTIMEANDPOS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "STOPINFORMATION",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETTASKCYCLE_WITHOUTCORR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETPOS_WITHOUTCORR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETVELO_WITHOUTCORR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETACC_WITHOUTCORR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SETDIR_WITHOUTCORR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "COUPLESTATE",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CPLPARAMS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CPLFACTOR",
+     "type": "|UDINT"
+    },
+    {
+     "name": "AXISCTRLLOOPIDX",
+     "type": "|UDINT"
+    },
+    {
+     "name": "AXISSETPOINTGENIDX",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CPLCHARACVALUES",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CAMINFO",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CAMSTATUS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ENCODERINITIALIZATIONDONE",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_IDXOFFS_TableFunctions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "CREATETAB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "CREATEMOTIONTAB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DELETETAB",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_IDXOFFS_TableParameter": {
+   "extends": null,
+   "members": [
+    {
+     "name": "MFREADCHARACVALUES",
+     "type": "|UDINT"
+    },
+    {
+     "name": "WRITETABROWS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "WRITEMFTABROWS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MFREADTAB",
+     "type": "|UDINT"
+    },
+    {
+     "name": "READSLAVEDYNAMICS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "READMASTERPOSITION",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_Table": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Parameter",
+     "type": "Tc2_MC2|_ST_NCADS_TableParameter"
+    },
+    {
+     "name": "Functions",
+     "type": "Tc2_MC2|_ST_NCADS_TableFunctions"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_TableFunctions": {
+   "extends": null,
+   "members": [
+    {
+     "name": "IDXGRP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IDXOFFS",
+     "type": "Tc2_MC2|_ST_NCADS_IDXOFFS_TableFunctions"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_NCADS_TableParameter": {
+   "extends": null,
+   "members": [
+    {
+     "name": "IDXGRP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IDXOFFS",
+     "type": "Tc2_MC2|_ST_NCADS_IDXOFFS_TableParameter"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_ParaStruct": {
+   "extends": null,
+   "members": [
+    {
+     "name": "Port",
+     "type": "|UINT"
+    },
+    {
+     "name": "IndexGroup",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IndexOffset",
+     "type": "|UDINT"
+    },
+    {
+     "name": "ParaType",
+     "type": "Tc2_MC2|_E_ParameterType"
+    },
+    {
+     "name": "LrealSize",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LrealOffset",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_TcNC_SetPosOnTheFly": {
+   "extends": null,
+   "members": [
+    {
+     "name": "nPosSetType",
+     "type": "|UDINT"
+    },
+    {
+     "name": "nCtrlDWord",
+     "type": "|DWORD"
+    },
+    {
+     "name": "fPreviousActualPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fNewActualPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "nReserved",
+     "type": "|DWORD"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_TcNC_UniversalAxisTorqueStartRequest": {
+   "extends": null,
+   "members": [
+    {
+     "name": "nStartType",
+     "type": "|UDINT"
+    },
+    {
+     "name": "nControlMask",
+     "type": "|DWORD"
+    },
+    {
+     "name": "nMode",
+     "type": "|DWORD"
+    },
+    {
+     "name": "nBufferMode",
+     "type": "|UDINT"
+    },
+    {
+     "name": "fTorque",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fTorqueRamp",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fVelocityLimitHigh",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fVelocityLimitLow",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fAcceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDeceleration",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fManualTorque",
+     "type": "|LREAL"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_TcNC_UnversalAxisStartRequest": {
+   "extends": null,
+   "members": [
+    {
+     "name": "nStartType",
+     "type": "|UDINT"
+    },
+    {
+     "name": "nControlMask",
+     "type": "|UDINT"
+    },
+    {
+     "name": "fPosTarget",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fVeloRequ",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fAcc",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fDec",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fJerk",
+     "type": "|LREAL"
+    },
+    {
+     "name": "nBufferMode",
+     "type": "|UDINT"
+    },
+    {
+     "name": "nReserved",
+     "type": "|UDINT"
+    },
+    {
+     "name": "fBlendingPosition",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fVeloStart",
+     "type": "|LREAL"
+    },
+    {
+     "name": "fVeloEnd",
+     "type": "|LREAL"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_TcNC_UnversalAxisStartResponse": {
+   "extends": null,
+   "members": [
+    {
+     "name": "nCmdNo",
+     "type": "|WORD"
+    },
+    {
+     "name": "nCmdState",
+     "type": "|WORD"
+    }
+   ]
+  },
+  "Tc2_MC2|_ST_TcNc_OperationModes": {
+   "extends": null,
+   "members": [
+    {
+     "name": "PosAreaControl",
+     "type": "|DWORD"
+    },
+    {
+     "name": "TargetPosControl",
+     "type": "|DWORD"
+    },
+    {
+     "name": "StopMonitoring",
+     "type": "|DWORD"
+    },
+    {
+     "name": "AllowSlaveCommands",
+     "type": "|DWORD"
+    }
+   ]
+  },
+  "Tc2_MC2|_TCMCGLOBAL": {
+   "extends": null,
+   "members": [
+    {
+     "name": "NCPORT_TCMC",
+     "type": "|UINT"
+    },
+    {
+     "name": "NCPORT_TCMC_COUPLING",
+     "type": "|UINT"
+    },
+    {
+     "name": "NCNETID_TCMC",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "NCPORT_TCMC_CAM",
+     "type": "|UINT"
+    },
+    {
+     "name": "NCPORT_TCMC_CAM_FAST",
+     "type": "|UINT"
+    },
+    {
+     "name": "NCNETID_TCMC_CAM",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "NCPORT_TCMC_SUPERPOSITION",
+     "type": "|UINT"
+    },
+    {
+     "name": "NCPORT_TCMC_RESET",
+     "type": "|UINT"
+    },
+    {
+     "name": "NcDeviceInfoTcMainVersion",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcDeviceInfoTcSubVersion",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcDeviceInfoNcDriverVersion",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcDeviceInfoNcVersion",
+     "type": "|DWORD"
+    },
+    {
+     "name": "NcDeviceInfoNcName",
+     "type": "|STRING(19)"
+    },
+    {
+     "name": "Axis",
+     "type": "Tc2_MC2|_ST_NCADS_Axis"
+    },
+    {
+     "name": "Table",
+     "type": "Tc2_MC2|_ST_NCADS_Table"
+    },
+    {
+     "name": "NCPORT_TCNCCAMMING_TABLEFUNCTION",
+     "type": "|UINT"
+    },
+    {
+     "name": "tTargetPosTimeOut",
+     "type": "|TIME"
+    },
+    {
+     "name": "tADSTimeOut",
+     "type": "|TIME"
+    },
+    {
+     "name": "tStopMonitoringTimeOut",
+     "type": "|TIME"
+    },
+    {
+     "name": "NCTOPLC_FEEDBACK_MAXWAITCYCLES",
+     "type": "|INT"
+    },
+    {
+     "name": "fbADSRDDEVINFO",
+     "type": "Tc2_System|ADSRDDEVINFO"
+    },
+    {
+     "name": "DeviceVersion",
+     "type": "|DWORD"
+    },
+    {
+     "name": "Init",
+     "type": "|BOOL"
+    }
+   ]
+  },
   "Tc2_Standard|R_TRIG": {
    "extends": null,
    "members": [
@@ -13173,6 +18196,206 @@
     }
    ]
   },
+  "Tc2_System|ADSRDDEVINFO": {
+   "extends": null,
+   "members": [
+    {
+     "name": "NETID",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "PORT",
+     "type": "Tc2_System|T_AmsPort"
+    },
+    {
+     "name": "RDINFO",
+     "type": "|BOOL"
+    },
+    {
+     "name": "TMOUT",
+     "type": "|TIME"
+    },
+    {
+     "name": "BUSY",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ERR",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ERRID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DEVNAME",
+     "type": "|STRING(19)"
+    },
+    {
+     "name": "DEVVER",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_System|ADSRDWRTEX": {
+   "extends": null,
+   "members": [
+    {
+     "name": "NETID",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "PORT",
+     "type": "Tc2_System|T_AmsPort"
+    },
+    {
+     "name": "IDXGRP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IDXOFFS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "WRITELEN",
+     "type": "|UDINT"
+    },
+    {
+     "name": "READLEN",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SRCADDR",
+     "type": "|PVOID"
+    },
+    {
+     "name": "DESTADDR",
+     "type": "|PVOID"
+    },
+    {
+     "name": "WRTRD",
+     "type": "|BOOL"
+    },
+    {
+     "name": "TMOUT",
+     "type": "|TIME"
+    },
+    {
+     "name": "BUSY",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ERR",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ERRID",
+     "type": "|UDINT"
+    },
+    {
+     "name": "COUNT_R",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_System|ADSREAD": {
+   "extends": null,
+   "members": [
+    {
+     "name": "NETID",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "PORT",
+     "type": "Tc2_System|T_AmsPort"
+    },
+    {
+     "name": "IDXGRP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IDXOFFS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LEN",
+     "type": "|UDINT"
+    },
+    {
+     "name": "DESTADDR",
+     "type": "|PVOID"
+    },
+    {
+     "name": "READ",
+     "type": "|BOOL"
+    },
+    {
+     "name": "TMOUT",
+     "type": "|TIME"
+    },
+    {
+     "name": "BUSY",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ERR",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ERRID",
+     "type": "|UDINT"
+    }
+   ]
+  },
+  "Tc2_System|ADSWRITE": {
+   "extends": null,
+   "members": [
+    {
+     "name": "NETID",
+     "type": "Tc2_System|T_AmsNetID"
+    },
+    {
+     "name": "PORT",
+     "type": "Tc2_System|T_AmsPort"
+    },
+    {
+     "name": "IDXGRP",
+     "type": "|UDINT"
+    },
+    {
+     "name": "IDXOFFS",
+     "type": "|UDINT"
+    },
+    {
+     "name": "LEN",
+     "type": "|UDINT"
+    },
+    {
+     "name": "SRCADDR",
+     "type": "|PVOID"
+    },
+    {
+     "name": "WRITE",
+     "type": "|BOOL"
+    },
+    {
+     "name": "TMOUT",
+     "type": "|TIME"
+    },
+    {
+     "name": "BUSY",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ERR",
+     "type": "|BOOL"
+    },
+    {
+     "name": "ERRID",
+     "type": "|UDINT"
+    }
+   ]
+  },
   "Tc2_System|ADSWRTCTL": {
    "extends": null,
    "members": [
@@ -13225,6 +18448,28 @@
   "Tc2_System|E_WATCHDOG_TIME_CONFIG": {
    "extends": null,
    "members": []
+  },
+  "Tc2_System|FW_GetCurTaskIndex": {
+   "extends": null,
+   "members": [
+    {
+     "name": "nIndex",
+     "type": "|BYTE"
+    }
+   ]
+  },
+  "Tc2_System|GETCURTASKINDEX": {
+   "extends": null,
+   "members": [
+    {
+     "name": "index",
+     "type": "|BYTE"
+    },
+    {
+     "name": "fbGetCurTaskIndex",
+     "type": "Tc2_System|FW_GetCurTaskIndex"
+    }
+   ]
   },
   "Tc2_System|Global_Variables": {
    "extends": null,
@@ -13771,6 +19016,10 @@
    "extends": null,
    "members": []
   },
+  "Tc2_System|T_AmsNetIdArr": {
+   "extends": null,
+   "members": []
+  },
   "Tc2_System|T_AmsPort": {
    "extends": null,
    "members": []
@@ -14239,7 +19488,65 @@
     }
    ]
   },
+  "|AMSADDR": {
+   "extends": null,
+   "members": [
+    {
+     "name": "netId",
+     "type": "|AMSNETID"
+    },
+    {
+     "name": "port",
+     "type": "|WORD"
+    }
+   ]
+  },
+  "|AMSNETID": {
+   "extends": null,
+   "members": []
+  },
+  "|AdsAddInitCommand": {
+   "extends": null,
+   "members": [
+    {
+     "name": "initNo",
+     "type": "|UDINT"
+    },
+    {
+     "name": "addr",
+     "type": "|AMSADDR"
+    },
+    {
+     "name": "indexGroup",
+     "type": "|UDINT"
+    },
+    {
+     "name": "indexOffset",
+     "type": "|UDINT"
+    },
+    {
+     "name": "timeout",
+     "type": "|UDINT"
+    },
+    {
+     "name": "keyLength",
+     "type": "|UINT"
+    },
+    {
+     "name": "msgLength",
+     "type": "|UINT"
+    },
+    {
+     "name": "dataLength",
+     "type": "|UINT"
+    }
+   ]
+  },
   "|BaseAlarms": {
+   "extends": null,
+   "members": []
+  },
+  "|BasicAxis": {
    "extends": null,
    "members": []
   },
@@ -14459,6 +19766,71 @@
     {
      "name": "ResetFlash",
      "type": "|BOOL"
+    }
+   ]
+  },
+  "|FB_HomeRoutine_RefSensor": {
+   "extends": "SPT_PackMLBase|FB_CyclicFB",
+   "members": [
+    {
+     "name": "RefSensor",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SearchVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "BackoffVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "HomePosition",
+     "type": "|LREAL"
+    },
+    {
+     "name": "EnableSoftLimits",
+     "type": "|BOOL"
+    },
+    {
+     "name": "SoftLimitNeg",
+     "type": "|LREAL"
+    },
+    {
+     "name": "SoftLimitPos",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_Axis",
+     "type": "SPT_MotionControl|I_BasicAxis"
+    },
+    {
+     "name": "SequenceStep",
+     "type": "|UDINT"
+    },
+    {
+     "name": "MCWriteBool",
+     "type": "Tc2_MC2|MC_WriteBoolParameter"
+    },
+    {
+     "name": "MCWriteParam",
+     "type": "Tc2_MC2|MC_WriteParameter"
+    },
+    {
+     "name": "MCMoveVelocity",
+     "type": "Tc2_MC2|MC_MoveVelocity"
+    },
+    {
+     "name": "MCHalt",
+     "type": "Tc2_MC2|MC_Halt"
+    },
+    {
+     "name": "MCHome",
+     "type": "Tc2_MC2|MC_Home"
+    },
+    {
+     "name": "ERR_ABORTED",
+     "type": "|UDINT"
     }
    ]
   },
@@ -14764,9 +20136,57 @@
     },
     {
      "addSymbol": true,
-     "comment": "",
+     "comment": "lower travel limit and homing reference",
+     "name": "B_AxisMin",
+     "type": "SPT_Components|FB_DigitalSensor"
+    },
+    {
+     "addSymbol": true,
+     "comment": "upper travel limit",
+     "name": "B_AxisMax",
+     "type": "SPT_Components|FB_DigitalSensor"
+    },
+    {
+     "addSymbol": true,
+     "comment": "carriage servo axis (NC, AX5125 SoE)",
      "name": "Y_Lift",
-     "type": "SPT_Components|FB_DoubleSolenoidFeedback"
+     "type": "SPT_Components|FB_Component_BasicAxis"
+    },
+    {
+     "name": "HomeRoutine",
+     "type": "|FB_HomeRoutine_RefSensor"
+    },
+    {
+     "name": "ResetRoutine",
+     "type": "SPT_MotionControl|FB_ResetRoutine_SoEDrive"
+    },
+    {
+     "name": "_LevelLow",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_LevelHigh",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_LevelWindow",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_TravelVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_HomeSearchVelocity",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_SoftLimitNeg",
+     "type": "|LREAL"
+    },
+    {
+     "name": "_SoftLimitPos",
+     "type": "|LREAL"
     },
     {
      "name": "M_Conveyor",
@@ -14806,6 +20226,10 @@
     },
     {
      "name": "_HomeTime",
+     "type": "|TIME"
+    },
+    {
+     "name": "_ReferenceTime",
      "type": "|TIME"
     },
     {
@@ -14860,6 +20284,10 @@
     },
     {
      "name": "__FB_TRANSFERLIFT__RESETTING__RESETHOMETIMER",
+     "type": "Tc2_Standard|TON"
+    },
+    {
+     "name": "__FB_TRANSFERLIFT__RESETTING__REFERENCETIMER",
      "type": "Tc2_Standard|TON"
     },
     {
@@ -15930,6 +21358,83 @@
     }
    ]
   },
+  "|ST_BasicAxis": {
+   "extends": null,
+   "members": [
+    {
+     "name": "InitReferenceEvent",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "PowerError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "ResetError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "HaltError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "StopError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "HomeError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "JogError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "MoveAbsoluteError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "MoveRelativeError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "MoveVelocityError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "MoveModuloError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "ReadParameterSetError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "WriteBoolParameterError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "WriteParameterError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "CommandWhileInhibited",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "AxisError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "DriveError",
+     "type": "|TcEventEntry"
+    },
+    {
+     "name": "ExternalSequenceError",
+     "type": "|TcEventEntry"
+    }
+   ]
+  },
   "|ST_ComponentBase": {
    "extends": null,
    "members": [
@@ -16488,6 +21993,10 @@
     {
      "name": "Station",
      "type": "|ST_TransferLift_Status"
+    },
+    {
+     "name": "HomeAxis",
+     "type": "|BOOL"
     }
    ]
   },
@@ -16512,6 +22021,22 @@
     },
     {
      "name": "ReverseDirection",
+     "type": "|BOOL"
+    },
+    {
+     "name": "AxisHomed",
+     "type": "|BOOL"
+    },
+    {
+     "name": "AxisPosition",
+     "type": "|LREAL"
+    },
+    {
+     "name": "AtHome",
+     "type": "|BOOL"
+    },
+    {
+     "name": "AtFar",
      "type": "|BOOL"
     },
     {
@@ -16667,6 +22192,10 @@
    ]
   },
   "|UDINT (81..10000)": {
+   "extends": null,
+   "members": []
+  },
+  "|UINTARR8": {
    "extends": null,
    "members": []
   },
@@ -16870,5 +22399,5 @@
    ]
   }
  },
- "writtenAtUtc": "2026-08-27T18:11:49Z"
+ "writtenAtUtc": "2026-10-14T23:06:16Z"
 }

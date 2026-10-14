@@ -51,6 +51,19 @@ answering.
 | `TwinCAT_1/PLC/Mapping_PLC.xml` | The I/O mapping build, imported in XAE |
 | The machine pages | **A generator.** Swept on every run; never hand-edit |
 | The curated reference | You — hand-written TwinCAT knowledge |
+| `TwinCAT_1/PLC/SIM_1/Library/` | You — device models the libraries lack or get wrong |
+
+### Local overrides of library blocks
+
+`SIM_1/Library/FB_Sercos_VC` and `FB_Sercos_FSM` are local copies of the OC_EtherCAT 1.1.8 blocks,
+and they **shadow the library by name**: a project POU wins over an unqualified library POU, so the
+generated `Lift0x_Y_Lift : FB_Sercos_VC` binds to the copy with no edit to the generated region.
+
+They exist because the library's Sercos state machine reads control-word bit 13 inverted. On an
+AX5000 a 1 there means *run*, so the library parked every NC-enabled drive in its Halt state,
+reporting status `16#C010` — "drive ignores the command values" — and the NC never declared the
+lift axes operational. The copy also keeps `S4_SwitchOn` at "10" instead of stepping back to "01".
+**Delete both files once OC_EtherCAT ships the fix**; nothing else refers to them.
 
 ## 3. The control program
 
@@ -76,6 +89,31 @@ gap is not hidden by a deliberate one.
 One trap worth stating here because it fails silently: **a `TcLinkTo` member path resolves on a
 STRUCT, not on a FUNCTION_BLOCK instance.** On an FB instance the compiler accepts the pragma,
 reports nothing, and links nothing. A link is real when it appears in the `tsproj` `<Mappings>`.
+
+### Lift axes (NC)
+
+The two lift carriages are NC axes, `FG_Transport_Lift01_Y_Lift` and `FG_Transport_Lift02_Y_Lift`, on an
+**AX5125 (SoE) with a velocity interface**: the drive takes a velocity command and reports position,
+and the position loop runs in the NC. In `PLC_1` each is an `FB_Component_BasicAxis`, referenced on
+its `B_AxisMin` sensor by `FB_HomeRoutine_RefSensor`; its `AXIS_REF` links
+(`TINC^NC-Task 1 SAF^Axes^...`) live in `Mapping_PLC.xml` beside the terminal links.
+
+In the simulation the drive is `FB_Sercos_VC`, and **two of its numbers must agree with the NC**:
+
+| NC axis (XAE) | Value | SIM_1 `FG_Transport.InitRun` |
+|---|---|---|
+| Encoder scaling factor numerator / denominator | 0.0001 / 1 - mm per increment | the sim encoder reports 0.0001 mm per increment; fixed in the block |
+| Drive output scaling (`VeloScale`) | 6 counts per increment/s | `stConfig.fNormalizationFactor := 60000000.0` with `fReferenceVelocity := 1000.0` |
+
+`fNormalizationFactor` counts mean `fReferenceVelocity` mm/s, and the sim never moves faster than
+`fReferenceVelocity`. **Change one side, change the other.** A mismatch looks like a tuning problem
+and is not: with the library defaults the sim ran flat out at its cap (10 mm/s set, 1000 mm/s
+actual) and every reset ended in a following error; a factor of 6 off still showed as 60 mm/s.
+
+The loop itself, per axis: position controller **Kv 20** (the default 1 left a creeping tail of
+several seconds on every move), velocity pre-control 100 %, target-position window **0.1 mm**, and
+position-lag monitoring on. The sim is an ideal integrator with a few milliseconds of dead time, so
+Kv has a lot of headroom; on a real drive it would be tuned against the mechanics.
 
 ## 5. How the TwinCAT description is produced
 
