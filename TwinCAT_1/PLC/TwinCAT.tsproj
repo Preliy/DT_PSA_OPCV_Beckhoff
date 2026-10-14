@@ -1424,6 +1424,301 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 		<DataType>
+			<Name GUID="{30D15B2C-B050-1541-61FC-60D19B901707}" Namespace="OC_EtherCAT" AutoDeleteType="true">ST_Sercos_ControlWord</Name>
+			<Comment><![CDATA[
+	S-0-0134 Drive Control
+	https://product-help.schneider-electric.com/Machine%20Expert/V1.2/en/ATV340SUG/ATV340SUG/STI_Software_Setup/STI_Software_Setup-21.htm#XREF_D_SE_0083221_1
+]]></Comment>
+			<BitSize>16</BitSize>
+			<SubItem>
+				<Name>b0_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b1_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b2_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b3_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b4_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b5_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b6_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b7_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b8_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Reserved (=0)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>8</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b9_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Reserved (=0)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>9</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b10_OperationMode</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[0 = Primary operation mode]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>10</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b11_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>11</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b12_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>12</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b13_Halt</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive halt, 1 --> 0 = halt, 0 --> 1 = restart]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>13</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b14_Start</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive start, 1 --> 0 = Stop, 0 -> 1 = Start ]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>14</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b15_Enable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive enable, 1 --> 0 = drive disabled, 0 -> 1 = drive enabled]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>15</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>pack_mode</Name>
+					<Value>1</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{436769C3-1E95-A8CC-65AF-88EC4584EC18}" Namespace="OC_EtherCAT" AutoDeleteType="true">ST_Sercos_VC_Control</Name>
+			<Comment><![CDATA[
+	Sercos Velocity Control
+	MDT: S-0-0134 Master control word
+	MDT: S-0-0036 Velocity command value
+]]></Comment>
+			<BitSize>48</BitSize>
+			<SubItem>
+				<Name>nControlWord</Name>
+				<Type GUID="{30D15B2C-B050-1541-61FC-60D19B901707}" Namespace="OC_EtherCAT">ST_Sercos_ControlWord</Type>
+				<Comment><![CDATA[S-0-0134 Master control word]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nVelocityCommand</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<Comment><![CDATA[S-0-0036 Velocity command value]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>pack_mode</Name>
+					<Value>0</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{F031F36D-1177-51DB-F0F4-A748E1AEBAC9}" Namespace="OC_EtherCAT" AutoDeleteType="true">ST_Sercos_StatusWord</Name>
+			<Comment><![CDATA[
+	S-0-0135 Drive Status
+	https://product-help.schneider-electric.com/Machine%20Expert/V1.2/en/ATV340SUG/ATV340SUG/STI_Software_Setup/STI_Software_Setup-22.htm#XREF_D_SE_0083227_1
+]]></Comment>
+			<BitSize>16</BitSize>
+			<SubItem>
+				<Name>b0_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b1_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b2_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b3_CommandProcessing</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Status command value processing if 0 = ignored]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b4_Halt</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive halt, 0 = inactive, 1 = active]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b5_PositionFeedback</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Position feedback value status (S-0-0403)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b6_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b7_QuickStop</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Quick stop, 0 = inactive, 1 = active]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b8_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Reserved (=0)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>8</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b9_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Reserved (=0)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>9</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b10_OperationMode</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[0 = Primary operation mode]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>10</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b11_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>11</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b12_Warning</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Warning, 0 = No warning, 1 = Warning]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>12</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b13_Error</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive shut-down error, 0 = No error, 1 = Error]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>13</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b14_ReadyToOperate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[00 = Not ready to switch on, 01 = Switch on disabled, main power disabled]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>14</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b15_ReadyToOperate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[10 = Switch on, 11 = Drive enabled]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>15</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>pack_mode</Name>
+					<Value>1</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{F6FA1B71-A0A7-CA0F-AED5-23205301F7AF}" Namespace="OC_EtherCAT" AutoDeleteType="true">ST_Sercos_VC_Status</Name>
+			<Comment><![CDATA[
+	Sercos Velocity Control
+	AT: S-0-0135 Drive Status word
+	AT: S-0-0051 Position feedback 1 value
+]]></Comment>
+			<BitSize>48</BitSize>
+			<SubItem>
+				<Name>nStatusWord</Name>
+				<Type GUID="{F031F36D-1177-51DB-F0F4-A748E1AEBAC9}" Namespace="OC_EtherCAT">ST_Sercos_StatusWord</Type>
+				<Comment><![CDATA[S-0-0135 Drive Status word]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nPositionFeedback</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<Comment><![CDATA[S-0-0051 Position feedback 1 value]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>pack_mode</Name>
+					<Value>0</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-000000000041}" TcBaseType="true" HideSubItems="true" CName="AmsNetId">AMSNETID</Name>
 			<BitSize>48</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
@@ -1771,7 +2066,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{3349BDD1-C1B4-41A8-B54C-DC47D31B3B38}" Name="SIM_1" PrjFilePath="SIM_1\SIM_1.plcproj" TmcFilePath="SIM_1\SIM_1.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{823450EA-60BA-4DAB-25F6-9D875BD925BB}" TmcPath="SIM_1\SIM_1.tmc">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{644EF1D0-0B4E-ECDD-EDF7-778F1708CB71}" TmcPath="SIM_1\SIM_1.tmc">
 					<Name>SIM_1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -2077,6 +2372,14 @@ External Setpoint Generation:
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.FG_Transport.Lift01_B_AxisMax.Control</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift01_B_AxisMin.Control</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.FG_Transport.Lift01_B_Detect.Control</Name>
 							<Type>BYTE</Type>
 						</Var>
@@ -2094,6 +2397,18 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>MAIN.FG_Transport.Lift01_Y_Lift.Control</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift01_Y_Lift.ControlData</Name>
+							<Type>REAL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_B_AxisMax.Control</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_B_AxisMin.Control</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
@@ -2115,6 +2430,10 @@ External Setpoint Generation:
 						<Var>
 							<Name>MAIN.FG_Transport.Lift02_Y_Lift.Control</Name>
 							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_Y_Lift.ControlData</Name>
+							<Type>REAL</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.FG_Transport.Stopper01_B_Detect.Control</Name>
@@ -2980,6 +3299,14 @@ External Setpoint Generation:
 							<Name>GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bIn8</Name>
 							<Type>BIT</Type>
 						</Var>
+						<Var>
+							<Name>GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stStatus</Name>
+							<Type GUID="{F6FA1B71-A0A7-CA0F-AED5-23205301F7AF}" Namespace="OC_EtherCAT">ST_Sercos_VC_Status</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stStatus</Name>
+							<Type GUID="{F6FA1B71-A0A7-CA0F-AED5-23205301F7AF}" Namespace="OC_EtherCAT">ST_Sercos_VC_Status</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
@@ -3288,6 +3615,14 @@ External Setpoint Generation:
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.FG_Transport.Lift01_B_AxisMax.Status</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift01_B_AxisMin.Status</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.FG_Transport.Lift01_B_Detect.Status</Name>
 							<Type>BYTE</Type>
 						</Var>
@@ -3305,6 +3640,18 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>MAIN.FG_Transport.Lift01_Y_Lift.Status</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift01_Y_Lift.StatusData</Name>
+							<Type>REAL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_B_AxisMax.Status</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_B_AxisMin.Status</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
@@ -3326,6 +3673,10 @@ External Setpoint Generation:
 						<Var>
 							<Name>MAIN.FG_Transport.Lift02_Y_Lift.Status</Name>
 							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_Y_Lift.StatusData</Name>
+							<Type>REAL</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.FG_Transport.Stopper01_B_Detect.Status</Name>
@@ -3999,6 +4350,14 @@ External Setpoint Generation:
 							<Name>GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bOut8</Name>
 							<Type>BIT</Type>
 						</Var>
+						<Var>
+							<Name>GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stControl</Name>
+							<Type GUID="{436769C3-1E95-A8CC-65AF-88EC4584EC18}" Namespace="OC_EtherCAT">ST_Sercos_VC_Control</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stControl</Name>
+							<Type GUID="{436769C3-1E95-A8CC-65AF-88EC4584EC18}" Namespace="OC_EtherCAT">ST_Sercos_VC_Control</Type>
+						</Var>
 					</Vars>
 					<Contexts>
 						<Context>
@@ -4018,7 +4377,7 @@ External Setpoint Generation:
 				</Instance>
 			</Project>
 			<Project GUID="{CBF23307-111E-4593-B4B7-F9568AB4CDEC}" Name="PLC_1" PrjFilePath="PLC_1\PLC_1.plcproj" TmcFilePath="PLC_1\PLC_1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{2841CFAB-FEE5-68F9-D4B1-E85698C216D7}" TmcPath="PLC_1\PLC_1.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{82C07FD0-5968-19E3-3086-40CA80DE45F5}" TmcPath="PLC_1\PLC_1.tmc">
 					<Name>PLC_1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -4162,16 +4521,7 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput</Name>
-							<Comment><![CDATA[ Output]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift1.BasicAxis._Axis.PlcToNc</Name>
+							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
@@ -4183,16 +4533,7 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput</Name>
-							<Comment><![CDATA[ Output]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift1.BasicAxis._Axis.PlcToNc</Name>
+							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.PlcToNc</Name>
 							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
@@ -4707,15 +5048,7 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift1.BasicAxis._Axis.NcToPlc</Name>
+							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
@@ -4733,15 +5066,7 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift1.BasicAxis._Axis.NcToPlc</Name>
+							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
@@ -5111,6 +5436,36 @@ External Setpoint Generation:
 								<Link VarA="MAIN.Machine.FG_02.Y_Camera.OutputData" TypeA="BYTE" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000001}" VarB="Channel 15^Output" Size="1" OffsA="6" RestoreInfo="ANotFound"/>
 								<Link VarA="MAIN.Machine.FG_02.Y_Camera.OutputData" TypeA="BYTE" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000001}" VarB="Channel 16^Output" Size="1" OffsA="7" RestoreInfo="ANotFound"/>
 								<Link VarA="MAIN.Machine.FG_02.Y_Camera.OutputData" TypeA="BYTE" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000001}" VarB="Channel 9^Output" Size="1" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+					</UnrestoredVarLinks>
+					<UnrestoredVarLinks ImportTime="2026-10-14T20:38:56">
+						<OwnerA Name="InputDst" Prefix="TIPC^PLC_1^PLC_1 Instance" Type="1">
+							<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 4^Input" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 3^Input" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 9^Input" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 8^Input" Size="1" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift1.BasicAxis._Axis.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift1.BasicAxis._Axis.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+						<OwnerA Name="OutputSrc" Prefix="TIPC^PLC_1^PLC_1 Instance" Type="2">
+							<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 2^Output" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 1^Output" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 6^Output" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 5^Output" Size="1" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift1.BasicAxis._Axis.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift1.BasicAxis._Axis.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
 							</OwnerB>
 						</OwnerA>
 					</UnrestoredVarLinks>
@@ -10552,7 +10907,6 @@ External Setpoint Generation:
 		<MappingInfo Identifier="{00000000-0020-0304-3000-040320000403}" Id="#x02030010"/>
 		<MappingInfo Identifier="{00000000-2041-0850-4020-500800B6FC57}" Id="#x02030020"/>
 		<MappingInfo Identifier="{00000000-0050-0304-3000-040352000403}" Id="#x02030040"/>
-		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030050" Watchdog="14000000040000000400000004000000"/>
 		<OwnerA Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
 			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_Lift01_Y_Lift">
 				<Link VarA="Drive^Inputs^In^nDcOutputTime" VarB="InfoData^DcOutputShift"/>
@@ -10888,23 +11242,15 @@ External Setpoint Generation:
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_Detect.HardwareInput" VarB="Channel 1^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_Exit.HardwareInput" VarB="Channel 2^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._DriveActive" VarB="Channel 5^Input"/>
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor" VarB="Channel 4^Input"/>
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor" VarB="Channel 3^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_Detect.HardwareInput" VarB="Channel 6^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_Exit.HardwareInput" VarB="Channel 7^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._DriveActive" VarB="Channel 10^Input"/>
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor" VarB="Channel 9^Input"/>
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor" VarB="Channel 8^Input"/>
 			</OwnerB>
 			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1">
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Backward" VarB="Channel 3^Output"/>
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Forward" VarB="Channel 4^Output"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput" VarB="Channel 2^Output"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput" VarB="Channel 1^Output"/>
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Backward" VarB="Channel 7^Output"/>
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Forward" VarB="Channel 8^Output"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput" VarB="Channel 6^Output"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput" VarB="Channel 5^Output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Stopper_EL1809_1">
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper01.B_Detect.HardwareInput" VarB="Channel 1^Input"/>
@@ -10931,12 +11277,12 @@ External Setpoint Generation:
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Stopper04.Y_Stopper._ExtendOutput" VarB="Channel 4^Output"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift1.BasicAxis._Axis.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift1.BasicAxis._Axis.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift">
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift1.BasicAxis._Axis.NcToPlc" VarB="Outputs^ToPlc"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift1.BasicAxis._Axis.PlcToNc" VarB="Inputs^FromPlc"/>
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 		</OwnerA>
 		<OwnerA Name="TIPC^SIM_1^SIM_1 Instance">
@@ -11289,6 +11635,18 @@ External Setpoint Generation:
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut7" VarB="Channel 7^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut8" VarB="Channel 8^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut9" VarB="Channel 9^Output" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^EtherCAT_1_SIM^FG_Transport_Lift01_Y_Lift">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stControl^nControlWord" VarB="MDT^Master control word" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stControl^nVelocityCommand" VarB="MDT^Velocity command value" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stStatus^nPositionFeedback" VarB="AT^Position feedback 1 value" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stStatus^nStatusWord" VarB="AT^Drive status word" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^EtherCAT_1_SIM^FG_Transport_Lift02_Y_Lift">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stControl^nControlWord" VarB="MDT^Master control word" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stControl^nVelocityCommand" VarB="MDT^Velocity command value" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stStatus^nPositionFeedback" VarB="AT^Position feedback 1 value" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stStatus^nStatusWord" VarB="AT^Drive status word" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^EtherCAT_1_SIM^FG_Transport_Lift_EL1809_1">
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn1" VarB="Channel 1^Input" AutoLink="true"/>

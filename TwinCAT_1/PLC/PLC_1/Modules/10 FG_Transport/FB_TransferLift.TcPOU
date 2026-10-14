@@ -14,8 +14,7 @@ VAR
 	{ attribute 'TcHmiSymbol.AddSymbol' }
 	B_Exit			: FB_DigitalSensor;		// on the fixed frame - pallet has left
 	{ attribute 'TcHmiSymbol.AddSymbol' }
-	Y_Lift			: FB_DoubleSolenoidFeedback;
-	Y_Lift1 		: FB_Component_BasicAxis;
+	Y_Lift			: FB_Component_BasicAxis;
 
 	// --- Carriage belt ------------------------------------------------------
 	// A drive module of its own, like the two main conveyor sections, so it can
@@ -115,9 +114,9 @@ PROPERTY PRIVATE AtFar : BOOL]]></Declaration>
 END_VAR]]></Declaration>
         <Implementation>
           <ST><![CDATA[IF _ReverseDirection THEN
-	AtFar := Y_Lift.Retracted;
+	//AtFar := Y_Lift.Retracted;
 ELSE
-	AtFar := Y_Lift.Extended;
+	//AtFar := Y_Lift.Extended;
 END_IF]]></ST>
         </Implementation>
       </Get>
@@ -130,9 +129,9 @@ PROPERTY PRIVATE AtHome : BOOL]]></Declaration>
 END_VAR]]></Declaration>
         <Implementation>
           <ST><![CDATA[IF _ReverseDirection THEN
-	AtHome := Y_Lift.Extended;
+	//AtHome := Y_Lift.Extended;
 ELSE
-	AtHome := Y_Lift.Retracted;
+	//AtHome := Y_Lift.Retracted;
 END_IF]]></ST>
         </Implementation>
       </Get>
@@ -284,9 +283,9 @@ CASE _CurrentMode OF
 					SequenceState	:= 40;
 				ELSE
 					IF _ReverseDirection THEN
-						Y_Lift.Extend();
+						//Y_Lift.Extend();
 					ELSE
-						Y_Lift.Retract();
+						//Y_Lift.Retract();
 					END_IF
 					SequenceState := SequenceState + 10;
 				END_IF
@@ -338,9 +337,9 @@ CASE _CurrentMode OF
 
 			50:	// Travel to the far level
 				IF _ReverseDirection THEN
-					Y_Lift.Retract();
+					//Y_Lift.Retract();
 				ELSE
-					Y_Lift.Extend();
+					//Y_Lift.Extend();
 				END_IF
 				IF AtFar THEN
 					SequenceState := SequenceState + 10;
@@ -454,8 +453,8 @@ CASE DescendantSequenceState OF
 
 	10:
 		// A level change is a long stroke - these are travel alarms, not pacing.
-		Y_Lift.ExtendTime	:= 10000.0;
-		Y_Lift.RetractTime	:= 10000.0;
+		//Y_Lift.ExtendTime	:= 10000.0;
+		//Y_Lift.RetractTime	:= 10000.0;
 		DescendantSequenceState := DescendantSequenceState + 10;
 
 	20:
@@ -630,9 +629,9 @@ CASE SequenceState OF
 		M_Conveyor.RunForward  := FALSE;
 		M_Conveyor.RunBackward := FALSE;
 		IF _ReverseDirection THEN
-			Y_Lift.Extend();
+			//Y_Lift.Extend();
 		ELSE
-			Y_Lift.Retract();
+			//Y_Lift.Retract();
 		END_IF
 		SequenceState := 40;
 

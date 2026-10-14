@@ -225,15 +225,11 @@ GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn16	:= Stopper04_Y_Stopper.bE
 // --- Lift01  (FG_Transport_Lift_EL1809_1) ---
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn1	:= Lift01_B_Detect.bValue;
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn2	:= Lift01_B_Exit.bValue;
-GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn3	:= Lift01_Y_Lift.bRetracted;
-GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn4	:= Lift01_Y_Lift.bExtended;
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn5	:= Lift01_M_Conveyor.nStatus.6;
 
 // --- Lift02  (FG_Transport_Lift_EL1809_1) ---
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn6	:= Lift02_B_Detect.bValue;
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn7	:= Lift02_B_Exit.bValue;
-GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn8	:= Lift02_Y_Lift.bRetracted;
-GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn9	:= Lift02_Y_Lift.bExtended;
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn10	:= Lift02_M_Conveyor.nStatus.6;
 
 // --- Transport01  (FG_Transport_Drive_EL1008_1) ---
