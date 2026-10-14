@@ -11,8 +11,8 @@ Read this before trusting anything else in `Beckhoff/_docs/context/`. It answers
 | PLC snapshot | current, written `2026-10-14T23:06:16Z` |
 | Type model | `TwinCAT_1/PLC/PLC_1/PLC_1.tmc` |
 | Twin scene | `VC_Demo_1_Beckhoff_1` (reference for the root pages: `VC_Demo_1_Beckhoff_1`) |
-| Twin export | `2026-10-14T20:03:08.0167801Z` (commit `f310945 2026-08-28`) |
-| Twin handoff | `_workflow/config/handoff/.machine.json` schema 2, commit `8b6675b 2026-10-15` |
+| Twin export | `2026-10-14T20:03:08.0167801Z` (commit `4de76f0 2026-10-15`) |
+| Twin handoff | `_workflow/config/handoff/.machine.json` schema 2, commit `b28289a 2026-10-15` |
 | Twin live-verified | yes |
 | Groups | 7 |
 | Process-image symbols | 225 |
