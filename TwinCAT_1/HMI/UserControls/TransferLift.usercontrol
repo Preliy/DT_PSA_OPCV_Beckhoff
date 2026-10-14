@@ -1,6 +1,6 @@
-<div id="TransferLift" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControl" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="284" data-tchmi-height-unit="px">
+<div id="TransferLift" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControl" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="324" data-tchmi-height-unit="px">
 
-<div id="Lft_Frame" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="284" data-tchmi-height-unit="px">
+<div id="Lft_Frame" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="324" data-tchmi-height-unit="px">
 </div>
 
 <div id="Lft_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="6" data-tchmi-top-unit="px" data-tchmi-width="160" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="%pp%Unit::Config::Name%/pp%">
@@ -623,10 +623,9 @@
 <div id="Lft_ExitText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="222" data-tchmi-left-unit="px" data-tchmi-top="128" data-tchmi-top-unit="px" data-tchmi-width="62" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Exit">
 </div>
 
-<div id="Lft_LiftLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="156" data-tchmi-top-unit="px" data-tchmi-width="82" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Y_Lift">
+<div id="Lft_LimitLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="150" data-tchmi-top-unit="px" data-tchmi-width="82" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Limits">
 </div>
-
-<div id="Lft_LiftRetractedLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="120" data-tchmi-left-unit="px" data-tchmi-top="156" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<div id="Lft_AxisMinLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="120" data-tchmi-left-unit="px" data-tchmi-top="150" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "rgba(125, 125, 125, 1)"
@@ -634,7 +633,7 @@
 </script>
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
-    "event": "%pp%YLift::Status::Retracted%/pp%",
+    "event": "%pp%BAxisMin::Status::Active%/pp%",
     "actions": [
       {
         "objectType": "Condition",
@@ -646,7 +645,7 @@
                 "compare1": {
                   "objectType": "Symbol",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%pp%YLift::Status::Retracted%/pp%"
+                  "symbolExpression": "%pp%BAxisMin::Status::Active%/pp%"
                 },
                 "compare2": {
                   "objectType": "StaticValue",
@@ -661,7 +660,7 @@
               {
                 "objectType": "WriteToSymbol",
                 "active": true,
-                "symbolExpression": "%ctrl%Lft_LiftRetractedLamp::BackgroundColor%/ctrl%",
+                "symbolExpression": "%ctrl%Lft_AxisMinLamp::BackgroundColor%/ctrl%",
                 "value": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
@@ -678,7 +677,7 @@
               {
                 "objectType": "WriteToSymbol",
                 "active": true,
-                "symbolExpression": "%ctrl%Lft_LiftRetractedLamp::BackgroundColor%/ctrl%",
+                "symbolExpression": "%ctrl%Lft_AxisMinLamp::BackgroundColor%/ctrl%",
                 "value": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
@@ -697,11 +696,9 @@
   }
 ]</script>
 </div>
-
-<div id="Lft_LiftRetractedText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="142" data-tchmi-left-unit="px" data-tchmi-top="156" data-tchmi-top-unit="px" data-tchmi-width="48" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Retracted">
+<div id="Lft_AxisMinText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="142" data-tchmi-left-unit="px" data-tchmi-top="150" data-tchmi-top-unit="px" data-tchmi-width="52" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Min">
 </div>
-
-<div id="Lft_LiftExtendedLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="200" data-tchmi-left-unit="px" data-tchmi-top="156" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<div id="Lft_AxisMaxLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="200" data-tchmi-left-unit="px" data-tchmi-top="150" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "rgba(125, 125, 125, 1)"
@@ -709,7 +706,7 @@
 </script>
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
-    "event": "%pp%YLift::Status::Extended%/pp%",
+    "event": "%pp%BAxisMax::Status::Active%/pp%",
     "actions": [
       {
         "objectType": "Condition",
@@ -721,7 +718,7 @@
                 "compare1": {
                   "objectType": "Symbol",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%pp%YLift::Status::Extended%/pp%"
+                  "symbolExpression": "%pp%BAxisMax::Status::Active%/pp%"
                 },
                 "compare2": {
                   "objectType": "StaticValue",
@@ -736,7 +733,7 @@
               {
                 "objectType": "WriteToSymbol",
                 "active": true,
-                "symbolExpression": "%ctrl%Lft_LiftExtendedLamp::BackgroundColor%/ctrl%",
+                "symbolExpression": "%ctrl%Lft_AxisMaxLamp::BackgroundColor%/ctrl%",
                 "value": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
@@ -753,7 +750,7 @@
               {
                 "objectType": "WriteToSymbol",
                 "active": true,
-                "symbolExpression": "%ctrl%Lft_LiftExtendedLamp::BackgroundColor%/ctrl%",
+                "symbolExpression": "%ctrl%Lft_AxisMaxLamp::BackgroundColor%/ctrl%",
                 "value": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
@@ -772,23 +769,315 @@
   }
 ]</script>
 </div>
-
-<div id="Lft_LiftExtendedText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="224" data-tchmi-left-unit="px" data-tchmi-top="156" data-tchmi-top-unit="px" data-tchmi-width="66" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Extended">
+<div id="Lft_AxisMaxText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="222" data-tchmi-left-unit="px" data-tchmi-top="150" data-tchmi-top-unit="px" data-tchmi-width="62" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Max">
+</div>
+<div id="Lft_LiftLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="174" data-tchmi-top-unit="px" data-tchmi-width="60" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Y_Lift">
+</div>
+<div id="Lft_LiftPosValue" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="70" data-tchmi-left-unit="px" data-tchmi-top="174" data-tchmi-top-unit="px" data-tchmi-width="80" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-is-read-only="true" data-tchmi-decimal-digits="1" data-tchmi-value="%pp%Unit::Station::AxisPosition%/pp%">
+</div>
+<div id="Lft_LiftPosUnit" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="154" data-tchmi-left-unit="px" data-tchmi-top="174" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="mm">
+</div>
+<div id="Lft_HomedLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="200" data-tchmi-left-unit="px" data-tchmi-top="174" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(125, 125, 125, 1)"
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%pp%Unit::Station::AxisHomed%/pp%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%pp%Unit::Station::AxisHomed%/pp%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Lft_HomedLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(10, 255, 0, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Lft_HomedLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(125, 125, 125, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+<div id="Lft_HomedText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="222" data-tchmi-left-unit="px" data-tchmi-top="174" data-tchmi-top-unit="px" data-tchmi-width="62" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Homed">
+</div>
+<div id="Lft_AtHomeLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="196" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(125, 125, 125, 1)"
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%pp%Unit::Station::AtHome%/pp%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%pp%Unit::Station::AtHome%/pp%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Lft_AtHomeLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(10, 255, 0, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Lft_AtHomeLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(125, 125, 125, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+<div id="Lft_AtHomeText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="32" data-tchmi-left-unit="px" data-tchmi-top="196" data-tchmi-top-unit="px" data-tchmi-width="80" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="At home">
+</div>
+<div id="Lft_AtFarLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="120" data-tchmi-left-unit="px" data-tchmi-top="196" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(125, 125, 125, 1)"
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%pp%Unit::Station::AtFar%/pp%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%pp%Unit::Station::AtFar%/pp%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Lft_AtFarLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(10, 255, 0, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Lft_AtFarLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(125, 125, 125, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+<div id="Lft_AtFarText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="142" data-tchmi-left-unit="px" data-tchmi-top="196" data-tchmi-top-unit="px" data-tchmi-width="52" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="At far">
+</div>
+<div id="Lft_EnabledLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="200" data-tchmi-left-unit="px" data-tchmi-top="196" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(125, 125, 125, 1)"
+}
+</script>
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%pp%YLift::Status::Enabled%/pp%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%pp%YLift::Status::Enabled%/pp%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Lft_EnabledLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(10, 255, 0, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Lft_EnabledLamp::BackgroundColor%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(125, 125, 125, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+<div id="Lft_EnabledText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="222" data-tchmi-left-unit="px" data-tchmi-top="196" data-tchmi-top-unit="px" data-tchmi-width="70" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Enabled">
+</div>
+<div id="Lft_LiftHomeBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="218" data-tchmi-top-unit="px" data-tchmi-width="214" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Reference axis" data-tchmi-is-enabled="%pp%YLiftComponent::Status::HMIControlAvailable%/pp%" data-tchmi-state-symbol="%pp%Unit::HomeAxis%/pp%">
+</div>
+<div id="Lft_LiftResetBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="218" data-tchmi-top-unit="px" data-tchmi-width="60" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Reset" data-tchmi-state-symbol="%pp%YLiftComponent::Command::Reset%/pp%">
 </div>
 
-<div id="Lft_LiftRetractBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="178" data-tchmi-top-unit="px" data-tchmi-width="104" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Retract" data-tchmi-is-enabled="%pp%YLiftComponent::Status::HMIControlAvailable%/pp%" data-tchmi-state-symbol="%pp%YLift::Command::Retract%/pp%">
+<div id="Lft_BeltLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px" data-tchmi-width="92" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="M_Conveyor">
 </div>
 
-<div id="Lft_LiftExtendBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="120" data-tchmi-left-unit="px" data-tchmi-top="178" data-tchmi-top-unit="px" data-tchmi-width="104" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Extend" data-tchmi-is-enabled="%pp%YLiftComponent::Status::HMIControlAvailable%/pp%" data-tchmi-state-symbol="%pp%YLift::Command::Extend%/pp%">
-</div>
-
-<div id="Lft_LiftResetBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="178" data-tchmi-top-unit="px" data-tchmi-width="60" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Reset" data-tchmi-state-symbol="%pp%YLiftComponent::Command::Reset%/pp%">
-</div>
-
-<div id="Lft_BeltLabel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="216" data-tchmi-top-unit="px" data-tchmi-width="92" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="M_Conveyor">
-</div>
-
-<div id="Lft_BeltRunLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="120" data-tchmi-left-unit="px" data-tchmi-top="216" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<div id="Lft_BeltRunLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="120" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "rgba(125, 125, 125, 1)"
@@ -860,10 +1149,10 @@
 ]</script>
 </div>
 
-<div id="Lft_BeltRunText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="142" data-tchmi-left-unit="px" data-tchmi-top="216" data-tchmi-top-unit="px" data-tchmi-width="40" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Run">
+<div id="Lft_BeltRunText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="142" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px" data-tchmi-width="40" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Run">
 </div>
 
-<div id="Lft_BeltActiveLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="200" data-tchmi-left-unit="px" data-tchmi-top="216" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
+<div id="Lft_BeltActiveLamp" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="200" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "rgba(125, 125, 125, 1)"
@@ -935,13 +1224,13 @@
 ]</script>
 </div>
 
-<div id="Lft_BeltActiveText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="222" data-tchmi-left-unit="px" data-tchmi-top="216" data-tchmi-top-unit="px" data-tchmi-width="70" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Active">
+<div id="Lft_BeltActiveText" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="222" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px" data-tchmi-width="70" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-text="Active">
 </div>
 
-<div id="Lft_BeltBwdBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="238" data-tchmi-top-unit="px" data-tchmi-width="134" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Belt load" data-tchmi-is-enabled="%pp%Conveyor::Status::HMIControlAvailable%/pp%" data-tchmi-state-symbol="%pp%Conveyor::DeviceCommand::RunBackward%/pp%">
+<div id="Lft_BeltBwdBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="278" data-tchmi-top-unit="px" data-tchmi-width="134" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Belt load" data-tchmi-is-enabled="%pp%Conveyor::Status::HMIControlAvailable%/pp%" data-tchmi-state-symbol="%pp%Conveyor::DeviceCommand::RunBackward%/pp%">
 </div>
 
-<div id="Lft_BeltFwdBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="156" data-tchmi-left-unit="px" data-tchmi-top="238" data-tchmi-top-unit="px" data-tchmi-width="134" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Belt unload" data-tchmi-is-enabled="%pp%Conveyor::Status::HMIControlAvailable%/pp%" data-tchmi-state-symbol="%pp%Conveyor::DeviceCommand::RunForward%/pp%">
+<div id="Lft_BeltFwdBtn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="156" data-tchmi-left-unit="px" data-tchmi-top="278" data-tchmi-top-unit="px" data-tchmi-width="134" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Belt unload" data-tchmi-is-enabled="%pp%Conveyor::Status::HMIControlAvailable%/pp%" data-tchmi-state-symbol="%pp%Conveyor::DeviceCommand::RunForward%/pp%">
 </div>
 
 </div>

@@ -4,6 +4,7 @@
   "localizedText": {
     "L_EtherCAT": "EtherCAT",
     "L_Events": "Meldungen",
+    "L_FGT_Axes": "Hubachsen (NC)",
     "L_FGT_Drive": "Förderantriebe",
     "L_FGT_Index": "Index-Einheiten",
     "L_FGT_Lift": "Hubeinheiten",
