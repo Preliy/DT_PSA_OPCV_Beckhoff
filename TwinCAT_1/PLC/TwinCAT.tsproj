@@ -1745,7 +1745,7 @@ External Setpoint Generation:
 	</ImageDatas>
 	<Project ProjectGUID="{B9F043B3-1842-4DA0-8A5E-4A0187B6B825}" Target64Bit="true" ShowHideConfigurations="#x3c6">
 		<System>
-			<Settings MaxCpus="20" NonWinCpus="1" CoreBoostActive="true" PCoreAffinity="255" ECoreAffinity="1048320">
+			<Settings MaxCpus="20" NonWinCpus="1" CoreBoostActive="true" PCoreAffinity="255" ECoreAffinity="1048320" DontCheckTarget="169.254.215.222.1.1">
 				<Cpu CpuId="19"/>
 				<IoIdleTask Priority="6"/>
 			</Settings>
@@ -1787,6 +1787,7 @@ External Setpoint Generation:
 				<Axis Id="4" CreateSymbols="true" AxisType="1">
 					<Name>FG_Transport_Lift01_Y_Lift</Name>
 					<AxisPara>
+						<TargetPosControl Range="0.1"/>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="8">
@@ -1848,7 +1849,7 @@ External Setpoint Generation:
 						</Vars>
 					</Encoder>
 					<Drive Name="Drive" DrvType="9">
-						<DrvPara MaxCount="#xffffffff">
+						<DrvPara MaxCount="#xffffffff" DriveControlDWord="#x00030000">
 							<Analog VeloScale="6" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
 							<TimeComp TaskDelayCycles="1"/>
 						</DrvPara>
@@ -1905,6 +1906,7 @@ External Setpoint Generation:
 					</Drive>
 					<Controller Name="Ctrl" CtrType="1">
 						<CtrPara PriorControlFactor="1">
+							<PID PosKp="20"/>
 							<Observer BandWidth="20"/>
 						</CtrPara>
 					</Controller>
@@ -1926,6 +1928,7 @@ External Setpoint Generation:
 				<Axis Id="1" CreateSymbols="true" AxisType="1">
 					<Name>FG_Transport_Lift02_Y_Lift</Name>
 					<AxisPara>
+						<TargetPosControl Range="0.1"/>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="8">
@@ -1987,7 +1990,7 @@ External Setpoint Generation:
 						</Vars>
 					</Encoder>
 					<Drive Name="Drive" DrvType="9">
-						<DrvPara MaxCount="#xffffffff">
+						<DrvPara MaxCount="#xffffffff" DriveControlDWord="#x00030000">
 							<Analog VeloScale="6" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
 							<TimeComp TaskDelayCycles="1"/>
 						</DrvPara>
@@ -2044,7 +2047,9 @@ External Setpoint Generation:
 					</Drive>
 					<Controller Name="Ctrl" CtrType="1">
 						<CtrPara PriorControlFactor="1">
+							<PID PosKp="20"/>
 							<Observer BandWidth="20"/>
+							<ParameterChanged>258</ParameterChanged>
 						</CtrPara>
 					</Controller>
 					<Vars VarGrpType="1" InsertType="1">
@@ -2066,7 +2071,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{3349BDD1-C1B4-41A8-B54C-DC47D31B3B38}" Name="SIM_1" PrjFilePath="SIM_1\SIM_1.plcproj" TmcFilePath="SIM_1\SIM_1.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{644EF1D0-0B4E-ECDD-EDF7-778F1708CB71}" TmcPath="SIM_1\SIM_1.tmc">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{1B539B31-F822-2FB9-E471-1604EC1C0352}" TmcPath="SIM_1\SIM_1.tmc">
 					<Name>SIM_1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -4377,7 +4382,7 @@ External Setpoint Generation:
 				</Instance>
 			</Project>
 			<Project GUID="{CBF23307-111E-4593-B4B7-F9568AB4CDEC}" Name="PLC_1" PrjFilePath="PLC_1\PLC_1.plcproj" TmcFilePath="PLC_1\PLC_1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{82C07FD0-5968-19E3-3086-40CA80DE45F5}" TmcPath="PLC_1\PLC_1.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{FAFD804A-BC56-A197-4839-B8F143F2B954}" TmcPath="PLC_1\PLC_1.tmc">
 					<Name>PLC_1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -5048,6 +5053,16 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.Machine.FG_Transport.Lift01.B_AxisMin.HardwareInput</Name>
+							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Machine.FG_Transport.Lift01.B_AxisMax.HardwareInput</Name>
+							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
@@ -5062,6 +5077,16 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>MAIN.Machine.FG_Transport.Lift02.B_Exit.HardwareInput</Name>
+							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Machine.FG_Transport.Lift02.B_AxisMin.HardwareInput</Name>
+							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Machine.FG_Transport.Lift02.B_AxisMax.HardwareInput</Name>
 							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -10901,12 +10926,17 @@ External Setpoint Generation:
 				<EtherCAT PromiscuousModeNoCopy="true" DcSyncMode="3"/>
 			</Device>
 		</Io>
+		<SymbolWatch>
+			<Variable>TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift^Drive^Inputs^In^nState1</Variable>
+			<Variable>TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift^Drive^Inputs^In^nState2</Variable>
+		</SymbolWatch>
 	</Project>
 	<Mappings>
 		<MappingInfo Identifier="{00000000-2001-0850-0020-500841000403}" Id="#x02030030"/>
 		<MappingInfo Identifier="{00000000-0020-0304-3000-040320000403}" Id="#x02030010"/>
 		<MappingInfo Identifier="{00000000-2041-0850-4020-500800B6FC57}" Id="#x02030020"/>
 		<MappingInfo Identifier="{00000000-0050-0304-3000-040352000403}" Id="#x02030040"/>
+		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030050" Watchdog="14000000040000000400000004000000"/>
 		<OwnerA Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
 			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_Lift01_Y_Lift">
 				<Link VarA="Drive^Inputs^In^nDcOutputTime" VarB="InfoData^DcOutputShift"/>
@@ -11239,9 +11269,13 @@ External Setpoint Generation:
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index05.Y_Stopper._ExtendOutput" VarB="Channel 15^Output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1">
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_AxisMax.HardwareInput" VarB="Channel 4^Input"/>
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_AxisMin.HardwareInput" VarB="Channel 3^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_Detect.HardwareInput" VarB="Channel 1^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_Exit.HardwareInput" VarB="Channel 2^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._DriveActive" VarB="Channel 5^Input"/>
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_AxisMax.HardwareInput" VarB="Channel 9^Input"/>
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_AxisMin.HardwareInput" VarB="Channel 8^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_Detect.HardwareInput" VarB="Channel 6^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_Exit.HardwareInput" VarB="Channel 7^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._DriveActive" VarB="Channel 10^Input"/>
