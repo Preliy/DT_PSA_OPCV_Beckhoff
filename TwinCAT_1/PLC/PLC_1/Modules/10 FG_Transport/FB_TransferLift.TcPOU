@@ -15,6 +15,7 @@ VAR
 	B_Exit			: FB_DigitalSensor;		// on the fixed frame - pallet has left
 	{ attribute 'TcHmiSymbol.AddSymbol' }
 	Y_Lift			: FB_DoubleSolenoidFeedback;
+	Y_Lift1 		: FB_Component_BasicAxis;
 
 	// --- Carriage belt ------------------------------------------------------
 	// A drive module of its own, like the two main conveyor sections, so it can

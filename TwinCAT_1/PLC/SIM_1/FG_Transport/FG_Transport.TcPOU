@@ -25,14 +25,18 @@ VAR_INPUT
 	Index05_B_Exit : FB_SensorBinary;
 	Index05_Y_Lift : FB_Cylinder;
 	Index05_Y_Stopper : FB_Cylinder;
+	Lift01_B_AxisMax : FB_SensorBinary;
+	Lift01_B_AxisMin : FB_SensorBinary;
 	Lift01_B_Detect : FB_SensorBinary;
 	Lift01_B_Exit : FB_SensorBinary;
 	Lift01_M_Conveyor : FB_Drive;
-	Lift01_Y_Lift : FB_Cylinder;
+	Lift01_Y_Lift : FB_Sercos_VC;
+	Lift02_B_AxisMax : FB_SensorBinary;
+	Lift02_B_AxisMin : FB_SensorBinary;
 	Lift02_B_Detect : FB_SensorBinary;
 	Lift02_B_Exit : FB_SensorBinary;
 	Lift02_M_Conveyor : FB_Drive;
-	Lift02_Y_Lift : FB_Cylinder;
+	Lift02_Y_Lift : FB_Sercos_VC;
 	Stopper01_B_Detect : FB_SensorBinary;
 	Stopper01_B_Exit : FB_SensorBinary;
 	Stopper01_Y_Stopper : FB_Cylinder;
@@ -72,10 +76,14 @@ END_VAR
 	Index05_B_Exit();
 	Index05_Y_Lift();
 	Index05_Y_Stopper();
+	Lift01_B_AxisMax();
+	Lift01_B_AxisMin();
 	Lift01_B_Detect();
 	Lift01_B_Exit();
 	Lift01_M_Conveyor();
 	Lift01_Y_Lift();
+	Lift02_B_AxisMax();
+	Lift02_B_AxisMin();
 	Lift02_B_Detect();
 	Lift02_B_Exit();
 	Lift02_M_Conveyor();
@@ -112,6 +120,13 @@ END_VAR
 	IF NOT bInitRun THEN RETURN; END_IF
 	bInitRun := FALSE;
 {endregion}
+	
+	
+	
+Lift01_Y_Lift.pControl := ADR(GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stControl);
+Lift01_Y_Lift.pStatus := ADR(GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stStatus);
+Lift02_Y_Lift.pControl := ADR(GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stControl);
+Lift02_Y_Lift.pStatus := ADR(GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stStatus);
 ]]></ST>
       </Implementation>
     </Method>
@@ -265,14 +280,12 @@ Stopper03_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL2008_1.
 Stopper04_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL2008_1.bOut4;
 
 // --- Lift01  (FG_Transport_Lift_EL2008_1) ---
-Lift01_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut1;
-Lift01_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut2;
+
 Lift01_M_Conveyor.nControl.1	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut3;
 Lift01_M_Conveyor.nControl.0	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut4;
 
 // --- Lift02  (FG_Transport_Lift_EL2008_1) ---
-Lift02_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut5;
-Lift02_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut6;
+
 Lift02_M_Conveyor.nControl.1	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut7;
 Lift02_M_Conveyor.nControl.0	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut8;
 

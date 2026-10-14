@@ -411,6 +411,16 @@
 			$NAME$ : ST_Sercos_VC;]]>
 		</Declaration>
 	</Device>
+	<Device ProductDescription="AX5125">
+		<Declaration>
+			<![CDATA[{attribute 'TcLinkTo' := '
+			.stControl.nControlWord := TIIB($BOXNO$)^MDT^Master control word;
+			.stControl.nVelocityCommand := TIIB($BOXNO$)^MDT^Velocity command value;
+			.stStatus.nStatusWord := TIIB($BOXNO$)^AT^Drive status word;
+			.stStatus.nPositionFeedback := TIIB($BOXNO$)^AT^Position feedback 1 value'}
+			$NAME$ : ST_Sercos_VC;]]>
+		</Declaration>
+	</Device>
 	<Device ProductDescription="GFX4">
 		<Declaration>
 			<![CDATA[{attribute 'TcLinkTo' := '
