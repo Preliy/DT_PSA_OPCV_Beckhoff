@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_Sercos_VC" Id="{53a8345f-18e2-40ef-8712-6bb22423aa91}" SpecialFunc="None">
+    <Declaration><![CDATA[// ============================================================================
+// Sercos drive, velocity control - LOCAL COPY of OC_EtherCAT 1.1.8 FB_Sercos_VC.
+//   MDT: S-0-0134 Master control word
+//   MDT: S-0-0036 Velocity command value
+//   AT:  S-0-0135 Drive status word
+//   AT:  S-0-0051 Position feedback 1 value
+//
+// The logic is the library's. It is copied only so that _fbStateMachine is the
+// fixed Library\FB_Sercos_FSM - the compiled library block would keep using the
+// library's own state machine. See FB_Sercos_FSM for the two defects and why the
+// copies shadow the library by name. Remove both once OC_EtherCAT ships the fix.
+//
+// Member names are the library's on purpose: OC Assistant generates
+// Lift0x_Y_Lift : FB_Sercos_VC, FG_Transport.InitRun wires pControl/pStatus, and
+// Unity binds ControlData over ADS. All types stay library types.
+// The library's empty Motion method is not carried over.
+// ============================================================================
+{attribute 'reflection'}
+FUNCTION_BLOCK FB_Sercos_VC EXTENDS FB_LinkDataReal
+VAR_INPUT
+	pControl			: PVOID; //Process data from fieldbus, 6 BYTES FROM FIELDBUS
+	pStatus				: PVOID; //Process data to fieldbus, 6 BYTES TO FIELDBUS
+	stControl	 		: ST_Sercos_VC_Control;
+	stConfig			: ST_Sercos_VC_Config;
+	bSTO 				: BOOL := TRUE;
+END_VAR
+
+VAR_OUTPUT
+	stStatus 			: ST_Sercos_VC_Status;
+END_VAR
+
+VAR
+	{attribute 'instance-path'}
+	{attribute 'noinit'}
+	_sPath 				: STRING;
+	_fbStateMachine 	: FB_Sercos_FSM;
+	_fbEncoder 			: FB_Encoder;
+	_fVelocity			: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SUPER^();
+InitRun();
+
+GetControlData();
+Cycle();
+SetStatusData();]]></ST>
+    </Implementation>
+    <Method Name="Cycle" Id="{8e452cb2-ae88-40f7-a330-41b02349c875}">
+      <Declaration><![CDATA[METHOD PRIVATE Cycle
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_fbStateMachine.bPower := bSTO;
+
+_fbStateMachine.stControl := stControl.nControlWord;
+_fbStateMachine();
+stStatus.nStatusWord := _fbStateMachine.stStatus;
+
+// Through the eState property - the library read the state machine's internal _eState.
+IF (_fbStateMachine.eState = E_Sercos_State.S5a_DriveInOperation OR _fbStateMachine.eState = E_Sercos_State.S5b_Halt) THEN
+	_fbEncoder.fValue := _fVelocity := GetTargetVelocity(stControl.nVelocityCommand, stConfig.fReferenceVelocity, stConfig.fNormalizationFactor);
+	_fbEncoder();
+END_IF
+
+stStatus.nStatusWord.b8_Reserved := stControl.nControlWord.b8_Reserved;
+stStatus.nStatusWord.b9_Reserved := stControl.nControlWord.b9_Reserved;
+stStatus.nStatusWord.b10_OperationMode := stControl.nControlWord.b11_Reserved;
+
+stStatus.nPositionFeedback := _fbEncoder.nResult;
+
+//Set Link Data
+IF stConfig.bIsLinkOutputVelocity THEN
+	ControlData := LREAL_TO_REAL(_fVelocity);
+ELSE
+	ControlData := LREAL_TO_REAL(_fbEncoder.fResult);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="eState" Id="{157b704f-326b-446a-9db8-8885d910db0e}">
+      <Declaration><![CDATA[PROPERTY eState : E_Sercos_State]]></Declaration>
+      <Get Name="Get" Id="{b3c7f03e-133f-46af-81d0-1994aec8154a}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eState := _fbStateMachine.eState;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="fbEncoder" Id="{8a8bde51-2cbe-4472-81fe-f3c82ce70594}">
+      <Declaration><![CDATA[PROPERTY PUBLIC fbEncoder : REFERENCE TO FB_Encoder]]></Declaration>
+      <Get Name="Get" Id="{ff89cfe8-4ddd-4a34-bb9c-f079085acfa6}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[fbEncoder REF= _fbEncoder;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="GetControlData" Id="{d295db58-96e5-43eb-ada2-ee69eda0c179}">
+      <Declaration><![CDATA[METHOD INTERNAL GetControlData
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF pControl <= 0 OR stConfig.bForceMode THEN RETURN; END_IF
+
+(*Control Word*)
+F_Memcpy(ADR(stControl), pControl, 2, stConfig.bSwapProcessData);
+(*Velocity Command*)
+F_Memcpy(ADR(stControl) + 2, pControl + 2, 4, stConfig.bSwapProcessData);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetTargetVelocity" Id="{42978e74-75c0-4db0-8f0e-0f46d46a5191}">
+      <Declaration><![CDATA[METHOD INTERNAL GetTargetVelocity : REAL
+VAR_INPUT
+	nVelocityCommand 			: DINT;
+	fReferenceVelocity			: REAL;
+	nNormalizationFactor 		: REAL;
+END_VAR
+
+VAR
+	fTargetVelocity 			: REAL;
+	fTargetVelocityFactor 		: REAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[fTargetVelocity := DINT_TO_REAL(nVelocityCommand);
+fTargetVelocityFactor := F_Norm(0, nNormalizationFactor, ABS(fTargetVelocity));
+GetTargetVelocity := fReferenceVelocity * fTargetVelocityFactor * F_Sign(fTargetVelocity);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InitRun" Id="{0d6dd163-c77d-42ea-9678-382ab82eeed1}">
+      <Declaration><![CDATA[METHOD PRIVATE InitRun
+VAR_INST
+	bInitRun : BOOL := TRUE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT bInitRun THEN RETURN; END_IF
+bInitRun := FALSE;
+
+IF pControl = 0 OR pStatus = 0 THEN
+	ADSLOGSTR(ADSLOG_MSGTYPE_WARN, '%s', CONCAT(_sPath, ' PLC IO is not assigned!'));
+END_IF
+
+_fbEncoder.stConfig.bIsIntegrator := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetStatusData" Id="{e5058130-9e17-4f1c-b227-4fc7522140dc}">
+      <Declaration><![CDATA[METHOD INTERNAL SetStatusData
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF pStatus <= 0 THEN RETURN; END_IF
+
+(*StatusWord*)
+F_Memcpy(pStatus, ADR(stStatus), 2, stConfig.bSwapProcessData);
+(*Position Feedback*)
+F_Memcpy(pStatus + 2, ADR(stStatus) + 2, 4, stConfig.bSwapProcessData);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

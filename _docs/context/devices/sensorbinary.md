@@ -3,13 +3,13 @@
 
 # SensorBinary in TwinCAT
 
-**25 instances.** What this device type *is* - its authored description, its bit layout, the full instance list with twin paths - is in the main repo: [`SensorBinary`](https://github.com/Preliy/DT_PSA_OPCV/blob/master/_docs/context/devices/sensorbinary.md). This page states only what TwinCAT makes of it.
+**29 instances.** What this device type *is* - its authored description, its bit layout, the full instance list with twin paths - is in the main repo: [`SensorBinary`](https://github.com/Preliy/DT_PSA_OPCV/blob/master/_docs/context/devices/sensorbinary.md). This page states only what TwinCAT makes of it.
 
 ## Control function blocks
 
 | Control FB | Instances |
 |---|---:|
-| `FB_DigitalSensor` | 25 |
+| `FB_DigitalSensor` | 29 |
 
 ### `FB_DigitalSensor`
 
@@ -34,8 +34,12 @@
 | `B_Exit` | FG_Transport | `MAIN.Machine.FG_Transport.Index04.B_Exit` | `FB_DigitalSensor` |
 | `B_Detect` | FG_Transport | `MAIN.Machine.FG_Transport.Index05.B_Detect` | `FB_DigitalSensor` |
 | `B_Exit` | FG_Transport | `MAIN.Machine.FG_Transport.Index05.B_Exit` | `FB_DigitalSensor` |
+| `B_AxisMax` | FG_Transport | `MAIN.Machine.FG_Transport.Lift01.B_AxisMax` | `FB_DigitalSensor` |
+| `B_AxisMin` | FG_Transport | `MAIN.Machine.FG_Transport.Lift01.B_AxisMin` | `FB_DigitalSensor` |
 | `B_Detect` | FG_Transport | `MAIN.Machine.FG_Transport.Lift01.B_Detect` | `FB_DigitalSensor` |
 | `B_Exit` | FG_Transport | `MAIN.Machine.FG_Transport.Lift01.B_Exit` | `FB_DigitalSensor` |
+| `B_AxisMax` | FG_Transport | `MAIN.Machine.FG_Transport.Lift02.B_AxisMax` | `FB_DigitalSensor` |
+| `B_AxisMin` | FG_Transport | `MAIN.Machine.FG_Transport.Lift02.B_AxisMin` | `FB_DigitalSensor` |
 | `B_Detect` | FG_Transport | `MAIN.Machine.FG_Transport.Lift02.B_Detect` | `FB_DigitalSensor` |
 | `B_Exit` | FG_Transport | `MAIN.Machine.FG_Transport.Lift02.B_Exit` | `FB_DigitalSensor` |
 | `B_Detect` | FG_Transport | `MAIN.Machine.FG_Transport.Stopper01.B_Detect` | `FB_DigitalSensor` |

@@ -316,6 +316,38 @@ Everything below was extracted from the shipped library.
 `HoldControlled`, `HoldImmediate`, `StopControlled`, `StopImmediate`, `SuspendControlled`,
 `SuspendImmediate`, `Trace`, `Marker`, `TraceWithJson`, `FB_init`
 
+## Servo axes — `FB_Component_BasicAxis` (SPT Components 3.9.1, SPT Motion Control 3.9.0)
+
+The lift carriages are NC axes on this component. Checked against the shipped libraries; none of it
+is obvious from the method names.
+
+- **It wraps `BasicAxis : FB_BasicAxis`, which owns `_Axis : Tc2_MC2.AXIS_REF`.** The PLC↔NC link
+  therefore reads `….Y_Lift.BasicAxis._Axis.NcToPlc` / `.PlcToNc`, and it lives in
+  `Mapping_PLC.xml` beside the terminal links (owner `TINC^NC-Task 1 SAF^Axes^…`).
+- **There is no `Homed` property.** Read `Y_Lift.Axis.Status.Homed`.
+- **Every `Move*()` is fire-and-forget.** It returns `TRUE` when the command was *accepted*, and
+  `MoveAbsolute` refuses (`FALSE`) while the axis is `Busy` unless `AbortPrevious` is set. Issue a
+  move once, then watch the position — never re-issue it every scan.
+- **The default velocity is the NC's slow manual velocity**, loaded by the block's own
+  `Initialize`, which runs after the owner's. Set `Velocity` before each move, not once.
+- **Nothing enables the drive.** `MC_Power` keeps its last `Enable`; call `Enable()` before moving.
+  `InhibitFeedPositive/Negative` feed `MC_Power`'s `Enable_Positive/Negative` every scan — the
+  natural place for limit sensors.
+- **The default reset routine is the CoE one** (`FB_ResetRoutine_CoEDrive`, a plain `MC_Reset`).
+  An AX5000 is SoE: assign `FB_ResetRoutine_SoEDrive` through `ResetMethod`.
+- **No shipped home routine references on a sensor.** `SetZeroHere`, `SetPosition`, `AbsHoming`
+  and `HardStop` are what there is. A home method is any `FB_CyclicFB` that `IMPLEMENTS
+  I_MotionSequence` — `Axis : I_BasicAxis` plus `Execute() : BOOL`, and the abstract `CyclicLogic`,
+  which `FB_BasicAxis` calls every scan once it has set `Axis := THIS^`. It drives its **own** MC
+  blocks on `_Axis.Axis`, because the axis' `Move*()` refuse while the home method keeps it `Busy`.
+  `FB_HomeRoutine_RefSensor` (FG_Transport) is this project's.
+- **`FB_BaseFB` initialises `_Busy := TRUE`.** A home method that tests `_Busy` in `Execute` refuses
+  until its first `CyclicLogic`; test your own step instead.
+- **`MC_SetPosition` does not set `Homed`.** `MC_Home` with `MC_HomingMode.MC_Direct` sets the
+  position *and* the flag without moving.
+- **`HMI`:** `AxisBase_HMI : ST_AxisBase_HMI` — `Command` holds the four jog bits (honoured only with
+  `HMIControlAvailable`, and only on an enabled axis), `Status` the set and actual values.
+
 ## Build order — the official progression
 
 From Beckhoff's [Machine Code Progression](https://beckhoff-usa-community.github.io/SPT-Libraries/SPT%20Training/MachineCodeProgression.html).

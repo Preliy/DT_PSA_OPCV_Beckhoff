@@ -238,6 +238,9 @@
     <Content Include="Pages\FGTransport_Lift.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Pages\FGTransport_Axes.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Pages\FGTransport_Drive.content">
       <SubType>Content</SubType>
     </Content>

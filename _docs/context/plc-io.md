@@ -10,7 +10,7 @@ Which terminal channel every PLC signal is on, which channels are free, and whet
 | Device | `<Device Id>` | Boxes | Driven by | Layout |
 |---|---|---|---|---|
 | `EtherCAT_1` | 1 | 1-43 | `PLC_1` (real master) | terminals nested under their EK1100 coupler |
-| `EtherCAT_1_SIM` | 2286744 | 44-89 | `SIM_1` (EtherCAT simulation) | flat, identical names |
+| `EtherCAT_1_SIM` | 2286744 | 33-106 | `SIM_1` (EtherCAT simulation) | flat, identical names |
 
 **The box names are identical on both masters - only the id tells them apart.** That is why the SIM side addresses terminals numerically as `TIIB(n)` while the control side uses the symbolic `TIID^EtherCAT_1^...` path, and why a `TIIB` number copied from the wrong master compiles and links to the wrong device.
 
@@ -29,7 +29,7 @@ Which terminal channel every PLC signal is on, which channels are free, and whet
 | 8 | `FG_Transport_EK1100^FG_Transport_Drive_EL1008_1` | EL1008 | 8 DI | 2 | 3-8 |
 | 13 | `FG_Transport_EK1100^FG_Transport_Index_EL2809_1` | EL2809 | 16 DO | 15 | 16 |
 | 5 | `FG_Transport_EK1100^FG_Transport_Stopper_EL2008_1` | EL2008 | 8 DO | 4 | 5-8 |
-| 6 | `FG_Transport_EK1100^FG_Transport_Lift_EL2008_1` | EL2008 | 8 DO | 8 | - |
+| 6 | `FG_Transport_EK1100^FG_Transport_Lift_EL2008_1` | EL2008 | 8 DO | 4 | 1-2, 5-6 |
 | 12 | `FG_Transport_EK1100^FG_Transport_Drive_EL2008_1` | EL2008 | 8 DO | 4 | 5-8 |
 | 2 | `FG_01_EK1100^FG_01_EL1008_1` | EL1008 | 8 DI | 6 | 7-8 |
 | 4 | `FG_01_EK1100^FG_01_EL1008_2` | EL1008 | 8 DI | 6 | 7-8 |
@@ -46,7 +46,7 @@ Which terminal channel every PLC signal is on, which channels are free, and whet
 | 42 | `FG_05_EK1100^FG_05_EL1859_1` | EL1859 | 16 DI+DO | 16 | - |
 | 43 | `FG_05_EK1100^FG_05_EL1859_2` | EL1859 | 16 DI+DO | 16 | - |
 
-**200 DI + 152 DO = 352 channels, 292 used, 60 free.**
+**200 DI + 152 DO = 352 channels, 288 used, 64 free.**
 
 ## Allocation
 
@@ -179,13 +179,13 @@ Which terminal channel every PLC signal is on, which channels are free, and whet
 |---:|---|---|
 | 1 | `MAIN.Machine.FG_Transport.Lift01.B_Detect.HardwareInput` | `Mapping_PLC.xml` |
 | 2 | `MAIN.Machine.FG_Transport.Lift01.B_Exit.HardwareInput` | `Mapping_PLC.xml` |
-| 3 | `MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor` | `Mapping_PLC.xml` |
-| 4 | `MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor` | `Mapping_PLC.xml` |
+| 3 | `MAIN.Machine.FG_Transport.Lift01.B_AxisMin.HardwareInput` | `Mapping_PLC.xml` |
+| 4 | `MAIN.Machine.FG_Transport.Lift01.B_AxisMax.HardwareInput` | `Mapping_PLC.xml` |
 | 5 | `MAIN.Machine.FG_Transport.Lift01.M_Conveyor._DriveActive` | `Mapping_PLC.xml` |
 | 6 | `MAIN.Machine.FG_Transport.Lift02.B_Detect.HardwareInput` | `Mapping_PLC.xml` |
 | 7 | `MAIN.Machine.FG_Transport.Lift02.B_Exit.HardwareInput` | `Mapping_PLC.xml` |
-| 8 | `MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor` | `Mapping_PLC.xml` |
-| 9 | `MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor` | `Mapping_PLC.xml` |
+| 8 | `MAIN.Machine.FG_Transport.Lift02.B_AxisMin.HardwareInput` | `Mapping_PLC.xml` |
+| 9 | `MAIN.Machine.FG_Transport.Lift02.B_AxisMax.HardwareInput` | `Mapping_PLC.xml` |
 | 10 | `MAIN.Machine.FG_Transport.Lift02.M_Conveyor._DriveActive` | `Mapping_PLC.xml` |
 
 ### `FG_Transport_Drive_EL1008_1` (EL1008, 8 DI)
@@ -228,12 +228,8 @@ Which terminal channel every PLC signal is on, which channels are free, and whet
 
 | Ch | PLC symbol | Source |
 |---:|---|---|
-| 1 | `MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput` | `Mapping_PLC.xml` |
-| 2 | `MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput` | `Mapping_PLC.xml` |
 | 3 | `MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Backward` | `Mapping_PLC.xml` |
 | 4 | `MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Forward` | `Mapping_PLC.xml` |
-| 5 | `MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput` | `Mapping_PLC.xml` |
-| 6 | `MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput` | `Mapping_PLC.xml` |
 | 7 | `MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Backward` | `Mapping_PLC.xml` |
 | 8 | `MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Forward` | `Mapping_PLC.xml` |
 
@@ -491,4 +487,4 @@ Which terminal channel every PLC signal is on, which channels are free, and whet
 
 **225 = 222 + 3.** If that identity ever fails, a signal is dead and no compiler will say so.
 
-tsproj: `not committed` - `Mapping_PLC.xml`: `not committed`
+tsproj: `568b392 2026-10-14` - `Mapping_PLC.xml`: `1829366 2026-08-28`

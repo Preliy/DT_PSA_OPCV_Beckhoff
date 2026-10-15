@@ -2,6 +2,1723 @@
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.25">
 	<DataTypes>
 		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000000000035}" TcBaseType="true" HideType="true">UINTARR2</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>2</Elements>
+			</ArrayInfo>
+			<Format Name="ArrayView" Preview="[%u, %u]">
+				<Printf>[%u, %u]</Printf>
+				<Parameter>[0]</Parameter>
+				<Parameter>[1]</Parameter>
+			</Format>
+			<Format Name="MixedView" Preview="%x [%u, %u]">
+				<Printf>0x%08x [%u, %u]</Printf>
+				<Parameter>.</Parameter>
+				<Parameter>[0]</Parameter>
+				<Parameter>[1]</Parameter>
+			</Format>
+			<Format Name="32bitView" Preview="%x (%u)">
+				<Printf>0x%08x (%u)</Printf>
+				<Parameter>.</Parameter>
+				<Parameter>.</Parameter>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{901C2423-655B-45CE-B7E3-21F174F0F99F}" Namespace="MC" TcBaseType="true">NCENCODERSTRUCT_IN2B</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>nDataIn1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>72</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>80</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<Comment><![CDATA[Encoder Status 4 (automatically linked):
+0x01 (Bit 0) = IO data invalid (e.g. EtherCAT 'WcState')
+0x02 (Bit 1) = IO data input toggle (e.g. EtherCAT 'InputToggle')
+]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>88</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>232</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>240</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState8</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>248</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDcInputTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<Comment><![CDATA[Drive Velocity Actual Value
+]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<Relations>
+				<Relation>
+					<Type GUID="{55728D3F-7B02-4448-8096-580617CECBA3}">NCENCODERSTRUCT_IN</Type>
+					<MapEntry>
+						<BitSize>96</BitSize>
+					</MapEntry>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{9CC50AB2-5D79-4869-A3C2-1FA7761BAFEA}" Namespace="MC" TcBaseType="true">NCENCODERSTRUCT_OUT2</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>nDataOut1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>72</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>80</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>88</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>232</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>240</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl8</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>248</BitOffs>
+			</SubItem>
+			<Relations>
+				<Relation>
+					<Type GUID="{5FE34D39-3B85-4458-8264-8C4874D8985C}">NCENCODERSTRUCT_OUT</Type>
+					<MapEntry>
+						<BitSize>96</BitSize>
+					</MapEntry>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{F95C7C69-0C87-46C4-9559-1285CCA5B23A}" Namespace="MC" TcBaseType="true">NCDRIVESTRUCT_IN2</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>nDataIn1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>72</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>80</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<Comment><![CDATA[Drive Status 4 (automatically linked):
+0x01 (0000 0001) = IO data invalid (e.g. EtherCAT 'WcState')
+0x02 (0000 0010) = IO data input toggle (e.g. EtherCAT 'InputToggle')
+
+Drive Status 4 (manually linked):
+0x80 (1000 0000) = Fast axis stop (digital IO interrupt)
+]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>88</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataIn6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>232</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>240</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nState8</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<Comment><![CDATA[Digital Inputs 1..8
+]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>248</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDcOutputTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<Relations>
+				<Relation>
+					<Type GUID="{9AC463DC-3417-4DEA-AD2A-5FBD4C9C15AA}">NCDRIVESTRUCT_IN</Type>
+					<MapEntry>
+						<BitSize>96</BitSize>
+					</MapEntry>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{644DC4BD-3D15-4DCB-94C7-24F3A5D579AA}" Namespace="MC" TcBaseType="true">NCDRIVESTRUCT_OUT2</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>nDataOut1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>72</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>80</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>88</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nDataOut6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000035}">UINTARR2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>232</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>240</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nCtrl8</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000002}">USINT</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>248</BitOffs>
+			</SubItem>
+			<Relations>
+				<Relation>
+					<Type GUID="{595E16A9-7783-4B1C-A30C-48BA6EFCC859}">NCDRIVESTRUCT_OUT</Type>
+					<MapEntry>
+						<BitSize>96</BitSize>
+					</MapEntry>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{875D2B22-B7EB-497E-B933-0C004593CCF3}" Namespace="MC" HideType="true" IecDeclaration="DWORD;">PLCTONC_AXIS_REF_CTRL</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>Enable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>FeedEnablePlus</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>FeedEnableMinus</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>HomingSensor</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AcceptBlockedDrive</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>8</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PlcDebugFlag</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>30</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>NcDebugFlag</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>31</BitOffs>
+			</SubItem>
+			<Format Name="Short">
+				<Printf>%08x</Printf>
+			</Format>
+			<Format Name="Cpp">
+				<Printf>0x%08x</Printf>
+			</Format>
+			<Format Name="IEC">
+				<Printf>16#%08X</Printf>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC" TcBaseType="true">PLCTONC_AXIS_REF</Name>
+			<BitSize>1024</BitSize>
+			<SubItem>
+				<Name>ControlDWord</Name>
+				<Type GUID="{875D2B22-B7EB-497E-B933-0C004593CCF3}" Namespace="MC">PLCTONC_AXIS_REF_CTRL</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Override</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AxisModeRequest</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AxisModeDWord</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AxisModeLReal</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PositionCorrection</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ExtSetPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ExtSetVelo</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ExtSetAcc</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ExtSetDirection</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ExtControllerOutput</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>GearRatio1</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>GearRatio2</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>GearRatio3</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>GearRatio4</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MapState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>832</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PlcCycleControl</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>840</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PlcCycleCount</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>848</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ExtTorque</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>896</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>NcStructType</Name>
+					<Value>1</Value>
+				</Property>
+			</Properties>
+			<Relations>
+				<Relation Priority="100">
+					<Type GUID="{60392271-8688-4F4C-B404-618DF106325D}"></Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}"></Type>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{CBC83B73-B816-4597-A9E5-2B03263CA131}" Namespace="MC" HideType="true" IecDeclaration="DWORD;">NCTOPLC_AXIS_REF_STATE</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>Operational</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Homed</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>NotMoving</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>InPositionArea</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>InTargetPosition</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Protected</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ErrorPropagationDelayed</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>HasBeenStopped</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>HasJob</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>8</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PositiveDirection</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>9</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>NegativeDirection</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>10</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>HomingBusy</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>11</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ConstantVelocity</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>12</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Compensating</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>13</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ExtSetPointGenEnabled</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>14</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PhasingActive</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>15</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ExternalLatchValid</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>NewTargetPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>17</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>IsDriveLimitActive</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>18</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ContinuousMotion</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>19</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ControlLoopClosed</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>20</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamTableQueued</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>21</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamDataQueued</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>22</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamScalingPending</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>23</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CmdBuffered</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>24</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PTPmode</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>25</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SoftLimitMinExceeded</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>26</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SoftLimitMaxExceeded</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>27</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>DriveDeviceError</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>28</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>MotionCommandsLocked</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>29</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>IoDataInvalid</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>30</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Error</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>31</BitOffs>
+			</SubItem>
+			<Format Name="Short">
+				<Printf>%08x</Printf>
+			</Format>
+			<Format Name="Cpp">
+				<Printf>0x%08x</Printf>
+			</Format>
+			<Format Name="IEC">
+				<Printf>16#%08X</Printf>
+			</Format>
+			<Relations>
+				<Relation Priority="100">
+					<Type>{4C3FC5AC-D5AA-44C6-AC5A-159774BA0F6D}</Type>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{6BDEED54-7268-405F-A18B-665A0AE0FEE9}" Namespace="MC" HideType="true" IecDeclaration="DWORD;">NCTOPLC_AXIS_REF_OPMODE</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>OpModePosAreaMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeTargetPosMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeLoop</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeMotionMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModePEHTimeMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeBacklashCompensation</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeDelayedErrorReaction</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeModulo</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeSimulationAxis</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>8</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeStopMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>12</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeOutputSmoothingFilter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>13</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModePosLagMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeVeloLagMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>17</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeSoftLimitMinMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>18</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeSoftLimitMaxMonitoring</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>19</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModePosCorrection</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>20</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeAllowSlaveCommands</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>21</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeAllowExtSetAxisCommands</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>22</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ApplicationRequest</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>23</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{303D9411-849C-467F-8A4C-5C8CD0F3DD46}" Namespace="MC" HideType="true">NCTOPLC_AXIS_REF_STATE2_FLAGS</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>AvoidingCollision</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<Format Name="Short">
+				<Printf>%08x</Printf>
+			</Format>
+			<Format Name="Cpp">
+				<Printf>0x%08x</Printf>
+			</Format>
+			<Format Name="IEC">
+				<Printf>16#%08X</Printf>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{669F3788-48FD-42CF-8A59-2DA946853FB6}" Namespace="MC" HideType="true">NCTOPLC_AXIS_REF_STATE2</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>Value</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000007}">DWORD</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Flags</Name>
+				<Type GUID="{303D9411-849C-467F-8A4C-5C8CD0F3DD46}" Namespace="MC">NCTOPLC_AXIS_REF_STATE2_FLAGS</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<Format Name="Short">
+				<Printf>%08x</Printf>
+			</Format>
+			<Format Name="Cpp">
+				<Printf>0x%08x</Printf>
+			</Format>
+			<Format Name="IEC">
+				<Printf>16#%08X</Printf>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{F7B9FC50-054E-4547-B468-83A9E72D8064}" Namespace="MC" HideType="true">NCTOPLC_AXIS_REF_STATE3_FLAGS</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>TouchProbe1InputState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>TouchProbe2InputState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<Format Name="Short">
+				<Printf>%08x</Printf>
+			</Format>
+			<Format Name="Cpp">
+				<Printf>0x%08x</Printf>
+			</Format>
+			<Format Name="IEC">
+				<Printf>16#%08X</Printf>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{60E203BA-3CEE-4BB0-8728-643B1F529592}" Namespace="MC" HideType="true">NCTOPLC_AXIS_REF_STATE3</Name>
+			<BitSize>32</BitSize>
+			<SubItem>
+				<Name>Value</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000007}">DWORD</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Flags</Name>
+				<Type GUID="{F7B9FC50-054E-4547-B468-83A9E72D8064}" Namespace="MC">NCTOPLC_AXIS_REF_STATE3_FLAGS</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<Format Name="Short">
+				<Printf>%08x</Printf>
+			</Format>
+			<Format Name="Cpp">
+				<Printf>0x%08x</Printf>
+			</Format>
+			<Format Name="IEC">
+				<Printf>16#%08X</Printf>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{BA9D9D0F-1A4A-4A27-A19F-3032626A8491}" Namespace="MC" HideType="true">NCTOPLC_AXIS_REF_CAMCOUPLINGSTATE</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>CamActivationPending</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamDeactivationPending</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamActive</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamDataQueued</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamScalingPending</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000000000039}" TcBaseType="true" HideType="true">UINTARR8</Name>
+			<BitSize>128</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000005}">UINT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>8</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC" TcBaseType="true">NCTOPLC_AXIS_REF</Name>
+			<BitSize>2048</BitSize>
+			<SubItem>
+				<Name>StateDWord</Name>
+				<Type GUID="{CBC83B73-B816-4597-A9E5-2B03263CA131}" Namespace="MC">NCTOPLC_AXIS_REF_STATE</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ErrorCode</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AxisState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Present State Of The Axis Movement (continuous axis):
+0  = INACTIVE:		axis has no job
+1  = RUNNING:		axis is executing a motion job
+2  = OVERRIDE_ZERO:	axis is executing a job but override is zero
+3  = PHASE_VELOCONST:	axis is moving at constant velocity
+4  = PHASE_ACCPOS:	axis is accelerating
+5  = PHASE_ACCNEG:	axis is decelerating
+Slaves only:
+11 = PREPHASE:		slave axis is in a motion pre-phase
+12 = SYNCHRONIZING:	slave axis is synchronizing
+13 = SYNCHRONOUS:	slave axis is moving synchronously
+External Setpoint Generation:
+41 = EXTSETGEN_MODE1:	external setpoint generation active
+42 = EXTSETGEN_MODE2:	internal and external setpoint gen. active
+]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AxisModeConfirmation</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>HomingState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Axis Homing Status:
+0: idle
+1: start homing
+2: searching home switch
+3: stopping on home switch
+4: moving off home switch
+5: searching sync pulse
+6: stopping after homing
+]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CoupleState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Axis Coupling Status:
+0: axis is a single axis (not coupled)
+1: axis is a master axis
+2: axis is master and slave
+3: axis is a slave axis
+]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SvbEntries</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SafEntries</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AxisId</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>OpModeDWord</Name>
+				<Type GUID="{6BDEED54-7268-405F-A18B-665A0AE0FEE9}" Namespace="MC">NCTOPLC_AXIS_REF_OPMODE</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>320</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ModuloActPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>384</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActiveControlLoopIndex</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>448</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ControlLoopIndex</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>464</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ModuloActTurns</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActVelo</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>PosDiff</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>640</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetVelo</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>704</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetAcc</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>768</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>TargetPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>832</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ModuloSetPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>896</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ModuloSetTurns</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>960</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CmdNo</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>992</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CmdState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>1008</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetJerk</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1024</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetTorque</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1088</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActTorque</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1152</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>StateDWord2</Name>
+				<Type GUID="{669F3788-48FD-42CF-8A59-2DA946853FB6}" Namespace="MC">NCTOPLC_AXIS_REF_STATE2</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1216</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>StateDWord3</Name>
+				<Type GUID="{60E203BA-3CEE-4BB0-8728-643B1F529592}" Namespace="MC">NCTOPLC_AXIS_REF_STATE3</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1248</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>TouchProbeState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000007}">DWORD</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1280</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>TouchProbeCounter</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000007}">DWORD</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1312</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamCouplingState</Name>
+				<Type GUID="{BA9D9D0F-1A4A-4A27-A19F-3032626A8491}" Namespace="MC">NCTOPLC_AXIS_REF_CAMCOUPLINGSTATE</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>8</Elements>
+				</ArrayInfo>
+				<BitSize>64</BitSize>
+				<BitOffs>1344</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>CamCouplingTableID</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000039}">UINTARR8</Type>
+				<BitSize>128</BitSize>
+				<BitOffs>1408</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActTorqueDerivative</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1536</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>SetTorqueDerivative</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1600</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AbsPhasingPos</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1664</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>TorqueOffset</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1728</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActPosWithoutPosCorrection</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1792</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>ActAcc</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1856</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>DcTimeStamp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>1920</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>UserData</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>1984</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>NcStructType</Name>
+					<Value>2</Value>
+				</Property>
+			</Properties>
+			<Relations>
+				<Relation Priority="100">
+					<Type GUID="{429B767E-373B-40AE-BFA5-E1C08B444DF3}">NCAXLESTRUCT_TOPLC</Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{E8DA524A-605F-4879-82E6-B86EF6986572}">NCAXLESTRUCT_TOPLC2</Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{B507963E-69F3-4B64-BB8C-2BD7A560976D}">NCAXLESTRUCT_TOPLC3</Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{F794B740-82D7-4637-848E-4F74A711D038}">NCAXLESTRUCT_TOPLC4</Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{40BD39B0-C3EA-4F74-9F4F-5F1982786F7C}"></Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{40BD39B2-C3EA-4F74-9F4F-5F1982786F7C}"></Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{8CDE0C45-AB9D-42DB-BC94-1CF7521AB268}"></Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}"></Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}"></Type>
+				</Relation>
+				<Relation Priority="100">
+					<Type GUID="{10036166-C9D3-404B-BDD3-323034AAA7F4}"></Type>
+				</Relation>
+			</Relations>
+		</DataType>
+		<DataType>
+			<Name GUID="{30D15B2C-B050-1541-61FC-60D19B901707}" Namespace="OC_EtherCAT" AutoDeleteType="true">ST_Sercos_ControlWord</Name>
+			<Comment><![CDATA[
+	S-0-0134 Drive Control
+	https://product-help.schneider-electric.com/Machine%20Expert/V1.2/en/ATV340SUG/ATV340SUG/STI_Software_Setup/STI_Software_Setup-21.htm#XREF_D_SE_0083221_1
+]]></Comment>
+			<BitSize>16</BitSize>
+			<SubItem>
+				<Name>b0_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b1_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b2_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b3_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b4_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b5_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b6_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b7_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b8_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Reserved (=0)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>8</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b9_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Reserved (=0)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>9</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b10_OperationMode</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[0 = Primary operation mode]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>10</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b11_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>11</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b12_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>12</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b13_Halt</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive halt, 1 --> 0 = halt, 0 --> 1 = restart]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>13</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b14_Start</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive start, 1 --> 0 = Stop, 0 -> 1 = Start ]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>14</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b15_Enable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive enable, 1 --> 0 = drive disabled, 0 -> 1 = drive enabled]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>15</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>pack_mode</Name>
+					<Value>1</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{436769C3-1E95-A8CC-65AF-88EC4584EC18}" Namespace="OC_EtherCAT" AutoDeleteType="true">ST_Sercos_VC_Control</Name>
+			<Comment><![CDATA[
+	Sercos Velocity Control
+	MDT: S-0-0134 Master control word
+	MDT: S-0-0036 Velocity command value
+]]></Comment>
+			<BitSize>48</BitSize>
+			<SubItem>
+				<Name>nControlWord</Name>
+				<Type GUID="{30D15B2C-B050-1541-61FC-60D19B901707}" Namespace="OC_EtherCAT">ST_Sercos_ControlWord</Type>
+				<Comment><![CDATA[S-0-0134 Master control word]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nVelocityCommand</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<Comment><![CDATA[S-0-0036 Velocity command value]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>pack_mode</Name>
+					<Value>0</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{F031F36D-1177-51DB-F0F4-A748E1AEBAC9}" Namespace="OC_EtherCAT" AutoDeleteType="true">ST_Sercos_StatusWord</Name>
+			<Comment><![CDATA[
+	S-0-0135 Drive Status
+	https://product-help.schneider-electric.com/Machine%20Expert/V1.2/en/ATV340SUG/ATV340SUG/STI_Software_Setup/STI_Software_Setup-22.htm#XREF_D_SE_0083227_1
+]]></Comment>
+			<BitSize>16</BitSize>
+			<SubItem>
+				<Name>b0_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b1_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b2_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b3_CommandProcessing</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Status command value processing if 0 = ignored]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b4_Halt</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive halt, 0 = inactive, 1 = active]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b5_PositionFeedback</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Position feedback value status (S-0-0403)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b6_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b7_QuickStop</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Quick stop, 0 = inactive, 1 = active]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b8_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Reserved (=0)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>8</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b9_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Reserved (=0)]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>9</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b10_OperationMode</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[0 = Primary operation mode]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>10</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b11_Reserved</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>11</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b12_Warning</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Warning, 0 = No warning, 1 = Warning]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>12</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b13_Error</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[Drive shut-down error, 0 = No error, 1 = Error]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>13</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b14_ReadyToOperate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[00 = Not ready to switch on, 01 = Switch on disabled, main power disabled]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>14</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>b15_ReadyToOperate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<Comment><![CDATA[10 = Switch on, 11 = Drive enabled]]></Comment>
+				<BitSize>1</BitSize>
+				<BitOffs>15</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>pack_mode</Name>
+					<Value>1</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{F6FA1B71-A0A7-CA0F-AED5-23205301F7AF}" Namespace="OC_EtherCAT" AutoDeleteType="true">ST_Sercos_VC_Status</Name>
+			<Comment><![CDATA[
+	Sercos Velocity Control
+	AT: S-0-0135 Drive Status word
+	AT: S-0-0051 Position feedback 1 value
+]]></Comment>
+			<BitSize>48</BitSize>
+			<SubItem>
+				<Name>nStatusWord</Name>
+				<Type GUID="{F031F36D-1177-51DB-F0F4-A748E1AEBAC9}" Namespace="OC_EtherCAT">ST_Sercos_StatusWord</Type>
+				<Comment><![CDATA[S-0-0135 Drive Status word]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nPositionFeedback</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<Comment><![CDATA[S-0-0051 Position feedback 1 value]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>pack_mode</Name>
+					<Value>0</Value>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-000000000041}" TcBaseType="true" HideSubItems="true" CName="AmsNetId">AMSNETID</Name>
 			<BitSize>48</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
@@ -24,10 +1741,11 @@
 		<ImageData Id="1000">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
 		<ImageData Id="1001">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff00ffff00ffff00ffff00ffff00ffff00ffffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff00ffff00ffff00ffff00ffff00ffff00ffffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff00ffff00ffff00ffff00ffff00ffff00ffffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff00ffff00ffff00ffff00ffff00ffff00ffffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff00ffff00ffff00ffff00ffff00ffff00ffffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff00ffff00ffff00ffff00ffff00ffff00ffffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff00ffff00ffff00ffff00ffff00ffff00ffffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
 		<ImageData Id="1002">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000120b0000120b00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1003">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0ff0000c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff000000ff00ffff00ffff00ffc0c0c0ff0000ff0000ff0000808080ff00ff000000000000000000000000000000000000000000ff00ffff00ffff00ffc0c0c0c0c0c0ff0000c0c0c0808080ff00ff0000000000000000000000000000000000000000000000ff0000ffff00ffc0c0c0c0c0c0ff0000c0c0c0808080ff00ff000000000000000000000000000000000000000000ff00ffff00ffff00ffc0c0c0c0c0c0ff0000c0c0c0808080ff00ffff00ffff00ffff00ff000000ff00ffff00ff000000ff00ffff00ffff00ffc0c0c0c0c0c0ff0000c0c0c0808080ff00ff000000000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0ff0000c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0ff0000c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0ff0000c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ff</ImageData>
 	</ImageDatas>
-	<Project ProjectGUID="{B9F043B3-1842-4DA0-8A5E-4A0187B6B825}" Target64Bit="true" ShowHideConfigurations="#x3c7">
+	<Project ProjectGUID="{B9F043B3-1842-4DA0-8A5E-4A0187B6B825}" Target64Bit="true" ShowHideConfigurations="#x3c6">
 		<System>
-			<Settings MaxCpus="20" NonWinCpus="1" CoreBoostActive="true" PCoreAffinity="255" ECoreAffinity="1048320">
+			<Settings MaxCpus="20" NonWinCpus="1" CoreBoostActive="true" PCoreAffinity="255" ECoreAffinity="1048320" DontCheckTarget="169.254.215.222.1.1">
 				<Cpu CpuId="19"/>
 				<IoIdleTask Priority="6"/>
 			</Settings>
@@ -49,9 +1767,311 @@
 				</Task>
 			</Tasks>
 		</System>
+		<Motion>
+			<NC>
+				<SafTask Priority="5" CycleTime="20000" AmsPort="501" IoAtBegin="true" SafTaskInfo="256" HighPrioAds="true">
+					<Name>NC-Task 1 SAF</Name>
+					<Vars VarGrpType="1" InsertType="1">
+						<Name>Inputs</Name>
+					</Vars>
+					<Vars VarGrpType="2" InsertType="1">
+						<Name>Outputs</Name>
+					</Vars>
+					<Image Id="3" AddrType="1" ImageType="1">
+						<Name>Image</Name>
+					</Image>
+				</SafTask>
+				<SvbTask Priority="9" CycleTime="100000" AmsPort="511">
+					<Name>NC-Task 1 SVB</Name>
+				</SvbTask>
+				<Axis Id="4" CreateSymbols="true" AxisType="1">
+					<Name>FG_Transport_Lift01_Y_Lift</Name>
+					<AxisPara>
+						<TargetPosControl Range="0.1"/>
+						<OtherSettings AllowMotionCmdToSlave="true"/>
+					</AxisPara>
+					<Encoder Name="Enc" EncType="8">
+						<EncPara MaxCount="#xffffffff"/>
+						<Vars VarGrpType="1">
+							<Name>Inputs</Name>
+							<Var>
+								<Name>In</Name>
+								<Type GUID="{901C2423-655B-45CE-B7E3-21F174F0F99F}" Namespace="MC">NCENCODERSTRUCT_IN2B</Type>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn1</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn2</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn3</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn4</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn5</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn6</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn7</Name>
+									<Comment><![CDATA[Drive Velocity Actual Value
+]]></Comment>
+								</SubVar>
+							</Var>
+						</Vars>
+						<Vars VarGrpType="2">
+							<Name>Outputs</Name>
+							<Var>
+								<Name>Out</Name>
+								<Type GUID="{9CC50AB2-5D79-4869-A3C2-1FA7761BAFEA}" Namespace="MC">NCENCODERSTRUCT_OUT2</Type>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut1</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut2</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut3</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut4</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut5</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut6</Name>
+								</SubVar>
+							</Var>
+						</Vars>
+					</Encoder>
+					<Drive Name="Drive" DrvType="9">
+						<DrvPara MaxCount="#xffffffff" DriveControlDWord="#x00030000">
+							<Analog VeloScale="6" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
+							<TimeComp TaskDelayCycles="1"/>
+						</DrvPara>
+						<Vars VarGrpType="1">
+							<Name>Inputs</Name>
+							<Var>
+								<Name>In</Name>
+								<Type GUID="{F95C7C69-0C87-46C4-9559-1285CCA5B23A}" Namespace="MC">NCDRIVESTRUCT_IN2</Type>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn1</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn2</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn3</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn4</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn5</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn6</Name>
+								</SubVar>
+							</Var>
+						</Vars>
+						<Vars VarGrpType="2">
+							<Name>Outputs</Name>
+							<Var>
+								<Name>Out</Name>
+								<Type GUID="{644DC4BD-3D15-4DCB-94C7-24F3A5D579AA}" Namespace="MC">NCDRIVESTRUCT_OUT2</Type>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut1</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut2</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut3</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut4</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut5</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut6</Name>
+								</SubVar>
+							</Var>
+						</Vars>
+					</Drive>
+					<Controller Name="Ctrl" CtrType="1">
+						<CtrPara PriorControlFactor="1">
+							<PID PosKp="20"/>
+							<Observer BandWidth="20"/>
+						</CtrPara>
+					</Controller>
+					<Vars VarGrpType="1" InsertType="1">
+						<Name>Inputs</Name>
+						<Var>
+							<Name>FromPlc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" InsertType="1">
+						<Name>Outputs</Name>
+						<Var>
+							<Name>ToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+					</Vars>
+				</Axis>
+				<Axis Id="1" CreateSymbols="true" AxisType="1">
+					<Name>FG_Transport_Lift02_Y_Lift</Name>
+					<AxisPara>
+						<TargetPosControl Range="0.1"/>
+						<OtherSettings AllowMotionCmdToSlave="true"/>
+					</AxisPara>
+					<Encoder Name="Enc" EncType="8">
+						<EncPara MaxCount="#xffffffff"/>
+						<Vars VarGrpType="1">
+							<Name>Inputs</Name>
+							<Var>
+								<Name>In</Name>
+								<Type GUID="{901C2423-655B-45CE-B7E3-21F174F0F99F}" Namespace="MC">NCENCODERSTRUCT_IN2B</Type>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn1</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn2</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn3</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn4</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn5</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn6</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn7</Name>
+									<Comment><![CDATA[Drive Velocity Actual Value
+]]></Comment>
+								</SubVar>
+							</Var>
+						</Vars>
+						<Vars VarGrpType="2">
+							<Name>Outputs</Name>
+							<Var>
+								<Name>Out</Name>
+								<Type GUID="{9CC50AB2-5D79-4869-A3C2-1FA7761BAFEA}" Namespace="MC">NCENCODERSTRUCT_OUT2</Type>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut1</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut2</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut3</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut4</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut5</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut6</Name>
+								</SubVar>
+							</Var>
+						</Vars>
+					</Encoder>
+					<Drive Name="Drive" DrvType="9">
+						<DrvPara MaxCount="#xffffffff" DriveControlDWord="#x00030000">
+							<Analog VeloScale="6" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
+							<TimeComp TaskDelayCycles="1"/>
+						</DrvPara>
+						<Vars VarGrpType="1">
+							<Name>Inputs</Name>
+							<Var>
+								<Name>In</Name>
+								<Type GUID="{F95C7C69-0C87-46C4-9559-1285CCA5B23A}" Namespace="MC">NCDRIVESTRUCT_IN2</Type>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn1</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn2</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn3</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn4</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn5</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataIn6</Name>
+								</SubVar>
+							</Var>
+						</Vars>
+						<Vars VarGrpType="2">
+							<Name>Outputs</Name>
+							<Var>
+								<Name>Out</Name>
+								<Type GUID="{644DC4BD-3D15-4DCB-94C7-24F3A5D579AA}" Namespace="MC">NCDRIVESTRUCT_OUT2</Type>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut1</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut2</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut3</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut4</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut5</Name>
+								</SubVar>
+								<SubVar TypeFormatIndex="2">
+									<Name>nDataOut6</Name>
+								</SubVar>
+							</Var>
+						</Vars>
+					</Drive>
+					<Controller Name="Ctrl" CtrType="1">
+						<CtrPara PriorControlFactor="1">
+							<PID PosKp="20"/>
+							<Observer BandWidth="20"/>
+							<ParameterChanged>258</ParameterChanged>
+						</CtrPara>
+					</Controller>
+					<Vars VarGrpType="1" InsertType="1">
+						<Name>Inputs</Name>
+						<Var>
+							<Name>FromPlc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2" InsertType="1">
+						<Name>Outputs</Name>
+						<Var>
+							<Name>ToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+					</Vars>
+				</Axis>
+			</NC>
+		</Motion>
 		<Plc>
 			<Project GUID="{3349BDD1-C1B4-41A8-B54C-DC47D31B3B38}" Name="SIM_1" PrjFilePath="SIM_1\SIM_1.plcproj" TmcFilePath="SIM_1\SIM_1.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{823450EA-60BA-4DAB-25F6-9D875BD925BB}" TmcPath="SIM_1\SIM_1.tmc">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{1B539B31-F822-2FB9-E471-1604EC1C0352}" TmcPath="SIM_1\SIM_1.tmc">
 					<Name>SIM_1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -357,6 +2377,14 @@
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.FG_Transport.Lift01_B_AxisMax.Control</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift01_B_AxisMin.Control</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.FG_Transport.Lift01_B_Detect.Control</Name>
 							<Type>BYTE</Type>
 						</Var>
@@ -374,6 +2402,18 @@
 						</Var>
 						<Var>
 							<Name>MAIN.FG_Transport.Lift01_Y_Lift.Control</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift01_Y_Lift.ControlData</Name>
+							<Type>REAL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_B_AxisMax.Control</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_B_AxisMin.Control</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
@@ -395,6 +2435,10 @@
 						<Var>
 							<Name>MAIN.FG_Transport.Lift02_Y_Lift.Control</Name>
 							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_Y_Lift.ControlData</Name>
+							<Type>REAL</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.FG_Transport.Stopper01_B_Detect.Control</Name>
@@ -1260,6 +3304,14 @@
 							<Name>GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bIn8</Name>
 							<Type>BIT</Type>
 						</Var>
+						<Var>
+							<Name>GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stStatus</Name>
+							<Type GUID="{F6FA1B71-A0A7-CA0F-AED5-23205301F7AF}" Namespace="OC_EtherCAT">ST_Sercos_VC_Status</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stStatus</Name>
+							<Type GUID="{F6FA1B71-A0A7-CA0F-AED5-23205301F7AF}" Namespace="OC_EtherCAT">ST_Sercos_VC_Status</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
@@ -1568,6 +3620,14 @@
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.FG_Transport.Lift01_B_AxisMax.Status</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift01_B_AxisMin.Status</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.FG_Transport.Lift01_B_Detect.Status</Name>
 							<Type>BYTE</Type>
 						</Var>
@@ -1585,6 +3645,18 @@
 						</Var>
 						<Var>
 							<Name>MAIN.FG_Transport.Lift01_Y_Lift.Status</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift01_Y_Lift.StatusData</Name>
+							<Type>REAL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_B_AxisMax.Status</Name>
+							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_B_AxisMin.Status</Name>
 							<Type>BYTE</Type>
 						</Var>
 						<Var>
@@ -1606,6 +3678,10 @@
 						<Var>
 							<Name>MAIN.FG_Transport.Lift02_Y_Lift.Status</Name>
 							<Type>BYTE</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.FG_Transport.Lift02_Y_Lift.StatusData</Name>
+							<Type>REAL</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.FG_Transport.Stopper01_B_Detect.Status</Name>
@@ -2279,6 +4355,14 @@
 							<Name>GVL_EtherCAT_1_SIM.FG_05_EL1859_2.bOut8</Name>
 							<Type>BIT</Type>
 						</Var>
+						<Var>
+							<Name>GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stControl</Name>
+							<Type GUID="{436769C3-1E95-A8CC-65AF-88EC4584EC18}" Namespace="OC_EtherCAT">ST_Sercos_VC_Control</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stControl</Name>
+							<Type GUID="{436769C3-1E95-A8CC-65AF-88EC4584EC18}" Namespace="OC_EtherCAT">ST_Sercos_VC_Control</Type>
+						</Var>
 					</Vars>
 					<Contexts>
 						<Context>
@@ -2298,7 +4382,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{CBF23307-111E-4593-B4B7-F9568AB4CDEC}" Name="PLC_1" PrjFilePath="PLC_1\PLC_1.plcproj" TmcFilePath="PLC_1\PLC_1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{F9CF6A40-3744-26FE-3C38-AAC805E0041D}" TmcPath="PLC_1\PLC_1.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{FAFD804A-BC56-A197-4839-B8F143F2B954}" TmcPath="PLC_1\PLC_1.tmc">
 					<Name>PLC_1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -2442,13 +4526,8 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput</Name>
-							<Comment><![CDATA[ Output]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput</Name>
-							<Type>BOOL</Type>
+							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Forward</Name>
@@ -2459,13 +4538,8 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput</Name>
-							<Comment><![CDATA[ Output]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput</Name>
-							<Type>BOOL</Type>
+							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Forward</Name>
@@ -2979,12 +5053,18 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor</Name>
+							<Name>MAIN.Machine.FG_Transport.Lift01.B_AxisMin.HardwareInput</Name>
+							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor</Name>
+							<Name>MAIN.Machine.FG_Transport.Lift01.B_AxisMax.HardwareInput</Name>
+							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
 							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.Machine.FG_Transport.Lift01.M_Conveyor._DriveActive</Name>
@@ -3001,12 +5081,18 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor</Name>
+							<Name>MAIN.Machine.FG_Transport.Lift02.B_AxisMin.HardwareInput</Name>
+							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor</Name>
+							<Name>MAIN.Machine.FG_Transport.Lift02.B_AxisMax.HardwareInput</Name>
+							<Comment><![CDATA[ Hardware input bit from the physical sensor]]></Comment>
 							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.Machine.FG_Transport.Lift02.M_Conveyor._DriveActive</Name>
@@ -3378,6 +5464,36 @@
 							</OwnerB>
 						</OwnerA>
 					</UnrestoredVarLinks>
+					<UnrestoredVarLinks ImportTime="2026-10-14T20:38:56">
+						<OwnerA Name="InputDst" Prefix="TIPC^PLC_1^PLC_1 Instance" Type="1">
+							<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 4^Input" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 3^Input" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 9^Input" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor" TypeA="BOOL" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 8^Input" Size="1" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift1.BasicAxis._Axis.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift1.BasicAxis._Axis.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+						<OwnerA Name="OutputSrc" Prefix="TIPC^PLC_1^PLC_1 Instance" Type="2">
+							<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 2^Output" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 1^Output" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 6^Output" Size="1" RestoreInfo="ANotFound"/>
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="Channel 5^Output" Size="1" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift01.Y_Lift1.BasicAxis._Axis.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift">
+								<Link VarA="MAIN.Machine.FG_Transport.Lift02.Y_Lift1.BasicAxis._Axis.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+					</UnrestoredVarLinks>
 					<Contexts>
 						<Context>
 							<Id>0</Id>
@@ -3449,7 +5565,7 @@
 				<Image Id="#x454fcb60" AddrType="1" ImageType="3" SizeIn="65536" SizeOut="65536">
 					<Name>Image</Name>
 				</Image>
-				<Box Id="44" BoxType="9910">
+				<Box Id="33" BoxType="9910">
 					<Name>FG_System_EK1100</Name>
 					<Comment><![CDATA[EK1100-0000-0018]]></Comment>
 					<ImageId>1000</ImageId>
@@ -3458,7 +5574,7 @@
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2368</BitOffs>
+							<BitOffs>2496</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
@@ -3483,7 +5599,7 @@
 						</BoxSettings>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="45" BoxType="9910">
+				<Box Id="34" BoxType="9910">
 					<Name>FG_System_Panel_EL1809_1</Name>
 					<Comment><![CDATA[EL1809-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -3492,19 +5608,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2384</BitOffs>
+							<BitOffs>2512</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortConnectionAddress="0000e90300000000">
-						<BoxSettings PhysAddr="1002" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2088" PreviuosPortPort="1" PreviuosPortEcAdr="1001" Flags="2" InputBitSize="16">
-							<Fmmu LogStart="16781312" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1002" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2184" PreviuosPortPort="1" PreviuosPortEcAdr="1001" Flags="2" InputBitSize="16">
+							<Fmmu LogStart="33558528" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -3603,7 +5719,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="46" BoxType="9910">
+				<Box Id="35" BoxType="9910">
 					<Name>FG_System_Panel_EL2809_1</Name>
 					<Comment><![CDATA[EL2809-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -3612,19 +5728,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2400</BitOffs>
+							<BitOffs>2528</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2809 16Ch. Dig. Output 24V, 0.5A" Desc="EL2809" PortConnectionAddress="0000ea0300000000">
-						<BoxSettings PhysAddr="1003" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="2" VendorId="2" ProductCode="184102994" Revision="1179648" OutOffset="2088" PreviuosPortPort="1" PreviuosPortEcAdr="1002" Flags="2" OutputBitSize="16">
-							<Fmmu LogStart="16779264" LogLength="2" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1003" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="2" VendorId="2" ProductCode="184102994" Revision="1179648" OutOffset="2184" PreviuosPortPort="1" PreviuosPortEcAdr="1002" Flags="2" OutputBitSize="16">
+							<Fmmu LogStart="33556480" LogLength="2" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -3723,7 +5839,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="59" BoxType="9910">
+				<Box Id="36" BoxType="9910">
 					<Name>FG_System_Door_EL1809_1</Name>
 					<Comment><![CDATA[EL1809-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -3732,19 +5848,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2416</BitOffs>
+							<BitOffs>2544</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortConnectionAddress="0000eb0300000000">
-						<BoxSettings PhysAddr="1004" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2104" PreviuosPortPort="1" PreviuosPortEcAdr="1003" Flags="2" InputBitSize="16">
-							<Fmmu LogStart="16781314" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1004" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2200" PreviuosPortPort="1" PreviuosPortEcAdr="1003" Flags="2" InputBitSize="16">
+							<Fmmu LogStart="33558530" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -3843,7 +5959,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="60" BoxType="9910">
+				<Box Id="37" BoxType="9910">
 					<Name>FG_System_Door_EL2008_1</Name>
 					<Comment><![CDATA[EL2008-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -3852,19 +5968,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2432</BitOffs>
+							<BitOffs>2560</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2008 8Ch. Dig. Output 24V, 0.5A" Desc="EL2008" PortConnectionAddress="0000ec0300000000">
-						<BoxSettings PhysAddr="1005" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2104" PreviuosPortPort="1" PreviuosPortEcAdr="1004" Flags="2" OutputBitSize="8">
-							<Fmmu LogStart="16779266" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1005" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2200" PreviuosPortPort="1" PreviuosPortEcAdr="1004" Flags="2" OutputBitSize="8">
+							<Fmmu LogStart="33556482" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -3923,7 +6039,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="61" BoxType="9910">
+				<Box Id="38" BoxType="9910">
 					<Name>FG_Transport_EK1100</Name>
 					<Comment><![CDATA[EK1100-0000-0018]]></Comment>
 					<ImageId>1000</ImageId>
@@ -3932,7 +6048,7 @@
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2448</BitOffs>
+							<BitOffs>2576</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
@@ -3957,7 +6073,7 @@
 						</BoxSettings>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="62" BoxType="9910">
+				<Box Id="39" BoxType="9910">
 					<Name>FG_Transport_Index_EL1809_1</Name>
 					<Comment><![CDATA[EL1809-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -3966,19 +6082,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2464</BitOffs>
+							<BitOffs>2592</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortConnectionAddress="0000ee0300000000">
-						<BoxSettings PhysAddr="1007" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2120" PreviuosPortPort="1" PreviuosPortEcAdr="1006" Flags="2" InputBitSize="16">
-							<Fmmu LogStart="16781316" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1007" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2216" PreviuosPortPort="1" PreviuosPortEcAdr="1006" Flags="2" InputBitSize="16">
+							<Fmmu LogStart="33558532" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4077,7 +6193,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="63" BoxType="9910">
+				<Box Id="47" BoxType="9910">
 					<Name>FG_Transport_Index_EL1809_2</Name>
 					<Comment><![CDATA[EL1809-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -4086,19 +6202,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2480</BitOffs>
+							<BitOffs>2608</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortConnectionAddress="0000ef0300000000">
-						<BoxSettings PhysAddr="1008" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2136" PreviuosPortPort="1" PreviuosPortEcAdr="1007" Flags="2" InputBitSize="16">
-							<Fmmu LogStart="16781318" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1008" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2232" PreviuosPortPort="1" PreviuosPortEcAdr="1007" Flags="2" InputBitSize="16">
+							<Fmmu LogStart="33558534" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4197,7 +6313,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="64" BoxType="9910">
+				<Box Id="48" BoxType="9910">
 					<Name>FG_Transport_Stopper_EL1809_1</Name>
 					<Comment><![CDATA[EL1809-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -4206,19 +6322,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2496</BitOffs>
+							<BitOffs>2624</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortConnectionAddress="0000f00300000000">
-						<BoxSettings PhysAddr="1009" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2152" PreviuosPortPort="1" PreviuosPortEcAdr="1008" Flags="2" InputBitSize="16">
-							<Fmmu LogStart="16781320" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1009" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2248" PreviuosPortPort="1" PreviuosPortEcAdr="1008" Flags="2" InputBitSize="16">
+							<Fmmu LogStart="33558536" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4317,7 +6433,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="65" BoxType="9910">
+				<Box Id="49" BoxType="9910">
 					<Name>FG_Transport_Lift_EL1809_1</Name>
 					<Comment><![CDATA[EL1809-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -4326,19 +6442,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2512</BitOffs>
+							<BitOffs>2640</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortConnectionAddress="0000f10300000000">
-						<BoxSettings PhysAddr="1010" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2168" PreviuosPortPort="1" PreviuosPortEcAdr="1009" Flags="2" InputBitSize="16">
-							<Fmmu LogStart="16781322" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1010" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2264" PreviuosPortPort="1" PreviuosPortEcAdr="1009" Flags="2" InputBitSize="16">
+							<Fmmu LogStart="33558538" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4437,7 +6553,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="66" BoxType="9910">
+				<Box Id="50" BoxType="9910">
 					<Name>FG_Transport_Drive_EL1008_1</Name>
 					<Comment><![CDATA[EL1008-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -4446,19 +6562,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2528</BitOffs>
+							<BitOffs>2656</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1008 8Ch. Dig. Input 24V, 3ms" Desc="EL1008" PortConnectionAddress="0000f20300000000">
-						<BoxSettings PhysAddr="1011" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="1" VendorId="2" ProductCode="66072658" Revision="1179648" InOffset="2184" PreviuosPortPort="1" PreviuosPortEcAdr="1010" Flags="2" InputBitSize="8">
-							<Fmmu LogStart="16781324" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1011" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="1" VendorId="2" ProductCode="66072658" Revision="1179648" InOffset="2280" PreviuosPortPort="1" PreviuosPortEcAdr="1010" Flags="2" InputBitSize="8">
+							<Fmmu LogStart="33558540" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4517,7 +6633,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="67" BoxType="9910">
+				<Box Id="51" BoxType="9910">
 					<Name>FG_Transport_Index_EL2809_1</Name>
 					<Comment><![CDATA[EL2809-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -4526,19 +6642,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2544</BitOffs>
+							<BitOffs>2672</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2809 16Ch. Dig. Output 24V, 0.5A" Desc="EL2809" PortConnectionAddress="0000f30300000000">
-						<BoxSettings PhysAddr="1012" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="2" VendorId="2" ProductCode="184102994" Revision="1179648" OutOffset="2112" PreviuosPortPort="1" PreviuosPortEcAdr="1011" Flags="2" OutputBitSize="16">
-							<Fmmu LogStart="16779267" LogLength="2" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1012" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="2" VendorId="2" ProductCode="184102994" Revision="1179648" OutOffset="2208" PreviuosPortPort="1" PreviuosPortEcAdr="1011" Flags="2" OutputBitSize="16">
+							<Fmmu LogStart="33556483" LogLength="2" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4637,7 +6753,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="68" BoxType="9910">
+				<Box Id="52" BoxType="9910">
 					<Name>FG_Transport_Stopper_EL2008_1</Name>
 					<Comment><![CDATA[EL2008-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -4646,19 +6762,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2560</BitOffs>
+							<BitOffs>2688</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2008 8Ch. Dig. Output 24V, 0.5A" Desc="EL2008" PortConnectionAddress="0000f40300000000">
-						<BoxSettings PhysAddr="1013" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2128" PreviuosPortPort="1" PreviuosPortEcAdr="1012" Flags="2" OutputBitSize="8">
-							<Fmmu LogStart="16779269" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1013" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2224" PreviuosPortPort="1" PreviuosPortEcAdr="1012" Flags="2" OutputBitSize="8">
+							<Fmmu LogStart="33556485" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4717,7 +6833,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="69" BoxType="9910">
+				<Box Id="53" BoxType="9910">
 					<Name>FG_Transport_Lift_EL2008_1</Name>
 					<Comment><![CDATA[EL2008-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -4726,19 +6842,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2576</BitOffs>
+							<BitOffs>2704</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2008 8Ch. Dig. Output 24V, 0.5A" Desc="EL2008" PortConnectionAddress="0000f50300000000">
-						<BoxSettings PhysAddr="1014" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2136" PreviuosPortPort="1" PreviuosPortEcAdr="1013" Flags="2" OutputBitSize="8">
-							<Fmmu LogStart="16779270" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1014" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2232" PreviuosPortPort="1" PreviuosPortEcAdr="1013" Flags="2" OutputBitSize="8">
+							<Fmmu LogStart="33556486" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4797,7 +6913,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="70" BoxType="9910">
+				<Box Id="54" BoxType="9910">
 					<Name>FG_Transport_Drive_EL2008_1</Name>
 					<Comment><![CDATA[EL2008-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -4806,19 +6922,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2592</BitOffs>
+							<BitOffs>2720</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2008 8Ch. Dig. Output 24V, 0.5A" Desc="EL2008" PortConnectionAddress="0000f60300000000">
-						<BoxSettings PhysAddr="1015" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2144" PreviuosPortPort="1" PreviuosPortEcAdr="1014" Flags="2" OutputBitSize="8">
-							<Fmmu LogStart="16779271" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1015" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2240" PreviuosPortPort="1" PreviuosPortEcAdr="1014" Flags="2" OutputBitSize="8">
+							<Fmmu LogStart="33556487" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4877,7 +6993,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="71" BoxType="9910">
+				<Box Id="55" BoxType="9910">
 					<Name>FG_01_EK1100</Name>
 					<Comment><![CDATA[EK1100-0000-0018]]></Comment>
 					<ImageId>1000</ImageId>
@@ -4886,7 +7002,7 @@
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2608</BitOffs>
+							<BitOffs>2736</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
@@ -4911,7 +7027,7 @@
 						</BoxSettings>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="72" BoxType="9910">
+				<Box Id="56" BoxType="9910">
 					<Name>FG_01_EL1008_1</Name>
 					<Comment><![CDATA[EL1008-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -4920,19 +7036,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2624</BitOffs>
+							<BitOffs>2752</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1008 8Ch. Dig. Input 24V, 3ms" Desc="EL1008" PortConnectionAddress="0000f80300000000">
-						<BoxSettings PhysAddr="1017" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="1" VendorId="2" ProductCode="66072658" Revision="1179648" InOffset="2192" PreviuosPortPort="1" PreviuosPortEcAdr="1016" Flags="2" InputBitSize="8">
-							<Fmmu LogStart="16781325" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1017" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="1" VendorId="2" ProductCode="66072658" Revision="1179648" InOffset="2288" PreviuosPortPort="1" PreviuosPortEcAdr="1016" Flags="2" InputBitSize="8">
+							<Fmmu LogStart="33558541" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -4991,7 +7107,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="73" BoxType="9910">
+				<Box Id="57" BoxType="9910">
 					<Name>FG_01_EL1008_2</Name>
 					<Comment><![CDATA[EL1008-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -5000,19 +7116,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2640</BitOffs>
+							<BitOffs>2768</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1008 8Ch. Dig. Input 24V, 3ms" Desc="EL1008" PortConnectionAddress="0000f90300000000">
-						<BoxSettings PhysAddr="1018" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="1" VendorId="2" ProductCode="66072658" Revision="1179648" InOffset="2200" PreviuosPortPort="1" PreviuosPortEcAdr="1017" Flags="2" InputBitSize="8">
-							<Fmmu LogStart="16781326" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1018" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="1" VendorId="2" ProductCode="66072658" Revision="1179648" InOffset="2296" PreviuosPortPort="1" PreviuosPortEcAdr="1017" Flags="2" InputBitSize="8">
+							<Fmmu LogStart="33558542" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -5071,7 +7187,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="74" BoxType="9910">
+				<Box Id="58" BoxType="9910">
 					<Name>FG_01_EL2008_1</Name>
 					<Comment><![CDATA[EL2008-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -5080,19 +7196,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2656</BitOffs>
+							<BitOffs>2784</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2008 8Ch. Dig. Output 24V, 0.5A" Desc="EL2008" PortConnectionAddress="0000fa0300000000">
-						<BoxSettings PhysAddr="1019" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2152" PreviuosPortPort="1" PreviuosPortEcAdr="1018" Flags="2" OutputBitSize="8">
-							<Fmmu LogStart="16779272" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1019" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2248" PreviuosPortPort="1" PreviuosPortEcAdr="1018" Flags="2" OutputBitSize="8">
+							<Fmmu LogStart="33556488" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -5151,7 +7267,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="75" BoxType="9910">
+				<Box Id="90" BoxType="9910">
 					<Name>FG_01_EL1859_1</Name>
 					<Comment><![CDATA[EL1859-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -5160,26 +7276,26 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2240</BitOffs>
+							<BitOffs>2336</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2304</BitOffs>
+							<BitOffs>2432</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2672</BitOffs>
+							<BitOffs>2800</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1859 8Ch. Dig. Input 24V, 3ms, 8Ch. Dig. Output 24V, 0.5A" Desc="EL1859" PortConnectionAddress="0000fb0300000000">
-						<BoxSettings PhysAddr="1020" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2048" OutOffset="2048" PreviuosPortPort="1" PreviuosPortEcAdr="1019" Flags="2" OutputBitSize="8" InputBitSize="8">
-							<Fmmu LogStart="16777216" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
-							<Fmmu LogStart="16777216" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1020" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2144" OutOffset="2144" PreviuosPortPort="1" PreviuosPortEcAdr="1019" Flags="2" OutputBitSize="8" InputBitSize="8">
+							<Fmmu LogStart="33554432" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
+							<Fmmu LogStart="33554432" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -5277,7 +7393,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="76" BoxType="9910">
+				<Box Id="91" BoxType="9910">
 					<Name>FG_01_EL1859_2</Name>
 					<Comment><![CDATA[EL1859-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -5286,26 +7402,26 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2240</BitOffs>
+							<BitOffs>2336</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2304</BitOffs>
+							<BitOffs>2432</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2688</BitOffs>
+							<BitOffs>2816</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1859 8Ch. Dig. Input 24V, 3ms, 8Ch. Dig. Output 24V, 0.5A" Desc="EL1859" PortConnectionAddress="0000fc0300000000">
-						<BoxSettings PhysAddr="1021" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2056" OutOffset="2056" PreviuosPortPort="1" PreviuosPortEcAdr="1020" Flags="2" OutputBitSize="8" InputBitSize="8">
-							<Fmmu LogStart="16777217" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
-							<Fmmu LogStart="16777217" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1021" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2152" OutOffset="2152" PreviuosPortPort="1" PreviuosPortEcAdr="1020" Flags="2" OutputBitSize="8" InputBitSize="8">
+							<Fmmu LogStart="33554433" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
+							<Fmmu LogStart="33554433" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -5403,7 +7519,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="77" BoxType="9910">
+				<Box Id="92" BoxType="9910">
 					<Name>FG_02_EK1100</Name>
 					<Comment><![CDATA[EK1100-0000-0018]]></Comment>
 					<ImageId>1000</ImageId>
@@ -5412,7 +7528,7 @@
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2704</BitOffs>
+							<BitOffs>2832</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
@@ -5437,7 +7553,7 @@
 						</BoxSettings>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="78" BoxType="9910">
+				<Box Id="93" BoxType="9910">
 					<Name>FG_02_EL1859_1</Name>
 					<Comment><![CDATA[EL1859-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -5446,26 +7562,26 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2240</BitOffs>
+							<BitOffs>2336</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2304</BitOffs>
+							<BitOffs>2432</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2720</BitOffs>
+							<BitOffs>2848</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1859 8Ch. Dig. Input 24V, 3ms, 8Ch. Dig. Output 24V, 0.5A" Desc="EL1859" PortConnectionAddress="0000fe0300000000">
-						<BoxSettings PhysAddr="1023" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2064" OutOffset="2064" PreviuosPortPort="1" PreviuosPortEcAdr="1022" Flags="2" OutputBitSize="8" InputBitSize="8">
-							<Fmmu LogStart="16777218" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
-							<Fmmu LogStart="16777218" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1023" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2160" OutOffset="2160" PreviuosPortPort="1" PreviuosPortEcAdr="1022" Flags="2" OutputBitSize="8" InputBitSize="8">
+							<Fmmu LogStart="33554434" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
+							<Fmmu LogStart="33554434" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -5563,7 +7679,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="79" BoxType="9910">
+				<Box Id="94" BoxType="9910">
 					<Name>FG_03_EK1100</Name>
 					<Comment><![CDATA[EK1100-0000-0018]]></Comment>
 					<ImageId>1000</ImageId>
@@ -5572,7 +7688,7 @@
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2736</BitOffs>
+							<BitOffs>2864</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
@@ -5597,7 +7713,7 @@
 						</BoxSettings>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="80" BoxType="9910">
+				<Box Id="95" BoxType="9910">
 					<Name>FG_03_EL1809_1</Name>
 					<Comment><![CDATA[EL1809-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -5606,19 +7722,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2752</BitOffs>
+							<BitOffs>2880</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortConnectionAddress="0000000400000000">
-						<BoxSettings PhysAddr="1025" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2208" PreviuosPortPort="1" PreviuosPortEcAdr="1024" Flags="2" InputBitSize="16">
-							<Fmmu LogStart="16781327" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1025" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2304" PreviuosPortPort="1" PreviuosPortEcAdr="1024" Flags="2" InputBitSize="16">
+							<Fmmu LogStart="33558543" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -5717,7 +7833,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="81" BoxType="9910">
+				<Box Id="96" BoxType="9910">
 					<Name>FG_03_EL2809_1</Name>
 					<Comment><![CDATA[EL2809-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -5726,19 +7842,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2768</BitOffs>
+							<BitOffs>2896</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2809 16Ch. Dig. Output 24V, 0.5A" Desc="EL2809" PortConnectionAddress="0000010400000000">
-						<BoxSettings PhysAddr="1026" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3840" OutputSize="2" VendorId="2" ProductCode="184102994" Revision="1179648" OutOffset="2160" PreviuosPortPort="1" PreviuosPortEcAdr="1025" Flags="2" OutputBitSize="16">
-							<Fmmu LogStart="16779273" LogLength="2" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1026" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3840" OutputSize="2" VendorId="2" ProductCode="184102994" Revision="1179648" OutOffset="2256" PreviuosPortPort="1" PreviuosPortEcAdr="1025" Flags="2" OutputBitSize="16">
+							<Fmmu LogStart="33556489" LogLength="2" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -5837,7 +7953,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="82" BoxType="9910">
+				<Box Id="97" BoxType="9910">
 					<Name>FG_04_EK1100</Name>
 					<Comment><![CDATA[EK1100-0000-0018]]></Comment>
 					<ImageId>1000</ImageId>
@@ -5846,7 +7962,7 @@
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2784</BitOffs>
+							<BitOffs>2912</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
@@ -5871,7 +7987,7 @@
 						</BoxSettings>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="83" BoxType="9910">
+				<Box Id="98" BoxType="9910">
 					<Name>FG_04_EL1008_1</Name>
 					<Comment><![CDATA[EL1008-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -5880,19 +7996,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2800</BitOffs>
+							<BitOffs>2928</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1008 8Ch. Dig. Input 24V, 3ms" Desc="EL1008" PortConnectionAddress="0000030400000000">
-						<BoxSettings PhysAddr="1028" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="1" VendorId="2" ProductCode="66072658" Revision="1179648" InOffset="2224" PreviuosPortPort="1" PreviuosPortEcAdr="1027" Flags="2" InputBitSize="8">
-							<Fmmu LogStart="16781329" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1028" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="1" VendorId="2" ProductCode="66072658" Revision="1179648" InOffset="2320" PreviuosPortPort="1" PreviuosPortEcAdr="1027" Flags="2" InputBitSize="8">
+							<Fmmu LogStart="33558545" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -5951,7 +8067,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="84" BoxType="9910">
+				<Box Id="99" BoxType="9910">
 					<Name>FG_04_EL2008_1</Name>
 					<Comment><![CDATA[EL2008-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -5960,19 +8076,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2816</BitOffs>
+							<BitOffs>2944</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2008 8Ch. Dig. Output 24V, 0.5A" Desc="EL2008" PortConnectionAddress="0000040400000000">
-						<BoxSettings PhysAddr="1029" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2176" PreviuosPortPort="1" PreviuosPortEcAdr="1028" Flags="2" OutputBitSize="8">
-							<Fmmu LogStart="16779275" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1029" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3840" OutputSize="1" VendorId="2" ProductCode="131608658" Revision="1179648" OutOffset="2272" PreviuosPortPort="1" PreviuosPortEcAdr="1028" Flags="2" OutputBitSize="8">
+							<Fmmu LogStart="33556491" LogLength="1" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -6031,7 +8147,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="85" BoxType="9910">
+				<Box Id="100" BoxType="9910">
 					<Name>FG_05_EK1100</Name>
 					<Comment><![CDATA[EK1100-0000-0018]]></Comment>
 					<ImageId>1000</ImageId>
@@ -6040,12 +8156,12 @@
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2832</BitOffs>
+							<BitOffs>2960</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EK1100 EtherCAT Coupler (2A E-Bus)" Desc="EK1100" PortConnectionAddress="0000000003040000">
-						<BoxSettings PhysAddr="1030" PortDesc="59" UsedPorts="3" PdiControl="3072" VendorId="2" ProductCode="72100946" Revision="1179648" PreviuosPortPort="2" PreviuosPortEcAdr="1027" Flags="2">
+						<BoxSettings PhysAddr="1030" PortDesc="59" UsedPorts="7" PdiControl="3072" VendorId="2" ProductCode="72100946" Revision="1179648" PreviuosPortPort="2" PreviuosPortEcAdr="1027" Flags="2">
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -6065,7 +8181,7 @@
 						</BoxSettings>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="86" BoxType="9910">
+				<Box Id="101" BoxType="9910">
 					<Name>FG_05_EL1809_1</Name>
 					<Comment><![CDATA[EL1809-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -6074,19 +8190,19 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2272</BitOffs>
+							<BitOffs>2368</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2848</BitOffs>
+							<BitOffs>2976</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortConnectionAddress="0000060400000000">
-						<BoxSettings PhysAddr="1031" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2232" PreviuosPortPort="1" PreviuosPortEcAdr="1030" Flags="2" InputBitSize="16">
-							<Fmmu LogStart="16781330" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1031" PortDesc="10" UsedPorts="3" PdiControl="3072" InputStart="4096" InputSize="2" VendorId="2" ProductCode="118566994" Revision="1179648" InOffset="2328" PreviuosPortPort="1" PreviuosPortEcAdr="1030" Flags="2" InputBitSize="16">
+							<Fmmu LogStart="33558546" LogLength="2" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -6185,7 +8301,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="87" BoxType="9910">
+				<Box Id="102" BoxType="9910">
 					<Name>FG_05_EL2809_1</Name>
 					<Comment><![CDATA[EL2809-0000-0018]]></Comment>
 					<ImageId>1002</ImageId>
@@ -6194,19 +8310,19 @@
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2336</BitOffs>
+							<BitOffs>2464</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2864</BitOffs>
+							<BitOffs>2992</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL2809 16Ch. Dig. Output 24V, 0.5A" Desc="EL2809" PortConnectionAddress="0000070400000000">
-						<BoxSettings PhysAddr="1032" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="2" VendorId="2" ProductCode="184102994" Revision="1179648" OutOffset="2184" PreviuosPortPort="1" PreviuosPortEcAdr="1031" Flags="2" OutputBitSize="16">
-							<Fmmu LogStart="16779276" LogLength="2" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1032" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3840" OutputSize="2" VendorId="2" ProductCode="184102994" Revision="1179648" OutOffset="2280" PreviuosPortPort="1" PreviuosPortEcAdr="1031" Flags="2" OutputBitSize="16">
+							<Fmmu LogStart="33556492" LogLength="2" LogEndBit="7" PhysStart="3840" WriteEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -6305,7 +8421,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="88" BoxType="9910">
+				<Box Id="103" BoxType="9910">
 					<Name>FG_05_EL1859_1</Name>
 					<Comment><![CDATA[EL1859-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -6314,26 +8430,26 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2240</BitOffs>
+							<BitOffs>2336</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2304</BitOffs>
+							<BitOffs>2432</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2880</BitOffs>
+							<BitOffs>3008</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1859 8Ch. Dig. Input 24V, 3ms, 8Ch. Dig. Output 24V, 0.5A" Desc="EL1859" PortConnectionAddress="0000080400000000">
-						<BoxSettings PhysAddr="1033" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2072" OutOffset="2072" PreviuosPortPort="1" PreviuosPortEcAdr="1032" Flags="2" OutputBitSize="8" InputBitSize="8">
-							<Fmmu LogStart="16777219" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
-							<Fmmu LogStart="16777219" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1033" PortDesc="10" UsedPorts="3" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2168" OutOffset="2168" PreviuosPortPort="1" PreviuosPortEcAdr="1032" Flags="2" OutputBitSize="8" InputBitSize="8">
+							<Fmmu LogStart="33554435" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
+							<Fmmu LogStart="33554435" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -6431,7 +8547,7 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
-				<Box Id="89" BoxType="9910">
+				<Box Id="104" BoxType="9910">
 					<Name>FG_05_EL1859_2</Name>
 					<Comment><![CDATA[EL1859-0000-0018]]></Comment>
 					<ImageId>1001</ImageId>
@@ -6440,26 +8556,26 @@
 						<Var>
 							<Name>FrameCountIn</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2240</BitOffs>
+							<BitOffs>2336</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>FrameCountOut</Name>
 							<Type>UDINT</Type>
-							<BitOffs>2304</BitOffs>
+							<BitOffs>2432</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 						<Var>
 							<Name>State</Name>
 							<Type>UINT</Type>
-							<BitOffs>2896</BitOffs>
+							<BitOffs>3024</BitOffs>
 							<InOut>0</InOut>
 						</Var>
 					</Vars>
 					<EcatSimuBox Type="EL1859 8Ch. Dig. Input 24V, 3ms, 8Ch. Dig. Output 24V, 0.5A" Desc="EL1859" PortConnectionAddress="0000090400000000">
-						<BoxSettings PhysAddr="1034" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2080" OutOffset="2080" PreviuosPortPort="1" PreviuosPortEcAdr="1033" Flags="2" OutputBitSize="8" InputBitSize="8">
-							<Fmmu LogStart="16777220" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
-							<Fmmu LogStart="16777220" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
+						<BoxSettings PhysAddr="1034" PortDesc="10" UsedPorts="1" PdiControl="3072" OutputStart="3841" OutputSize="1" InputStart="4096" InputSize="1" VendorId="2" ProductCode="121843794" Revision="1179648" InOffset="2176" OutOffset="2176" PreviuosPortPort="1" PreviuosPortEcAdr="1033" Flags="2" OutputBitSize="8" InputBitSize="8">
+							<Fmmu LogStart="33554436" LogLength="1" LogEndBit="7" PhysStart="3841" WriteEnable="true" Enable="true"/>
+							<Fmmu LogStart="33554436" LogLength="1" LogEndBit="7" PhysStart="4096" ReadEnable="true" Enable="true"/>
 							<Fmmu/>
 							<Fmmu/>
 							<Fmmu/>
@@ -6557,13 +8673,140 @@
 						</Pdo>
 					</EcatSimuBox>
 				</Box>
+				<Box Id="105" BoxType="9910">
+					<Name>FG_Transport_Lift01_Y_Lift</Name>
+					<Comment><![CDATA[AX5125-0000-0011]]></Comment>
+					<ImageId>1003</ImageId>
+					<Vars VarGrpType="3" InsertType="1">
+						<Name>InfoData</Name>
+						<Var>
+							<Name>FrameCountIn</Name>
+							<Type>UDINT</Type>
+							<BitOffs>2304</BitOffs>
+							<InOut>0</InOut>
+						</Var>
+						<Var>
+							<Name>FrameCountOut</Name>
+							<Type>UDINT</Type>
+							<BitOffs>2400</BitOffs>
+							<InOut>0</InOut>
+						</Var>
+						<Var>
+							<Name>State</Name>
+							<Type>UINT</Type>
+							<BitOffs>3040</BitOffs>
+							<InOut>0</InOut>
+						</Var>
+					</Vars>
+					<EcatSimuBox Type="AX5125-0000-0011 EtherCAT Drive (SoE, 1 Ch.)" Desc="AX5125-0000-0011" PortConnectionAddress="0000000006040000">
+						<BoxSettings PhysAddr="1035" PortDesc="15" UsedPorts="3" PdiControl="3072" MbxWriteStart="6144" MbxWriteSize="128" MbxReadStart="6656" MbxReadSize="128" OutputStart="4096" OutputSize="6" InputStart="4352" InputSize="6" VendorId="2" ProductCode="335896594" Revision="720896" InOffset="2048" OutOffset="2048" StateOffset="128" StateMask="1" PreviuosPortPort="2" PreviuosPortEcAdr="1030" Flags="2" OutputBitSize="48" InputBitSize="48">
+							<Fmmu LogStart="16777216" LogLength="6" LogEndBit="7" PhysStart="4096" WriteEnable="true" Enable="true"/>
+							<Fmmu LogStart="16777216" LogLength="6" LogEndBit="7" PhysStart="4352" ReadEnable="true" Enable="true"/>
+							<Fmmu LogStart="150994944" LogLength="1" PhysStart="2061" ReadEnable="true" Enable="true"/>
+							<Fmmu/>
+							<Fmmu/>
+							<Fmmu/>
+							<Fmmu/>
+							<Fmmu/>
+							<Sm/>
+							<Sm/>
+							<Sm SmStart="4096" SmLength="6" SmControl="36" SmActivate="1"/>
+							<Sm SmStart="4352" SmLength="6" SmControl="34" SmActivate="1"/>
+							<Sm/>
+							<Sm/>
+							<Sm/>
+							<Sm/>
+						</BoxSettings>
+						<Pdo Name="MDT" Index="#x0018" Flags="#x0001" SyncMan="2">
+							<Entry Name="Master control word" BitLen="16" Index="#x0086" Flags="#x00000800">
+								<Type>UINT</Type>
+							</Entry>
+							<Entry Name="Velocity command value" BitLen="32" Index="#x0024">
+								<Type>DINT</Type>
+							</Entry>
+						</Pdo>
+						<Pdo Name="AT" Index="#x0010" InOut="1" Flags="#x0001" SyncMan="3">
+							<Entry Name="Drive status word" BitLen="16" Index="#x0087" Flags="#x00000800">
+								<Type>UINT</Type>
+							</Entry>
+							<Entry Name="Position feedback 1 value" BitLen="32" Index="#x0033">
+								<Type>DINT</Type>
+							</Entry>
+						</Pdo>
+					</EcatSimuBox>
+				</Box>
+				<Box Id="106" BoxType="9910">
+					<Name>FG_Transport_Lift02_Y_Lift</Name>
+					<Comment><![CDATA[AX5125-0000-0011]]></Comment>
+					<ImageId>1003</ImageId>
+					<Vars VarGrpType="3" InsertType="1">
+						<Name>InfoData</Name>
+						<Var>
+							<Name>FrameCountIn</Name>
+							<Type>UDINT</Type>
+							<BitOffs>2304</BitOffs>
+							<InOut>0</InOut>
+						</Var>
+						<Var>
+							<Name>FrameCountOut</Name>
+							<Type>UDINT</Type>
+							<BitOffs>2400</BitOffs>
+							<InOut>0</InOut>
+						</Var>
+						<Var>
+							<Name>State</Name>
+							<Type>UINT</Type>
+							<BitOffs>3056</BitOffs>
+							<InOut>0</InOut>
+						</Var>
+					</Vars>
+					<EcatSimuBox Type="AX5125-0000-0011 EtherCAT Drive (SoE, 1 Ch.)" Desc="AX5125-0000-0011" PortConnectionAddress="00000b0400000000">
+						<BoxSettings PhysAddr="1036" PortDesc="15" UsedPorts="1" PdiControl="3072" MbxWriteStart="6144" MbxWriteSize="128" MbxReadStart="6656" MbxReadSize="128" OutputStart="4096" OutputSize="6" InputStart="4352" InputSize="6" VendorId="2" ProductCode="335896594" Revision="720896" InOffset="2096" OutOffset="2096" StateOffset="128" StateMask="2" PreviuosPortPort="1" PreviuosPortEcAdr="1035" Flags="2" OutputBitSize="48" InputBitSize="48">
+							<Fmmu LogStart="16777222" LogLength="6" LogEndBit="7" PhysStart="4096" WriteEnable="true" Enable="true"/>
+							<Fmmu LogStart="16777222" LogLength="6" LogEndBit="7" PhysStart="4352" ReadEnable="true" Enable="true"/>
+							<Fmmu LogStart="150994944" LogLength="1" LogStartBit="1" LogEndBit="1" PhysStart="2061" ReadEnable="true" Enable="true"/>
+							<Fmmu/>
+							<Fmmu/>
+							<Fmmu/>
+							<Fmmu/>
+							<Fmmu/>
+							<Sm/>
+							<Sm/>
+							<Sm SmStart="4096" SmLength="6" SmControl="36" SmActivate="1"/>
+							<Sm SmStart="4352" SmLength="6" SmControl="34" SmActivate="1"/>
+							<Sm/>
+							<Sm/>
+							<Sm/>
+							<Sm/>
+						</BoxSettings>
+						<Pdo Name="MDT" Index="#x0018" Flags="#x0001" SyncMan="2">
+							<Entry Name="Master control word" BitLen="16" Index="#x0086" Flags="#x00000800">
+								<Type>UINT</Type>
+							</Entry>
+							<Entry Name="Velocity command value" BitLen="32" Index="#x0024">
+								<Type>DINT</Type>
+							</Entry>
+						</Pdo>
+						<Pdo Name="AT" Index="#x0010" InOut="1" Flags="#x0001" SyncMan="3">
+							<Entry Name="Drive status word" BitLen="16" Index="#x0087" Flags="#x00000800">
+								<Type>UINT</Type>
+							</Entry>
+							<Entry Name="Position feedback 1 value" BitLen="32" Index="#x0033">
+								<Type>DINT</Type>
+							</Entry>
+						</Pdo>
+					</EcatSimuBox>
+				</Box>
 				<EcatSimu>
 					<GeneralSettings DeviceDesc="TC_2 (TwinCAT-Intel PCI Ethernet Adapter (Gigabit) V2 #3)" SecondAdapter="00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"/>
-					<DevSettings CycleTime="10000" MaxCycleTime="10000" InOffset="281" OutOffset="275" StateOffset="128" Flags="1"/>
-					<LogInAddrMaps LogAddr="16777216" PhysAddr="256" Size="5" WC="15"/>
-					<LogInAddrMaps LogAddr="16781312" PhysAddr="261" Size="20" WC="12"/>
-					<LogOutAddrMaps LogAddr="16777216" PhysAddr="256" Size="5" WC="15"/>
-					<LogOutAddrMaps LogAddr="16779264" PhysAddr="261" Size="14" WC="10"/>
+					<DevSettings CycleTime="10000" MaxCycleTime="2000" InOffset="293" OutOffset="287" StateOffset="129" Flags="1"/>
+					<LogInAddrMaps LogAddr="16777216" PhysAddr="256" Size="12" WC="6"/>
+					<LogInAddrMaps LogAddr="33554432" PhysAddr="268" Size="5" WC="15"/>
+					<LogInAddrMaps LogAddr="33558528" PhysAddr="273" Size="20" WC="12"/>
+					<LogOutAddrMaps LogAddr="16777216" PhysAddr="256" Size="12" WC="6"/>
+					<LogOutAddrMaps LogAddr="33554432" PhysAddr="268" Size="5" WC="15"/>
+					<LogOutAddrMaps LogAddr="33556480" PhysAddr="273" Size="14" WC="10"/>
+					<LogStateAddrMaps LogAddr="150994944" PhysAddr="128" Size="1" WC="2"/>
 				</EcatSimu>
 			</Device>
 			<Device Id="1" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="169.254.215.222.3.1" RemoteName="EtherCAT_1" InfoImageId="5">
@@ -6577,6 +8820,9 @@
 				</AddressInfo>
 				<Image Id="2" AddrType="9" ImageType="3">
 					<Name>Image</Name>
+				</Image>
+				<Image Id="4" AddrType="10" ImageType="3">
+					<Name>Image-2</Name>
 				</Image>
 				<Box Id="26" BoxType="9099">
 					<Name>FG_System_EK1100</Name>
@@ -8603,13 +10849,124 @@
 						</EtherCAT>
 					</Box>
 				</Box>
-				<EtherCAT PromiscuousModeNoCopy="true"/>
+				<Box Id="31" BoxType="9099" BoxFlags="#x00000020">
+					<Name>FG_Transport_Lift01_Y_Lift</Name>
+					<ImageId>1003</ImageId>
+					<EtherCAT SlaveType="2" PdiType="#x0008" MboxDataLinkLayer="true" StateMBoxPolling="true" CfgModeSafeOp="true" DownloadPdoCfg="true" CycleMBoxPollingTime="0" FoeType="1" SoeChannels="1" VendorId="#x00000002" ProductCode="#x14056012" RevisionNo="#x000b0000" InfoDataAddr="true" InfoDataSoeDS401="true" InfoDataDcTimes="true" AutoRestoreAfterWcOk="true" CheckRevisionNoType="4" PortPhys="17" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="AX5125-0000-0011 EtherCAT Drive (SoE, 1 Ch.)" Desc="AX5125-0000-0011" PortABoxInfo="#x02000015">
+						<SyncMan>001880002600010001000000800080008000001826010000</SyncMan>
+						<SyncMan>001a80002200010002000000800080008000001a22010000</SyncMan>
+						<SyncMan>001006002400010003000000000000000000001024010000</SyncMan>
+						<SyncMan>001106002200010004000000000000000000001122010000</SyncMan>
+						<Fmmu>0000000000000000001000020100000001000000000000000000000000000000</Fmmu>
+						<Fmmu>0000000000000000001100010100000002000000000000000000000000000000</Fmmu>
+						<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
+						<BootStrapData>0010140200181402</BootStrapData>
+						<DcData>3007000090d0030050c30000000000000000ffff000000000000000000000000</DcData>
+						<DcMode>446353796e633235300000000000000053796e63206379636c652074696d653a20323530c2b57300000000000000000090d0030050c3000000000000ffff30070000000000000000000000000000000000000000000000000000000000000000</DcMode>
+						<DcMode>446353796e633132350000000000000053796e63206379636c652074696d653a20313235c2b57300000000000000000048e80100a861000000000000ffff30070000000000000000000000000000000000000000000000000000000000000000</DcMode>
+						<DcMode>446353796e6336322e3500000000000053796e63206379636c652074696d653a2036322e35c2b573000000000000000024f400000000000000000000ffff30070000000000000000000000000000000000000000000000000000000000000000</DcMode>
+						<MBoxUserCmdData>020005000a0000001500000003000000000000000000000000000000000000000340010000000000d007546e637963202d204e43206379636c652074696d6500</MBoxUserCmdData>
+						<MBoxUserCmdData>020005000a0000001700000003000000000000000000000000000000000000000340020000000000d0075473637963202d20436f6d6d206379636c652074696d6500</MBoxUserCmdData>
+						<MBoxUserCmdData>020005000a0000000e0000000300000000000000000000000000000000000000034020000000000002004f7065726174696f6e206d6f646500</MBoxUserCmdData>
+						<Pdo Name="AT" Index="#x0010" Flags="#x0001" SyncMan="3">
+							<Entry Name="Drive status word" Index="#x0087" Flags="#x00000800">
+								<Type>UINT</Type>
+							</Entry>
+							<Entry Name="Position feedback 1 value" Index="#x0033">
+								<Type>DINT</Type>
+							</Entry>
+						</Pdo>
+						<Pdo Name="MDT" Index="#x0018" InOut="1" Flags="#x0001" SyncMan="2">
+							<Entry Name="Master control word" Index="#x0086" Flags="#x00000800">
+								<Type>UINT</Type>
+							</Entry>
+							<Entry Name="Velocity command value" Index="#x0024">
+								<Type>DINT</Type>
+							</Entry>
+						</Pdo>
+					</EtherCAT>
+				</Box>
+				<Box Id="32" BoxType="9099" BoxFlags="#x00000020">
+					<Name>FG_Transport_Lift02_Y_Lift</Name>
+					<ImageId>1003</ImageId>
+					<EtherCAT SlaveType="2" PdiType="#x0008" MboxDataLinkLayer="true" StateMBoxPolling="true" CfgModeSafeOp="true" DownloadPdoCfg="true" CycleMBoxPollingTime="0" FoeType="1" SoeChannels="1" VendorId="#x00000002" ProductCode="#x14056012" RevisionNo="#x000b0000" InfoDataAddr="true" InfoDataSoeDS401="true" InfoDataDcTimes="true" AutoRestoreAfterWcOk="true" CheckRevisionNoType="4" PortPhys="17" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="AX5125-0000-0011 EtherCAT Drive (SoE, 1 Ch.)" Desc="AX5125-0000-0011" PortABoxInfo="#x0100001f">
+						<SyncMan>001880002600010001000000800080008000001826010000</SyncMan>
+						<SyncMan>001a80002200010002000000800080008000001a22010000</SyncMan>
+						<SyncMan>001006002400010003000000000000000000001024010000</SyncMan>
+						<SyncMan>001106002200010004000000000000000000001122010000</SyncMan>
+						<Fmmu>0000000000000000001000020100000001000000000000000000000000000000</Fmmu>
+						<Fmmu>0000000000000000001100010100000002000000000000000000000000000000</Fmmu>
+						<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
+						<BootStrapData>0010140200181402</BootStrapData>
+						<DcData>3007000090d0030050c30000000000000000ffff000000000000000000000000</DcData>
+						<DcMode>446353796e633235300000000000000053796e63206379636c652074696d653a20323530c2b57300000000000000000090d0030050c3000000000000ffff30070000000000000000000000000000000000000000000000000000000000000000</DcMode>
+						<DcMode>446353796e633132350000000000000053796e63206379636c652074696d653a20313235c2b57300000000000000000048e80100a861000000000000ffff30070000000000000000000000000000000000000000000000000000000000000000</DcMode>
+						<DcMode>446353796e6336322e3500000000000053796e63206379636c652074696d653a2036322e35c2b573000000000000000024f400000000000000000000ffff30070000000000000000000000000000000000000000000000000000000000000000</DcMode>
+						<MBoxUserCmdData>020005000a0000001500000003000000000000000000000000000000000000000340010000000000d007546e637963202d204e43206379636c652074696d6500</MBoxUserCmdData>
+						<MBoxUserCmdData>020005000a0000001700000003000000000000000000000000000000000000000340020000000000d0075473637963202d20436f6d6d206379636c652074696d6500</MBoxUserCmdData>
+						<MBoxUserCmdData>020005000a0000000e0000000300000000000000000000000000000000000000034020000000000002004f7065726174696f6e206d6f646500</MBoxUserCmdData>
+						<Pdo Name="AT" Index="#x0010" Flags="#x0001" SyncMan="3">
+							<Entry Name="Drive status word" Index="#x0087" Flags="#x00000800">
+								<Type>UINT</Type>
+							</Entry>
+							<Entry Name="Position feedback 1 value" Index="#x0033">
+								<Type>DINT</Type>
+							</Entry>
+						</Pdo>
+						<Pdo Name="MDT" Index="#x0018" InOut="1" Flags="#x0001" SyncMan="2">
+							<Entry Name="Master control word" Index="#x0086" Flags="#x00000800">
+								<Type>UINT</Type>
+							</Entry>
+							<Entry Name="Velocity command value" Index="#x0024">
+								<Type>DINT</Type>
+							</Entry>
+						</Pdo>
+					</EtherCAT>
+				</Box>
+				<EtherCAT PromiscuousModeNoCopy="true" DcSyncMode="3"/>
 			</Device>
 		</Io>
+		<SymbolWatch>
+			<Variable>TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift^Drive^Inputs^In^nState1</Variable>
+			<Variable>TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift^Drive^Inputs^In^nState2</Variable>
+		</SymbolWatch>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{00000000-2001-0850-0020-500820000403}" Id="#x02030010"/>
+		<MappingInfo Identifier="{00000000-2001-0850-0020-500841000403}" Id="#x02030030"/>
+		<MappingInfo Identifier="{00000000-0020-0304-3000-040320000403}" Id="#x02030010"/>
 		<MappingInfo Identifier="{00000000-2041-0850-4020-500800B6FC57}" Id="#x02030020"/>
+		<MappingInfo Identifier="{00000000-0050-0304-3000-040352000403}" Id="#x02030040"/>
+		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030050" Watchdog="14000000040000000400000004000000"/>
+		<OwnerA Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
+			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_Lift01_Y_Lift">
+				<Link VarA="Drive^Inputs^In^nDcOutputTime" VarB="InfoData^DcOutputShift"/>
+				<Link VarA="Drive^Inputs^In^nState1" VarB="AT^Drive status word" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Inputs^In^nState2" VarB="AT^Drive status word"/>
+				<Link VarA="Drive^Inputs^In^nState4" VarB="WcState^InputToggle" Size="1" OffsA="1"/>
+				<Link VarA="Drive^Inputs^In^nState4" VarB="WcState^WcState"/>
+				<Link VarA="Drive^Outputs^Out^nCtrl1" VarB="MDT^Master control word" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Outputs^Out^nDataOut2" VarB="MDT^Velocity command value"/>
+				<Link VarA="Enc^Inputs^In^nDataIn1" VarB="AT^Position feedback 1 value"/>
+				<Link VarA="Enc^Inputs^In^nDcInputTime" VarB="InfoData^DcInputShift"/>
+				<Link VarA="Enc^Inputs^In^nState4" VarB="WcState^InputToggle" Size="1" OffsA="1"/>
+				<Link VarA="Enc^Inputs^In^nState4" VarB="WcState^WcState"/>
+			</OwnerB>
+		</OwnerA>
+		<OwnerA Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift">
+			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_Lift02_Y_Lift">
+				<Link VarA="Drive^Inputs^In^nDcOutputTime" VarB="InfoData^DcOutputShift"/>
+				<Link VarA="Drive^Inputs^In^nState1" VarB="AT^Drive status word" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Inputs^In^nState2" VarB="AT^Drive status word"/>
+				<Link VarA="Drive^Inputs^In^nState4" VarB="WcState^InputToggle" Size="1" OffsA="1"/>
+				<Link VarA="Drive^Inputs^In^nState4" VarB="WcState^WcState"/>
+				<Link VarA="Drive^Outputs^Out^nCtrl1" VarB="MDT^Master control word" Size="8" OffsB="8"/>
+				<Link VarA="Drive^Outputs^Out^nDataOut2" VarB="MDT^Velocity command value"/>
+				<Link VarA="Enc^Inputs^In^nDataIn1" VarB="AT^Position feedback 1 value"/>
+				<Link VarA="Enc^Inputs^In^nDcInputTime" VarB="InfoData^DcInputShift"/>
+				<Link VarA="Enc^Inputs^In^nState4" VarB="WcState^InputToggle" Size="1" OffsA="1"/>
+				<Link VarA="Enc^Inputs^In^nState4" VarB="WcState^WcState"/>
+			</OwnerB>
+		</OwnerA>
 		<OwnerA Name="TIPC^PLC_1^PLC_1 Instance">
 			<OwnerB Name="TIID^EtherCAT_1^FG_01_EK1100^FG_01_EL1008_1">
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_01.Y_Gripper.ExtendedSensor" VarB="Channel 2^Input"/>
@@ -8912,26 +11269,22 @@
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Index05.Y_Stopper._ExtendOutput" VarB="Channel 15^Output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL1809_1">
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_AxisMax.HardwareInput" VarB="Channel 4^Input"/>
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_AxisMin.HardwareInput" VarB="Channel 3^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_Detect.HardwareInput" VarB="Channel 1^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.B_Exit.HardwareInput" VarB="Channel 2^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._DriveActive" VarB="Channel 5^Input"/>
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.ExtendedSensor" VarB="Channel 4^Input"/>
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.RetractedSensor" VarB="Channel 3^Input"/>
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_AxisMax.HardwareInput" VarB="Channel 9^Input"/>
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_AxisMin.HardwareInput" VarB="Channel 8^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_Detect.HardwareInput" VarB="Channel 6^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.B_Exit.HardwareInput" VarB="Channel 7^Input"/>
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._DriveActive" VarB="Channel 10^Input"/>
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.ExtendedSensor" VarB="Channel 9^Input"/>
-				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.RetractedSensor" VarB="Channel 8^Input"/>
 			</OwnerB>
 			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Lift_EL2008_1">
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Backward" VarB="Channel 3^Output"/>
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.M_Conveyor._Forward" VarB="Channel 4^Output"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift._ExtendOutput" VarB="Channel 2^Output"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift._RetractOutput" VarB="Channel 1^Output"/>
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Backward" VarB="Channel 7^Output"/>
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.M_Conveyor._Forward" VarB="Channel 8^Output"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift._ExtendOutput" VarB="Channel 6^Output"/>
-				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift._RetractOutput" VarB="Channel 5^Output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^EtherCAT_1^FG_Transport_EK1100^FG_Transport_Stopper_EL1809_1">
 				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Stopper01.B_Detect.HardwareInput" VarB="Channel 1^Input"/>
@@ -8956,6 +11309,14 @@
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Stopper02.Y_Stopper._ExtendOutput" VarB="Channel 2^Output"/>
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Stopper03.Y_Stopper._ExtendOutput" VarB="Channel 3^Output"/>
 				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Stopper04.Y_Stopper._ExtendOutput" VarB="Channel 4^Output"/>
+			</OwnerB>
+			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift01_Y_Lift">
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis.PlcToNc" VarB="Inputs^FromPlc"/>
+			</OwnerB>
+			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^FG_Transport_Lift02_Y_Lift">
+				<Link VarA="PlcTask Inputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.NcToPlc" VarB="Outputs^ToPlc"/>
+				<Link VarA="PlcTask Outputs^MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis.PlcToNc" VarB="Inputs^FromPlc"/>
 			</OwnerB>
 		</OwnerA>
 		<OwnerA Name="TIPC^SIM_1^SIM_1 Instance">
@@ -9308,6 +11669,18 @@
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut7" VarB="Channel 7^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut8" VarB="Channel 8^Output" AutoLink="true"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Index_EL2809_1.bOut9" VarB="Channel 9^Output" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^EtherCAT_1_SIM^FG_Transport_Lift01_Y_Lift">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stControl^nControlWord" VarB="MDT^Master control word" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stControl^nVelocityCommand" VarB="MDT^Velocity command value" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stStatus^nPositionFeedback" VarB="AT^Position feedback 1 value" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stStatus^nStatusWord" VarB="AT^Drive status word" AutoLink="true"/>
+			</OwnerB>
+			<OwnerB Name="TIID^EtherCAT_1_SIM^FG_Transport_Lift02_Y_Lift">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stControl^nControlWord" VarB="MDT^Master control word" AutoLink="true"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stControl^nVelocityCommand" VarB="MDT^Velocity command value" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stStatus^nPositionFeedback" VarB="AT^Position feedback 1 value" AutoLink="true"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stStatus^nStatusWord" VarB="AT^Drive status word" AutoLink="true"/>
 			</OwnerB>
 			<OwnerB Name="TIID^EtherCAT_1_SIM^FG_Transport_Lift_EL1809_1">
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn1" VarB="Channel 1^Input" AutoLink="true"/>

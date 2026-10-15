@@ -328,6 +328,17 @@ icon in this project points at the same placeholder pair:
 `data-tchmi-is-read-only`), `TcHmiCombobox` (`data-tchmi-srcdata`, `data-tchmi-selected-value`,
 `onSelectionChanged` trigger), `TcHmiRectangle`, `TcHmiCheckbox` (`data-tchmi-state-symbol`).
 
+**Motion** (`Beckhoff.TwinCAT.HMI.Motion`): `TcHmiAxesList` and `TcHmiMotionControl`, used on
+`FGTransport_Axes`. Both need the ADS runtimes **`NC`** (port 500) and **`NCTask`** (port 501) in
+`Server/ADS/ADS.Config.default.json` (`data-tchmi-main-nc` / `data-tchmi-nc-task`). A PLC-linked axis
+must run the motion control in **`"NC & PLC"`** mode, because only the PLC's `MC_Power` may enable it:
+bind `data-tchmi-axis-ref` to `...Y_Lift.BasicAxis._Axis`, `data-tchmi-mc-power` to
+`...BasicAxis.MCPower`, `data-tchmi-halt` to `...BasicAxis.MCHalt`, and `data-tchmi-allowed-axes` to
+the axis id. In that mode the list's `target-motion-control` hand-over does not apply, so each axis
+gets its own control. **Leave `data-tchmi-home` unset**: NC-direct homing does not reference on
+`B_AxisMin`; the lift tile's *Reference axis* button runs the PLC's home routine instead. Gate the
+control with `data-tchmi-is-enabled` on the unit's `HMI::Status::HMIControlAvailable` (Manual).
+
 Access rights use the same shape on a control (`data-tchmi-access-config`) and on a nav item
 (`accessRights`):
 

@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.19">
+  <POU Name="FB_HomeRoutine_RefSensor" Id="{18e9f561-fb2f-4ddb-a5cc-144eb7d587b2}" SpecialFunc="None">
+    <Declaration><![CDATA[// Home method for an FB_Component_BasicAxis: reference on a sensor at the
+// negative end of travel. Assigned through Y_Lift.HomeMethod; Y_Lift.Home() starts
+// it, and FB_BasicAxis calls CyclicLogic every scan once Axis is set.
+//
+// SPT ships no home routine that references on a sensor - SetZeroHere and
+// SetPosition set the position wherever the axis stands, AbsHoming suits an
+// absolute encoder and HardStop drives into a block. This one is shaped after
+// FB_HomeRoutine_HardStop: it owns its MC blocks and drives _Axis.Axis directly,
+// because the axis' own Move*() refuse while the home method makes it Busy.
+//
+// Sequence:
+//   1. NC software limits off - before referencing the position is arbitrary, so
+//      an enabled limit could forbid the very move that finds the reference.
+//   2. Standing on the sensor: back off in the positive direction until it clears.
+//   3. Search in the negative direction; halt on the sensor.
+//   4. MC_Home MC_Direct to HomePosition - sets the position AND the Homed flag
+//      (MC_SetPosition would not set Homed).
+//   5. Optionally write and enable the NC software limits.
+//
+// THE SENSOR IS AN INPUT, WRITTEN BY THE OWNER EVERY SCAN, before the owner's
+// SUPER^.CyclicLogic(). The owner usually also feeds the same sensor into the
+// axis as InhibitFeedNegative, which stops the axis on its own the moment the
+// sensor makes; step 3 halts explicitly as well, so the result does not depend on
+// which of the two acts first.
+//
+// No timer here: the owner bounds the whole referencing with its own timeout.
+FUNCTION_BLOCK FB_HomeRoutine_RefSensor EXTENDS FB_CyclicFB IMPLEMENTS I_MotionSequence
+VAR_INPUT
+	RefSensor			: BOOL;				// the reference sensor, TRUE = made
+	SearchVelocity		: LREAL := 20.0;	// towards the sensor, axis units/s
+	BackoffVelocity		: LREAL := 10.0;	// off the sensor, axis units/s
+	HomePosition		: LREAL := 0.0;		// position assigned at the sensor
+	EnableSoftLimits	: BOOL;				// write and enable the NC limits when done
+	SoftLimitNeg		: LREAL;
+	SoftLimitPos		: LREAL;
+END_VAR
+VAR
+	_Axis				: I_BasicAxis;
+	SequenceStep		: UDINT;
+
+	MCWriteBool			: Tc2_MC2.MC_WriteBoolParameter;
+	MCWriteParam		: Tc2_MC2.MC_WriteParameter;
+	MCMoveVelocity		: Tc2_MC2.MC_MoveVelocity;
+	MCHalt				: Tc2_MC2.MC_Halt;
+	MCHome				: Tc2_MC2.MC_Home;
+END_VAR
+VAR CONSTANT
+	// This routine's own error, outside the NC's 16#4xxx range: a motion block was
+	// aborted by another command before the reference was found.
+	ERR_ABORTED			: UDINT := 16#7001;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Axis" Id="{359b36db-75e6-45cc-b8fd-b6a4ee7616ca}">
+      <Declaration><![CDATA[PROPERTY Axis : I_BasicAxis]]></Declaration>
+      <Get Name="Get" Id="{a6651836-0713-414e-8b3e-800d4759c3d7}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Axis := _Axis;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f63f24f2-0366-4144-b89d-96d49786b618}">
+        <Declaration><![CDATA[VAR
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Axis := Axis;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="CyclicLogic" Id="{558db9eb-faf6-4345-a049-4070aea8c33a}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicLogic
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _Axis = 0 THEN
+	RETURN;
+END_IF
+
+CASE SequenceStep OF
+	0:	// Idle
+		;
+
+	10:	// Negative software limit off
+		MCWriteBool(Axis := _Axis.Axis, Execute := TRUE,
+			ParameterNumber := Tc2_MC2.MC_AxisParameter.EnableLimitNeg, Value := FALSE);
+		IF NOT MCWriteBool.Busy THEN
+			MCWriteBool(Axis := _Axis.Axis, Execute := FALSE);
+			IF MCWriteBool.Error THEN
+				Fail(MCWriteBool.ErrorID);
+			ELSE
+				SequenceStep := 20;
+			END_IF
+		END_IF
+
+	20:	// Positive software limit off
+		MCWriteBool(Axis := _Axis.Axis, Execute := TRUE,
+			ParameterNumber := Tc2_MC2.MC_AxisParameter.EnableLimitPos, Value := FALSE);
+		IF NOT MCWriteBool.Busy THEN
+			MCWriteBool(Axis := _Axis.Axis, Execute := FALSE);
+			IF MCWriteBool.Error THEN
+				Fail(MCWriteBool.ErrorID);
+			ELSE
+				SequenceStep := 30;
+			END_IF
+		END_IF
+
+	30:	// Branch once on where the axis stands
+		IF RefSensor THEN
+			SequenceStep := 40;
+		ELSE
+			SequenceStep := 60;
+		END_IF
+
+	40:	// Back off the sensor in the positive direction
+		MCMoveVelocity(Axis := _Axis.Axis, Execute := TRUE,
+			Velocity := BackoffVelocity, Direction := Tc2_MC2.MC_Direction.MC_Positive_Direction);
+		IF NOT RefSensor THEN
+			MCMoveVelocity(Axis := _Axis.Axis, Execute := FALSE);
+			SequenceStep := 50;
+		ELSIF MCMoveVelocity.Error THEN
+			Fail(MCMoveVelocity.ErrorID);
+		ELSIF MCMoveVelocity.CommandAborted THEN
+			Fail(ERR_ABORTED);
+		END_IF
+
+	50:	// Clear of the sensor - stop before turning round
+		MCHalt(Axis := _Axis.Axis, Execute := TRUE);
+		IF NOT MCHalt.Busy THEN
+			MCHalt(Axis := _Axis.Axis, Execute := FALSE);
+			IF MCHalt.Error THEN
+				Fail(MCHalt.ErrorID);
+			ELSE
+				SequenceStep := 60;
+			END_IF
+		END_IF
+
+	60:	// Search in the negative direction. The sensor ends the search; an error or
+		// an abort by another command ends the routine.
+		MCMoveVelocity(Axis := _Axis.Axis, Execute := TRUE,
+			Velocity := SearchVelocity, Direction := Tc2_MC2.MC_Direction.MC_Negative_Direction);
+		IF RefSensor THEN
+			MCMoveVelocity(Axis := _Axis.Axis, Execute := FALSE);
+			SequenceStep := 70;
+		ELSIF MCMoveVelocity.Error THEN
+			Fail(MCMoveVelocity.ErrorID);
+		ELSIF MCMoveVelocity.CommandAborted THEN
+			Fail(ERR_ABORTED);
+		END_IF
+
+	70:	// On the sensor - halt
+		MCHalt(Axis := _Axis.Axis, Execute := TRUE);
+		IF NOT MCHalt.Busy THEN
+			MCHalt(Axis := _Axis.Axis, Execute := FALSE);
+			IF MCHalt.Error THEN
+				Fail(MCHalt.ErrorID);
+			ELSE
+				SequenceStep := 80;
+			END_IF
+		END_IF
+
+	80:	// Set the reference. MC_Direct assigns the position without moving and sets
+		// the Homed flag.
+		MCHome(Axis := _Axis.Axis, Execute := TRUE,
+			Position := HomePosition, HomingMode := Tc2_MC2.MC_HomingMode.MC_Direct,
+			bCalibrationCam := FALSE);
+		IF NOT MCHome.Busy THEN
+			MCHome(Axis := _Axis.Axis, Execute := FALSE, bCalibrationCam := FALSE);
+			IF MCHome.Error THEN
+				Fail(MCHome.ErrorID);
+			ELSIF EnableSoftLimits THEN
+				SequenceStep := 90;
+			ELSE
+				SequenceStep := 0;
+			END_IF
+		END_IF
+
+	90:	// Negative software limit value
+		MCWriteParam(Axis := _Axis.Axis, Execute := TRUE,
+			ParameterNumber := Tc2_MC2.MC_AxisParameter.SWLimitNeg, Value := SoftLimitNeg);
+		IF NOT MCWriteParam.Busy THEN
+			MCWriteParam(Axis := _Axis.Axis, Execute := FALSE);
+			IF MCWriteParam.Error THEN
+				Fail(MCWriteParam.ErrorID);
+			ELSE
+				SequenceStep := 100;
+			END_IF
+		END_IF
+
+	100: // Positive software limit value
+		MCWriteParam(Axis := _Axis.Axis, Execute := TRUE,
+			ParameterNumber := Tc2_MC2.MC_AxisParameter.SWLimitPos, Value := SoftLimitPos);
+		IF NOT MCWriteParam.Busy THEN
+			MCWriteParam(Axis := _Axis.Axis, Execute := FALSE);
+			IF MCWriteParam.Error THEN
+				Fail(MCWriteParam.ErrorID);
+			ELSE
+				SequenceStep := 110;
+			END_IF
+		END_IF
+
+	110: // Negative software limit on
+		MCWriteBool(Axis := _Axis.Axis, Execute := TRUE,
+			ParameterNumber := Tc2_MC2.MC_AxisParameter.EnableLimitNeg, Value := TRUE);
+		IF NOT MCWriteBool.Busy THEN
+			MCWriteBool(Axis := _Axis.Axis, Execute := FALSE);
+			IF MCWriteBool.Error THEN
+				Fail(MCWriteBool.ErrorID);
+			ELSE
+				SequenceStep := 120;
+			END_IF
+		END_IF
+
+	120: // Positive software limit on - done
+		MCWriteBool(Axis := _Axis.Axis, Execute := TRUE,
+			ParameterNumber := Tc2_MC2.MC_AxisParameter.EnableLimitPos, Value := TRUE);
+		IF NOT MCWriteBool.Busy THEN
+			MCWriteBool(Axis := _Axis.Axis, Execute := FALSE);
+			IF MCWriteBool.Error THEN
+				Fail(MCWriteBool.ErrorID);
+			ELSE
+				SequenceStep := 0;
+			END_IF
+		END_IF
+
+	900: // Failed - drop the move and stop the axis, keep the error for the owner
+		MCMoveVelocity(Axis := _Axis.Axis, Execute := FALSE);
+		MCHalt(Axis := _Axis.Axis, Execute := TRUE);
+		IF NOT MCHalt.Busy THEN
+			MCHalt(Axis := _Axis.Axis, Execute := FALSE);
+			SequenceStep := 0;
+		END_IF
+END_CASE
+
+_Busy := SequenceStep <> 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Execute" Id="{101cfb2c-c8fb-4151-9872-3c363ddc6f49}">
+      <Declaration><![CDATA[// Start referencing. FALSE when there is no axis or a run is already active.
+// Tests SequenceStep rather than _Busy: FB_BaseFB initialises _Busy TRUE, and it
+// is only cleared by CyclicLogic once the axis has assigned itself.
+METHOD Execute : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (_Axis = 0) OR (SequenceStep <> 0) THEN
+	RETURN;
+END_IF
+
+_Busy			:= TRUE;
+_Error			:= FALSE;
+_ErrorID		:= 0;
+SequenceStep	:= 10;
+Execute			:= TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Fail" Id="{07d73b28-f896-431c-8b2a-a8455b3178b1}">
+      <Declaration><![CDATA[METHOD PRIVATE Fail
+VAR_INPUT
+	ErrorID	: UDINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_Error			:= TRUE;
+_ErrorID		:= ErrorID;
+SequenceStep	:= 900;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
