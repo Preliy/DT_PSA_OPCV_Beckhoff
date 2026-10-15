@@ -4,6 +4,7 @@
   "localizedText": {
     "L_EtherCAT": "EtherCAT",
     "L_Events": "Events",
+    "L_FGT_Axes": "Lift axes (NC)",
     "L_FGT_Drive": "Conveyor drives",
     "L_FGT_Index": "Index units",
     "L_FGT_Lift": "Lift units",

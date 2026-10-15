@@ -1,0 +1,34 @@
+<div id="FGTransport_Axes" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="100" data-tchmi-height="100" data-tchmi-width-unit="%" data-tchmi-height-unit="%">
+
+<div id="FGTAx_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="FG_Transport - Lift axes (NC)" class="headline-2">
+</div>
+
+<div id="FGTAx_Hint" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="40" data-tchmi-top-unit="px" data-tchmi-width="940" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Manual mode only. Reference an axis with 'Reference axis' on the Lift units page - the NC's own homing does not use B_AxisMin.">
+</div>
+
+<div id="FGTAx_AxesList" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiMotion.TcHmiAxesList" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="68" data-tchmi-top-unit="px" data-tchmi-width="940" data-tchmi-width-unit="px" data-tchmi-height="160" data-tchmi-height-unit="px" data-tchmi-main-nc="NC" data-tchmi-nc-task="NCTask">
+</div>
+
+<div id="FGTAx_Lift01Label" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="240" data-tchmi-top-unit="px" data-tchmi-width="460" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Lift01.Y_Lift - raises (10 / 364 mm)">
+</div>
+
+<div id="FGTAx_Lift01Motion" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiMotion.TcHmiMotionControl" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="264" data-tchmi-top-unit="px" data-tchmi-width="460" data-tchmi-width-unit="px" data-tchmi-height="420" data-tchmi-height-unit="px" data-tchmi-main-nc="NC" data-tchmi-nc-task="NCTask" data-tchmi-data-source-mode="NC &amp; PLC" data-tchmi-axis-ref="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis._Axis%/s%" data-tchmi-mc-power="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis.MCPower%/s%" data-tchmi-halt="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.Y_Lift.BasicAxis.MCHalt%/s%" data-tchmi-is-enabled="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift01.HMI::Status::HMIControlAvailable%/s%">
+<script data-tchmi-target-attribute="data-tchmi-allowed-axes" type="application/json">
+[
+  4
+]
+</script>
+</div>
+
+<div id="FGTAx_Lift02Label" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="500" data-tchmi-left-unit="px" data-tchmi-top="240" data-tchmi-top-unit="px" data-tchmi-width="460" data-tchmi-width-unit="px" data-tchmi-height="20" data-tchmi-height-unit="px" data-tchmi-text="Lift02.Y_Lift - lowers (364 / 10 mm)">
+</div>
+
+<div id="FGTAx_Lift02Motion" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiMotion.TcHmiMotionControl" data-tchmi-left="500" data-tchmi-left-unit="px" data-tchmi-top="264" data-tchmi-top-unit="px" data-tchmi-width="460" data-tchmi-width-unit="px" data-tchmi-height="420" data-tchmi-height-unit="px" data-tchmi-main-nc="NC" data-tchmi-nc-task="NCTask" data-tchmi-data-source-mode="NC &amp; PLC" data-tchmi-axis-ref="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis._Axis%/s%" data-tchmi-mc-power="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis.MCPower%/s%" data-tchmi-halt="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.Y_Lift.BasicAxis.MCHalt%/s%" data-tchmi-is-enabled="%s%ADS.PLC1.MAIN.Machine.FG_Transport.Lift02.HMI::Status::HMIControlAvailable%/s%">
+<script data-tchmi-target-attribute="data-tchmi-allowed-axes" type="application/json">
+[
+  1
+]
+</script>
+</div>
+
+</div>

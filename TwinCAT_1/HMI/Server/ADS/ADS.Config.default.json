@@ -28,6 +28,22 @@
             "SYMBOLS": {},
             "USE_WHITELISTING": false
         },
+        "NC": {
+            "ENABLED": true,
+            "NETID": "127.0.0.1.1.1",
+            "PORT": 500,
+            "READ_ONLY": false,
+            "SYMBOLS": {},
+            "USE_WHITELISTING": false
+        },
+        "NCTask": {
+            "ENABLED": true,
+            "NETID": "127.0.0.1.1.1",
+            "PORT": 501,
+            "READ_ONLY": false,
+            "SYMBOLS": {},
+            "USE_WHITELISTING": false
+        },
         "TcSysService": {
             "ENABLED": true,
             "NETID": "127.0.0.1.1.1",
@@ -52,6 +68,7 @@
         353,
         354,
         355,
+        500,
         501,
         801,
         811,

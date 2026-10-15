@@ -69,7 +69,7 @@ That split is the three-key test, already applied: a node is a symbol when it ha
 **`oc.deviceType`** and **neither `oc.aggregatedBy` nor `oc.simulationDevice`**. Every node carries
 an `oc.plcPath`, including pure Unity grouping like `Laser Unit`, so **the path alone proves
 nothing** — this is the single most common way to generate symbols that do not exist. Machine-wide
-the test yields 83 of 180 nodes; FG_01 yields 5 of 5.
+the test yields 87 of 184 nodes; FG_01 yields 5 of 5.
 
 - `oc.aggregatedBy` — a `PanelSampler` folded this device into its own symbol. The panel is one
   symbol; its buttons and lamps are bits inside it, not devices of their own.

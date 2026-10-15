@@ -18,9 +18,19 @@ STRUCT
 	// a tile can label its travel buttons without knowing which instance it is.
 	ReverseDirection	: BOOL;
 
+	// --- Carriage axis ------------------------------------------------------
+	// The unit's own level facts, the ones its step chain and belt guard act on.
+	// AtHome / AtFar are FALSE while the axis is not referenced.
+	AxisHomed			: BOOL;
+	AxisPosition		: LREAL;	// mm above B_AxisMin
+	AtHome				: BOOL;		// at the level this lift loads from
+	AtFar				: BOOL;		// at the level this lift delivers to
+
 	// --- Diagnostics --------------------------------------------------------
 	// 0 none  1 no home  2 pallet never arrived aboard  3 travel failed
 	// 4 pallet never left
+	// 5 reset: pallet never came aboard   6 reset: pallet never left
+	// 9 reset: carriage axis not referenced
 	FaultCode			: DINT;
 END_STRUCT
 END_TYPE]]></Declaration>

@@ -208,6 +208,11 @@
         "name": "%l%L_FGT_Lift%/l%"
       },
       {
+        "content": "Pages/FGTransport_Axes.content",
+        "id": "FGT_Axes",
+        "name": "%l%L_FGT_Axes%/l%"
+      },
+      {
         "content": "Pages/FGTransport_Drive.content",
         "id": "FGT_Drive",
         "name": "%l%L_FGT_Drive%/l%"

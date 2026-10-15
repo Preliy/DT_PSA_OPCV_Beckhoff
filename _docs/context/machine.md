@@ -17,7 +17,7 @@ How the twin's structure is realised on Beckhoff hardware. The machine itself - 
 | Group | Control PLC path | Module | Devices | Process image | Linked |
 |---|---|---|---:|---:|---:|
 | [FG_System](fg-system.md) | `MAIN.Machine.FG_System` | yes | 10 | 26 | 26 |
-| [FG_Transport](fg-transport.md) | `MAIN.Machine.FG_Transport` | yes | 42 | 89 | 89 |
+| [FG_Transport](fg-transport.md) | `MAIN.Machine.FG_Transport` | yes | 46 | 89 | 89 |
 | [FG_01](fg-01.md) | `MAIN.Machine.FG_01` | yes | 9 | 24 | 24 |
 | [FG_02](fg-02.md) | `MAIN.Machine.FG_02` | yes | 1 | 2 | 2 |
 | [FG_03](fg-03.md) | `MAIN.Machine.FG_03` | yes | 9 | 30 | 30 |

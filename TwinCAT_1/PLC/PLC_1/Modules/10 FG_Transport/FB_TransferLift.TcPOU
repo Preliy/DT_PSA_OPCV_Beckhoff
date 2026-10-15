@@ -14,7 +14,28 @@ VAR
 	{ attribute 'TcHmiSymbol.AddSymbol' }
 	B_Exit			: FB_DigitalSensor;		// on the fixed frame - pallet has left
 	{ attribute 'TcHmiSymbol.AddSymbol' }
-	Y_Lift			: FB_DoubleSolenoidFeedback;
+	B_AxisMin		: FB_DigitalSensor := (Name := 'B_AxisMin');	// lower travel limit and homing reference
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	B_AxisMax		: FB_DigitalSensor := (Name := 'B_AxisMax');	// upper travel limit
+	{ attribute 'TcHmiSymbol.AddSymbol' }
+	Y_Lift			: FB_Component_BasicAxis := (Name := 'Y_Lift');	// carriage servo axis (NC, AX5125 SoE)
+
+	// --- Carriage axis ------------------------------------------------------
+	// Referenced on B_AxisMin, which then reads 0; the levels are absolute
+	// positions from there. Both limit sensors inhibit feed in their direction in
+	// every state and mode (CyclicLogic); the NC software limits are enabled by the
+	// home routine once the position means something.
+	HomeRoutine		: FB_HomeRoutine_RefSensor;
+	// The drive is SoE. FB_BasicAxis defaults to the CoE reset, which cannot
+	// clear a Sercos drive error.
+	ResetRoutine	: FB_ResetRoutine_SoEDrive;
+	_LevelLow			: LREAL := 10.0;	// lower conveyor level, mm
+	_LevelHigh			: LREAL := 364.0;	// upper conveyor level, mm
+	_LevelWindow		: LREAL := 1.0;		// at a level within +/- this, mm
+	_TravelVelocity		: LREAL := 150.0;	// level change, mm/s
+	_HomeSearchVelocity	: LREAL := 20.0;	// towards B_AxisMin, mm/s
+	_SoftLimitNeg		: LREAL := -2.0;	// NC software limits, mm
+	_SoftLimitPos		: LREAL := 370.0;
 
 	// --- Carriage belt ------------------------------------------------------
 	// A drive module of its own, like the two main conveyor sections, so it can
@@ -48,14 +69,16 @@ VAR
 	// 4 pallet never left
 	// Raised while finishing an interrupted crossing in Resetting:
 	// 5 reset: pallet never came aboard   6 reset: pallet never left
+	// 9 reset: carriage axis not referenced (timeout or axis error)
 	_FaultCode		: DINT;
 
 	// --- Parameters, set by the parent in Initialize ------------------------
-	// FALSE: home is the retracted (lower) end, travel is to extended (upper).
+	// FALSE: home is the lower level, travel is to the upper level.
 	// TRUE:  the mirror image, for the lift that returns pallets downwards.
 	_ReverseDirection	: BOOL;
 
 	_HomeTime		: TIME := T#5S;
+	_ReferenceTime	: TIME := T#40S;	// a full stroke to B_AxisMin at search speed
 	_LoadTime		: TIME := T#20S;	// belt running, waiting for the pallet aboard
 	_TravelTime		: TIME := T#10S;
 	_SettleTime		: TIME := T#500MS;	// let the pallet settle before travelling
@@ -96,9 +119,19 @@ END_VAR]]></Declaration>
 		// completes the crossing may clear it.
 		M_Conveyor.RunForward  := FALSE;
 		M_Conveyor.RunBackward := FALSE;
+		// Halt the carriage where it is, then take the power off it. A servo left
+		// enabled holds position on its own, which is exactly what an abort must not
+		// rely on.
+		Y_Lift.Stop();
 		SequenceState		:= SequenceState + 10;
 
-	10:
+	10:	// An axis in error never reports standstill - do not wait on it.
+		IF Y_Lift.Stopped OR Y_Lift.Error THEN
+			Y_Lift.Disable();
+			SequenceState	:= SequenceState + 10;
+		END_IF
+
+	20:
 		StateTasksComplete := TRUE;
 END_CASE
 
@@ -114,9 +147,9 @@ PROPERTY PRIVATE AtFar : BOOL]]></Declaration>
 END_VAR]]></Declaration>
         <Implementation>
           <ST><![CDATA[IF _ReverseDirection THEN
-	AtFar := Y_Lift.Retracted;
+	AtFar := AtLevel(_LevelLow);
 ELSE
-	AtFar := Y_Lift.Extended;
+	AtFar := AtLevel(_LevelHigh);
 END_IF]]></ST>
         </Implementation>
       </Get>
@@ -129,13 +162,27 @@ PROPERTY PRIVATE AtHome : BOOL]]></Declaration>
 END_VAR]]></Declaration>
         <Implementation>
           <ST><![CDATA[IF _ReverseDirection THEN
-	AtHome := Y_Lift.Extended;
+	AtHome := AtLevel(_LevelHigh);
 ELSE
-	AtHome := Y_Lift.Retracted;
+	AtHome := AtLevel(_LevelLow);
 END_IF]]></ST>
         </Implementation>
       </Get>
     </Property>
+    <Method Name="AtLevel" Id="{dcd00a73-f0ae-4f63-a533-25bf372a92be}">
+      <Declaration><![CDATA[// The carriage stands at Target. DERIVED FROM THE AXIS EVERY TIME it is asked,
+// like every readiness fact in this unit. An axis that is not referenced has no
+// meaningful position, so it is at no level - which keeps the belt guard shut and
+// CanAccept FALSE until the reset has referenced it.
+METHOD PRIVATE AtLevel : BOOL
+VAR_INPUT
+	Target	: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AtLevel := Y_Lift.Axis.Status.Homed
+	AND (ABS(Y_Lift.ActualPosition - Target) <= _LevelWindow);]]></ST>
+      </Implementation>
+    </Method>
     <Property Name="CanAccept" Id="{e7a912db-9cf1-4a8c-bbcb-a613632347fa}">
       <Declaration><![CDATA[// This lift can physically take a pallet right now. The predecessor gates its
 // release on this, and it is the whole of the readiness contract.
@@ -234,6 +281,14 @@ IF NOT (AtHome OR AtFar) THEN
 	M_Conveyor.RunBackward := FALSE;
 END_IF
 
+// THE LIMIT SENSORS INHIBIT FEED IN THEIR OWN DIRECTION, IN EVERY STATE AND MODE.
+// The axis can always be moved off a made sensor, never further onto it - which
+// is what lets the home routine back off B_AxisMin. Written before the base runs
+// the axis, so MC_Power sees this scan's sensors.
+Y_Lift.InhibitFeedNegative	:= B_AxisMin.Active;
+Y_Lift.InhibitFeedPositive	:= B_AxisMax.Active;
+HomeRoutine.RefSensor		:= B_AxisMin.Active;
+
 SUPER^.CyclicLogic();
 
 // After the base, so the published struct carries this scan's state and
@@ -282,16 +337,15 @@ CASE _CurrentMode OF
 					// normal load path hands over once a pallet is on board.
 					SequenceState	:= 40;
 				ELSE
-					IF _ReverseDirection THEN
-						Y_Lift.Extend();
-					ELSE
-						Y_Lift.Retract();
-					END_IF
+					// Already there is fine: an absolute move to where the axis
+					// stands completes at once. A refused move is not retried here -
+					// step 10 times out on it, so this step cannot hang.
+					MoveHome();
 					SequenceState := SequenceState + 10;
 				END_IF
 
 			10:
-				IF AtHome THEN
+				IF AtHome AND NOT Y_Lift.Busy THEN
 					SequenceState	:= SequenceState + 10;
 				ELSIF HomeTimer.Q THEN
 					_FaultCode := 1;
@@ -335,14 +389,20 @@ CASE _CurrentMode OF
 					SequenceState := SequenceState + 10;
 				END_IF
 
-			50:	// Travel to the far level
-				IF _ReverseDirection THEN
-					Y_Lift.Retract();
-				ELSE
-					Y_Lift.Extend();
+			50:	// Travel to the far level. A move is issued once and then watched:
+				// MoveAbsolute is fire-and-forget, and refuses while the axis is
+				// busy unless told to abort.
+				IF MoveFar() THEN
+					SequenceState := 55;
+				ELSIF TravelTimer.Q THEN
+					_FaultCode := 3;
+					ChangeState(E_PMLCommand.ePMLCommand_Hold);
 				END_IF
-				IF AtFar THEN
-					SequenceState := SequenceState + 10;
+
+			55:	// Arrived and at rest. An explicit target, not +10: from 55 that
+				// lands on 65, a step that does not exist, and the chain stops dead.
+				IF AtFar AND NOT Y_Lift.Busy THEN
+					SequenceState := 60;
 				ELSIF TravelTimer.Q THEN
 					_FaultCode := 3;
 					ChangeState(E_PMLCommand.ePMLCommand_Hold);
@@ -382,8 +442,8 @@ CASE _CurrentMode OF
 
 	//======================= MAINTENANCE & MANUAL =============================
 	E_PMLUnitMode.ePMLUnitMode_Maintenance, E_PMLUnitMode.ePMLUnitMode_Manual:
-		// Nothing to drive. Both devices honour their own HMI structs, and both belt
-		// directions are offered by hand. Nothing is assigned: the interface is derived
+		// Nothing to drive. The belt and the axis honour their own HMI structs, and
+		// both belt directions are offered by hand; referencing is HMI.HomeAxis. Nothing is assigned: the interface is derived
 		// from the sensors, so it keeps telling the truth while an operator works. A
 		// crossing created by jogging is invisible to this unit - Manual is supervised.
 		;
@@ -394,7 +454,7 @@ SUPER^.Execute();
 HomeTimer(	IN := (SequenceState = 10),							PT := _HomeTime);
 LoadTimer(	IN := (SequenceState = 30),							PT := _LoadTime);
 SettleTimer(IN := (SequenceState = 40),							PT := _SettleTime);
-TravelTimer(IN := (SequenceState = 50),							PT := _TravelTime);
+TravelTimer(IN := (SequenceState = 50) OR (SequenceState = 55),	PT := _TravelTime);
 UnloadTimer(IN := (SequenceState = 70),							PT := _UnloadTime);]]></ST>
       </Implementation>
     </Method>
@@ -405,6 +465,7 @@ UnloadTimer(IN := (SequenceState = 70),							PT := _UnloadTime);]]></ST>
 // 5 reset: pallet never finished loading      6 reset: pallet never left
 // 7 reset: travel to the delivery level failed
 // 8 reset: successor still occupied - the pallet cannot be handed over
+// 9 reset: carriage axis not referenced - timeout or axis error
 PROPERTY FaultCode : DINT]]></Declaration>
       <Get Name="Get" Id="{1aad7a82-ef72-4745-ba4a-62767268d35b}">
         <Declaration><![CDATA[VAR
@@ -428,7 +489,17 @@ PackMLBaseModule_HMI.Command := HMI.Command;
 SUPER^.HMICommunication();
 
 // The base clears a latch by writing back the value it acted on.
-HMI.Command := PackMLBaseModule_HMI.Command;]]></ST>
+HMI.Command := PackMLBaseModule_HMI.Command;
+
+// Reference the carriage axis by hand. Manual only - the same permission that
+// gates the jog buttons. Momentary: cleared here whether or not it was honoured,
+// so a refused press cannot fire later.
+IF HMI.HomeAxis THEN
+	IF PackMLBaseModule_HMI.Status.HMIControlAvailable THEN
+		Y_Lift.Home();
+	END_IF
+	HMI.HomeAxis := FALSE;
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Initialize" Id="{75f8014f-1b43-4461-b71c-610033432bf4}">
@@ -442,6 +513,8 @@ CASE DescendantSequenceState OF
 	0:
 		RegisterComponent(B_Detect);
 		RegisterComponent(B_Exit);
+		RegisterComponent(B_AxisMin);
+		RegisterComponent(B_AxisMax);
 		RegisterComponent(Y_Lift);
 
 		// The carriage belt is a component owned directly by this lift.
@@ -452,9 +525,16 @@ CASE DescendantSequenceState OF
 		DescendantSequenceState := DescendantSequenceState + 10;
 
 	10:
-		// A level change is a long stroke - these are travel alarms, not pacing.
-		Y_Lift.ExtendTime	:= 10000.0;
-		Y_Lift.RetractTime	:= 10000.0;
+		// Configure the carriage axis. NO MOTION HERE - SPT forbids motion commands
+		// in Initialize; referencing belongs to Resetting.
+		HomeRoutine.SearchVelocity		:= _HomeSearchVelocity;
+		HomeRoutine.BackoffVelocity		:= _HomeSearchVelocity / 2.0;
+		HomeRoutine.HomePosition		:= 0.0;
+		HomeRoutine.EnableSoftLimits	:= TRUE;
+		HomeRoutine.SoftLimitNeg		:= _SoftLimitNeg;
+		HomeRoutine.SoftLimitPos		:= _SoftLimitPos;
+		Y_Lift.HomeMethod				:= HomeRoutine;
+		Y_Lift.ResetMethod				:= ResetRoutine;
 		DescendantSequenceState := DescendantSequenceState + 10;
 
 	20:
@@ -465,6 +545,39 @@ CASE DescendantSequenceState OF
 	30:
 		Initialize := TRUE;
 END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveFar" Id="{a60965d5-9f00-4898-82b4-fb67c9d1a53d}">
+      <Declaration><![CDATA[// Command the carriage to the level it delivers to. TRUE when the move was
+// accepted - which is not arrival; watch AtFar for that.
+METHOD PRIVATE MoveFar : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Set every time: FB_BasicAxis loads the NC's slow manual velocity during its
+// own initialisation, which runs after this unit's.
+Y_Lift.Velocity := _TravelVelocity;
+IF _ReverseDirection THEN
+	MoveFar := Y_Lift.MoveAbsolute(Position := _LevelLow, AbortPrevious := TRUE);
+ELSE
+	MoveFar := Y_Lift.MoveAbsolute(Position := _LevelHigh, AbortPrevious := TRUE);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveHome" Id="{d39be9b3-f27a-400f-98b0-e8ecff093f8a}">
+      <Declaration><![CDATA[// Command the carriage to the level it loads from. TRUE when the move was
+// accepted - which is not arrival; watch AtHome for that.
+METHOD PRIVATE MoveHome : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Set every time - see MoveFar.
+Y_Lift.Velocity := _TravelVelocity;
+IF _ReverseDirection THEN
+	MoveHome := Y_Lift.MoveAbsolute(Position := _LevelHigh, AbortPrevious := TRUE);
+ELSE
+	MoveHome := Y_Lift.MoveAbsolute(Position := _LevelLow, AbortPrevious := TRUE);
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Property Name="NextCanAccept" Id="{351df210-5bef-4877-a72f-cb041e84bc6b}">
@@ -547,6 +660,14 @@ HMI.Station.NextReady				:= _NextCanAccept;
 HMI.Station.PayloadIncoming		:= _PayloadIncoming;
 HMI.Station.ReverseDirection		:= _ReverseDirection;
 
+// --- Carriage axis ----------------------------------------------------------
+// The level facts the step chain acts on, so a tile shows them rather than
+// re-deriving them from a position with its own idea of the window.
+HMI.Station.AxisHomed				:= Y_Lift.Axis.Status.Homed;
+HMI.Station.AxisPosition			:= Y_Lift.ActualPosition;
+HMI.Station.AtHome					:= AtHome;
+HMI.Station.AtFar					:= AtFar;
+
 // --- Diagnostics ------------------------------------------------------------
 HMI.Station.FaultCode				:= _FaultCode;]]></ST>
       </Implementation>
@@ -558,6 +679,7 @@ END_VAR
 VAR_INST
 	ResetCrossTimer		: TON;
 	ResetHomeTimer		: TON;
+	ReferenceTimer		: TON;
 	AccumulateTimer		: TON;
 END_VAR]]></Declaration>
       <Implementation>
@@ -625,18 +747,43 @@ CASE SequenceState OF
 		_UnloadingOut	:= FALSE;
 		SequenceState	:= 30;
 
-	30:	// Nothing spans the gap now, so the axis may move. Belt off first.
+	30:	// Nothing spans the gap now, so the axis may move. Belt off first, then
+		// power. Aborting took the power off; nothing else turns it back on.
 		M_Conveyor.RunForward  := FALSE;
 		M_Conveyor.RunBackward := FALSE;
-		IF _ReverseDirection THEN
-			Y_Lift.Extend();
-		ELSE
-			Y_Lift.Retract();
+		Y_Lift.Enable();
+		IF Y_Lift.Enabled THEN
+			SequenceState := 32;
 		END_IF
+
+	32:	// Reference only if the axis has no reference. BRANCHES on the axis' own
+		// state, sampled once; the reference survives every PackML state, so after
+		// the first reset this goes straight to 36. Home() is refused while the axis
+		// is still busy settling - retried, and bounded by the ReferenceTimer.
+		IF Y_Lift.Axis.Status.Homed THEN
+			SequenceState := 36;
+		ELSIF Y_Lift.Home() THEN
+			SequenceState := 34;
+		END_IF
+
+	34:	// THE ONE PLACE A RESET WAITS ON A SENSOR, and it is this unit's own: the
+		// home routine searches for B_AxisMin. It cannot deadlock on another unit,
+		// and the ReferenceTimer bounds it - a sensor that never makes is fault 9,
+		// not a hang.
+		IF Y_Lift.Error THEN
+			_FaultCode := 9;
+			ChangeState(E_PMLCommand.ePMLCommand_Hold);
+		ELSIF Y_Lift.Axis.Status.Homed AND NOT Y_Lift.Busy THEN
+			SequenceState := 36;
+		END_IF
+
+	36:	// Referenced - go to the home level. A refused move is caught by the
+		// ResetHomeTimer in step 40.
+		MoveHome();
 		SequenceState := 40;
 
 	40:
-		IF AtHome THEN
+		IF AtHome AND NOT Y_Lift.Busy THEN
 			SequenceState := 50;
 		ELSIF ResetHomeTimer.Q THEN
 			_FaultCode := 1;
@@ -661,11 +808,17 @@ SUPER^.Resetting();
 // by the load time and an outbound one by the unload time.
 
 ResetHomeTimer(	IN := (SequenceState = 40),		PT := _HomeTime);
+// Enabling, referencing and the decision between them share one budget.
+ReferenceTimer(	IN := (SequenceState >= 30) AND (SequenceState <= 34),	PT := _ReferenceTime);
+IF ReferenceTimer.Q AND (_FaultCode = 0) THEN
+	_FaultCode := 9;
+	ChangeState(E_PMLCommand.ePMLCommand_Hold);
+END_IF
 AccumulateTimer(IN := (SequenceState = 50),		PT := _AccumulateTime);]]></ST>
       </Implementation>
     </Method>
     <Property Name="ReverseDirection" Id="{ebe768a9-c1bd-41a1-be7c-474449935cd5}">
-      <Declaration><![CDATA[// FALSE: loads at the retracted (lower) end and delivers to the extended end.
+      <Declaration><![CDATA[// FALSE: loads at the lower level and delivers to the upper level.
 // TRUE: the mirror image. Set once by the parent in Initialize.
 PROPERTY ReverseDirection : BOOL]]></Declaration>
       <Set Name="Set" Id="{abfc390d-ccb4-4252-a555-45685bba41ad}">
@@ -684,9 +837,11 @@ END_VAR]]></Declaration>
         <ST><![CDATA[CASE SequenceState OF
 	0:
 		NoStateTasksToComplete	:= FALSE;
-		// Nothing to clear - see Aborting.
+		// Nothing to clear - see Aborting. The carriage halts where it is but stays
+		// powered: a stop is orderly, and Resetting resumes from here.
 		M_Conveyor.RunForward  := FALSE;
 		M_Conveyor.RunBackward := FALSE;
+		Y_Lift.Stop();
 		SequenceState		:= SequenceState + 10;
 
 	10:

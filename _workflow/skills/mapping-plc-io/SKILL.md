@@ -13,10 +13,16 @@ Two projects, two masters, one machine:
 - **`SIM_1`** (AmsPort 852) drives `EtherCAT_1_SIM`, the Beckhoff EtherCAT simulation.
   It sees `GVL_EtherCAT_1_SIM`, one struct per terminal.
 
-**The box names are identical on both masters.** Only the box id differs — the real master
-uses 1–14, the simulated one 26–39. That is why the SIM addresses terminals numerically as
-`TIIB(n)` and the control side uses the symbolic `TIID^EtherCAT_1^...` path, and why a
-`TIIB` number copied from the wrong master compiles and silently links to the wrong device.
+**The box names are identical on both masters.** Only the box id differs, and it is not stable:
+a rescan renumbers it (today the real master spans ids 1–43, the simulated one 33–106). That is why
+the SIM addresses terminals numerically as `TIIB(n)` and the control side uses the symbolic
+`TIID^EtherCAT_1^...` path, and why a `TIIB` number copied from the wrong master - or from before a
+rescan - compiles and silently links to the wrong device.
+
+**NC axis links live in `Mapping_PLC.xml` too.** An `AXIS_REF`'s `NcToPlc` / `PlcToNc` pair links to
+an axis under the NC task, owner `TINC^NC-Task 1 SAF^Axes^<axis>`, entries `ToPlc` / `FromPlc`.
+Keeping them in the file means one import restores the whole PLC side. `plc_io.py` checks them as
+NC links - direction only - not as terminal channels, so they never count as free or booked channels.
 
 ## There are no I/O GVLs
 

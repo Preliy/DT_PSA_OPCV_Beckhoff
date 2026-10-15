@@ -8,12 +8,12 @@ Read this before trusting anything else in `Beckhoff/_docs/context/`. It answers
 | | |
 |---|---|
 | Control platform | TwinCAT 3 · `PLC_1` AmsPort 851 · `SIM_1` AmsPort 852 |
-| PLC snapshot | current, written `2026-08-27T18:11:49Z` |
+| PLC snapshot | current, written `2026-10-14T23:06:16Z` |
 | Type model | `TwinCAT_1/PLC/PLC_1/PLC_1.tmc` |
 | Twin scene | `VC_Demo_1_Beckhoff_1` (reference for the root pages: `VC_Demo_1_Beckhoff_1`) |
-| Twin export | `2026-08-23T17:09:36.0996372Z` (commit `5010e82 2026-08-23`) |
-| Twin handoff | `_workflow/config/handoff/.machine.json` schema 2, commit `not committed` |
-| Twin live-verified | no |
+| Twin export | `2026-10-14T20:03:08.0167801Z` (commit `4de76f0 2026-10-15`) |
+| Twin handoff | `_workflow/config/handoff/.machine.json` schema 2, commit `9a64e5a 2026-10-15` |
+| Twin live-verified | yes |
 | Groups | 7 |
 | Process-image symbols | 225 |
 | Linked | 222 |

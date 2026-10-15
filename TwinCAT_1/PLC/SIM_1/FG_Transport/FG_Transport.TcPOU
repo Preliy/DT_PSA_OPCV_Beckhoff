@@ -25,14 +25,18 @@ VAR_INPUT
 	Index05_B_Exit : FB_SensorBinary;
 	Index05_Y_Lift : FB_Cylinder;
 	Index05_Y_Stopper : FB_Cylinder;
+	Lift01_B_AxisMax : FB_SensorBinary;
+	Lift01_B_AxisMin : FB_SensorBinary;
 	Lift01_B_Detect : FB_SensorBinary;
 	Lift01_B_Exit : FB_SensorBinary;
 	Lift01_M_Conveyor : FB_Drive;
-	Lift01_Y_Lift : FB_Cylinder;
+	Lift01_Y_Lift : FB_Sercos_VC;
+	Lift02_B_AxisMax : FB_SensorBinary;
+	Lift02_B_AxisMin : FB_SensorBinary;
 	Lift02_B_Detect : FB_SensorBinary;
 	Lift02_B_Exit : FB_SensorBinary;
 	Lift02_M_Conveyor : FB_Drive;
-	Lift02_Y_Lift : FB_Cylinder;
+	Lift02_Y_Lift : FB_Sercos_VC;
 	Stopper01_B_Detect : FB_SensorBinary;
 	Stopper01_B_Exit : FB_SensorBinary;
 	Stopper01_Y_Stopper : FB_Cylinder;
@@ -72,10 +76,14 @@ END_VAR
 	Index05_B_Exit();
 	Index05_Y_Lift();
 	Index05_Y_Stopper();
+	Lift01_B_AxisMax();
+	Lift01_B_AxisMin();
 	Lift01_B_Detect();
 	Lift01_B_Exit();
 	Lift01_M_Conveyor();
 	Lift01_Y_Lift();
+	Lift02_B_AxisMax();
+	Lift02_B_AxisMin();
 	Lift02_B_Detect();
 	Lift02_B_Exit();
 	Lift02_M_Conveyor();
@@ -112,7 +120,20 @@ END_VAR
 	IF NOT bInitRun THEN RETURN; END_IF
 	bInitRun := FALSE;
 {endregion}
-]]></ST>
+	
+	
+	
+Lift01_Y_Lift.pControl := ADR(GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stControl);
+Lift01_Y_Lift.pStatus := ADR(GVL_EtherCAT_1_SIM.FG_Transport_Lift01_Y_Lift.stStatus);
+Lift02_Y_Lift.pControl := ADR(GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stControl);
+Lift02_Y_Lift.pStatus := ADR(GVL_EtherCAT_1_SIM.FG_Transport_Lift02_Y_Lift.stStatus);
+
+// NC velocity command = 6 x encoder increments/s (0.0001 mm/inc, drive VeloScale = 6)
+// -> 1000 mm/s <=> 60 000 000 counts
+Lift01_Y_Lift.stConfig.fReferenceVelocity   := 1000.0;
+Lift01_Y_Lift.stConfig.fNormalizationFactor := 60000000.0;
+Lift02_Y_Lift.stConfig.fReferenceVelocity   := 1000.0;
+Lift02_Y_Lift.stConfig.fNormalizationFactor := 60000000.0;]]></ST>
       </Implementation>
     </Method>
     <Action Name="Mapping" Id="{62ee953e-c687-4d6b-a096-748c09bae4e3}">
@@ -138,7 +159,8 @@ END_VAR
 // nStatus.6 is the drive's real "turning" bit, published every scan by the twin.
 // nStatus.7 is NOT wired: it is a one second init pulse, not a health bit.
 //
-// 58 DI + 31 DO.
+// 58 DI + 27 DO, plus the two lift servo drives - FB_Sercos_VC on the AX5125
+// boxes, wired by pointer in InitRun rather than here.
 // ============================================================================
 
 // --- Index01  (FG_Transport_Index_EL1809_1) ---
@@ -210,15 +232,15 @@ GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL1809_1.bIn16	:= Stopper04_Y_Stopper.bE
 // --- Lift01  (FG_Transport_Lift_EL1809_1) ---
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn1	:= Lift01_B_Detect.bValue;
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn2	:= Lift01_B_Exit.bValue;
-GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn3	:= Lift01_Y_Lift.bRetracted;
-GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn4	:= Lift01_Y_Lift.bExtended;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn3	:= Lift01_B_AxisMin.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn4	:= Lift01_B_AxisMax.bValue;
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn5	:= Lift01_M_Conveyor.nStatus.6;
 
 // --- Lift02  (FG_Transport_Lift_EL1809_1) ---
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn6	:= Lift02_B_Detect.bValue;
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn7	:= Lift02_B_Exit.bValue;
-GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn8	:= Lift02_Y_Lift.bRetracted;
-GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn9	:= Lift02_Y_Lift.bExtended;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn8	:= Lift02_B_AxisMin.bValue;
+GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn9	:= Lift02_B_AxisMax.bValue;
 GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL1809_1.bIn10	:= Lift02_M_Conveyor.nStatus.6;
 
 // --- Transport01  (FG_Transport_Drive_EL1008_1) ---
@@ -265,14 +287,12 @@ Stopper03_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL2008_1.
 Stopper04_Y_Stopper.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Stopper_EL2008_1.bOut4;
 
 // --- Lift01  (FG_Transport_Lift_EL2008_1) ---
-Lift01_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut1;
-Lift01_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut2;
+// bOut1/bOut2 were the lift cylinder - free since the carriage became a servo.
 Lift01_M_Conveyor.nControl.1	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut3;
 Lift01_M_Conveyor.nControl.0	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut4;
 
 // --- Lift02  (FG_Transport_Lift_EL2008_1) ---
-Lift02_Y_Lift.bRetract	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut5;
-Lift02_Y_Lift.bExtend	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut6;
+// bOut5/bOut6 were the lift cylinder - free since the carriage became a servo.
 Lift02_M_Conveyor.nControl.1	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut7;
 Lift02_M_Conveyor.nControl.0	:= GVL_EtherCAT_1_SIM.FG_Transport_Lift_EL2008_1.bOut8;
 

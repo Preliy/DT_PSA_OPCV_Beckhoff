@@ -17,6 +17,11 @@ first.
 If the twin comes up with devices that never move, the usual cause is the runtime not being in Run,
 or the ADS route not resolving — see [01 · Setup](01-setup.md).
 
+**The first reset after the runtime starts references both lift axes**: each carriage searches down
+to its `B_AxisMin` sensor, sets zero there, and then moves to its home level - Lift01 to 10 mm,
+Lift02 to 364 mm. Later resets skip the search. A reset that never finds the sensor stops with lift
+fault 9 instead of hanging.
+
 ## 2. The operator panel
 
 The Beckhoff scene adds an on-screen panel, `MAIN.FG_System.H_ControlPanel`. It is a `PanelSampler`
@@ -55,7 +60,8 @@ pages:
 |---|---|
 | `StartPage`, `GroupsOverview` | The machine and its groups |
 | `FG_01` … `FG_05` | Per-group device tiles and controls |
-| `FG_Transport`, `FGTransport_Index`, `FGTransport_Lift`, `FGTransport_Stopper`, `FGTransport_Drive` | The conveyor, and one page per module type |
+| `FG_Transport`, `FGTransport_Index`, `FGTransport_Lift`, `FGTransport_Stopper`, `FGTransport_Drive` | The conveyor, and one page per module type. The lift tile shows the carriage position, *Homed*, *At home* / *At far* and the limit sensors, and has **Reference axis** (Manual only) |
+| `FGTransport_Axes` | The two lift axes in TwinCAT's own motion controls - enable, jog, move, halt. Manual mode only. Reference with the lift tile's button; the NC's own homing does not use `B_AxisMin` |
 | `EtherCAT` | Bus and terminal state |
 | `Events` | The event log |
 | `Settings`, `LoginPage` | — |

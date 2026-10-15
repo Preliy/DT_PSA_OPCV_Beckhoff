@@ -10,11 +10,16 @@
 // The carriage belt publishes itself: M_Conveyor is an FB_AbstractBinaryDrive and
 // carries its own ST_AbstractBinaryDrive_HMI at
 //   MAIN.Machine.FG_Transport.Lift01.M_Conveyor.HMI
-// which the tile binds as a second parameter. The two cylinders are jogged
-// through their own SolenoidHMI structs.
+// which the tile binds as a second parameter. The carriage axis publishes its own
+// AxisBase_HMI (jog, position) at MAIN.Machine.FG_Transport.Lift01.Y_Lift; the
+// NC page drives it through the TE2000 motion controls.
 TYPE ST_TransferLift_HMI EXTENDS ST_BaseModule_HMI :
 STRUCT
 	Station	: ST_TransferLift_Status;
+
+	// Reference the carriage axis on B_AxisMin. Manual only; momentary - the
+	// unit clears it on the scan it reads it, honoured or not.
+	HomeAxis	: BOOL;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

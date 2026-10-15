@@ -23,6 +23,12 @@
     <Compile Include="Hil\EtherCAT_1_SIM\PRG_EtherCAT_1_SIM.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Library\FB_Sercos_FSM.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Library\FB_Sercos_VC.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Library\FB_Camera.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -95,16 +101,6 @@
     <Folder Include="Hil" />
     <Folder Include="Hil\EtherCAT_1_SIM" />
     <Folder Include="Library" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="OC_SIM.tmc">
-      <SubType>Content</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SIM.tmc">
-      <SubType>Content</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="SIM_1.tmc">
